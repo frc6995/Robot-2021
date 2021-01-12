@@ -11,6 +11,7 @@ import java.util.ResourceBundle.Control;
 
 import edu.wpi.first.wpilibj.Controller;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import frc.robot.utility.inputs.ControllerProfile;
 import frc.robot.utility.inputs.DrivebaseControllerProfile;
 
@@ -18,7 +19,7 @@ import frc.robot.utility.inputs.DrivebaseControllerProfile;
  * A controller wrapper specifically for the driver controller.
  * Provides convenience methods that get the correct axis/button value for the role (fwdBackAxis, etc), based on the passed in DrivercontrollerProfile.
  */
-public class NomadDriverController extends GenericHID {
+public class NomadDriverController extends XboxController {
     /**
      * The DriverControllerProfile for the driver controller in use.
      */

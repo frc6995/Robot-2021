@@ -10,7 +10,7 @@ package frc.robot.utility.inputs;
 import edu.wpi.first.wpilibj.GenericHID;
 
 /**
- * Add your docs here.
+ * We know the drive controller will be  an Xbox-style gamepad.
  */
 public abstract class DrivebaseControllerProfile {
     public abstract int getFwdBackAxisID();
