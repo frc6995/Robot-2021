@@ -109,4 +109,16 @@ public class DriveConstantsDefault extends DriveConstants {
         
         return new DifferentialDriveKinematics(getkTrackWidthMeters());
     }
+
+    @Override
+    public int getDriveControllerFwdBackAxis() {
+        // TODO Auto-generated method stub
+        return 33;
+    }
+
+    @Override
+    public int getDriveControllerLeftRightAxis() {
+        // TODO Auto-generated method stub
+        return 34;
+    }
 }

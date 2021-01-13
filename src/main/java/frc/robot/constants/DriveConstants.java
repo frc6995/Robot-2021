@@ -16,6 +16,9 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
  */
 public abstract class DriveConstants {
     protected DifferentialDriveKinematics differentialDriveKinematics;
+
+    public abstract int getDriveControllerFwdBackAxis();
+    public abstract int getDriveControllerLeftRightAxis();
     /** The CAN ID for the left master motor controller. */
     public abstract int getCanIDLeftDriveMaster();
 

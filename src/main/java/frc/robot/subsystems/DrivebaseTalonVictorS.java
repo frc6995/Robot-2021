@@ -117,8 +117,8 @@ NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants dri
   }
 
   public void drivePercentages(DrivebaseWheelPercentages percentages){
-    leftLeader.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
-    rightLeader.set(ControlMode.PercentOutput, percentages.getRightPercentage());
+    //leftLeader.set(ControlMode.PercentOutput, percentages.getLeftPercentage());
+    //rightLeader.set(ControlMode.PercentOutput, percentages.getRightPercentage());
   }
 
   @Override

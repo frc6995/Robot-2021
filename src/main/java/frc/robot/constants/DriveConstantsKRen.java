@@ -89,4 +89,16 @@ public final class DriveConstantsKRen extends DriveConstants {
     public DifferentialDriveKinematics getDifferentialDriveKinematics() {
         return kDriveKinematics;
     }
+
+    @Override
+    public int getDriveControllerFwdBackAxis() {
+        // TODO Auto-generated method stub
+        return 33;
+    }
+
+    @Override
+    public int getDriveControllerLeftRightAxis() {
+        // TODO Auto-generated method stub
+        return 34;
+    }
 }

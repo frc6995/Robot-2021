@@ -8,19 +8,23 @@
 package frc.robot.commands.drivebase;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.constants.DriveConstants;
 import frc.robot.subsystems.DrivebaseS;
-import frc.robot.wrappers.inputdevices.NomadDriverController;
+import frc.robot.subsystems.DrivebaseTalonVictorS;
+import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
 
 public class DrivebaseArcadeDriveStickC extends CommandBase {
-  DrivebaseS drivebaseS;
-  NomadDriverController driveStick;
+  DrivebaseTalonVictorS drivebaseS;
+  NomadMappedGenericHID driveStick;
+  DriveConstants driveConstants;
   /**
    * Creates a new DrivebaseArcadeDriveStick.
    */
-  public DrivebaseArcadeDriveStickC(DrivebaseS drivebase, NomadDriverController stick) {
+  public DrivebaseArcadeDriveStickC(DrivebaseTalonVictorS drivebase, NomadMappedGenericHID stick, DriveConstants driveConstants) {
     drivebaseS = drivebase;
     addRequirements(drivebaseS);
     driveStick = stick;
+    this.driveConstants = driveConstants;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -34,8 +38,8 @@ public class DrivebaseArcadeDriveStickC extends CommandBase {
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.drivePercentages(
       drivebaseS.arcadeDriveController(
-        driveStick.getFwdBackAxisValue(), 
-        driveStick.getLeftRightAxisValue()
+        driveStick.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()), 
+        driveStick.getRawAxis(driveConstants.getDriveControllerLeftRightAxis())
       ).clamp()
     );
   }

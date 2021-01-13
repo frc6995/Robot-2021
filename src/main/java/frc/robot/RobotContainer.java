@@ -7,24 +7,17 @@
 
 package frc.robot;
 
-import java.sql.DriverAction;
-
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
-
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.commands.drivebase.AgitatorSpinC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.constants.AutoConstants;
 import frc.robot.constants.AutoConstantsKRen;
 import frc.robot.constants.DriveConstants;
 import frc.robot.constants.DriveConstantsKRen;
-import frc.robot.controllerprofiles.OGXboxControllerTriggerDriveProfile;
-import frc.robot.subsystems.AgitatorS;
-import frc.robot.subsystems.DrivebaseS;
+import frc.robot.constants.DriverStationConstants;
 import frc.robot.subsystems.DrivebaseTalonVictorS;
-import frc.robot.utility.inputs.ControllerProfile;
-import frc.robot.wrappers.inputdevices.NomadDriverController;
+import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -38,22 +31,16 @@ public class RobotContainer {
   private DriveConstants driveConstants;
   //Subsystems
   private DrivebaseTalonVictorS drivebaseS;
-  private AgitatorS agitatorS;
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
-  private AgitatorSpinC agitatorSpinC;
-  private ControllerProfile driverUsb0ControllerProfile = new ControllerProfile(0);
-  //Controller Profiles
-  private OGXboxControllerTriggerDriveProfile ogXboxControllerTriggerDriveProfile;
-  //Controllers
-  private NomadDriverController driverController;
+
+  private NomadMappedGenericHID driverController;
   /**
    * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
   public RobotContainer() {
     createConstantsFiles();
     createSubsystems();
-    createControllerProfiles();
     createControllers();
     createCommands();
     configureButtonBindings();
@@ -72,33 +59,24 @@ public class RobotContainer {
    */
   private void createSubsystems() {
     drivebaseS = new DrivebaseTalonVictorS(driveConstants, autoConstants);
-    agitatorS = new AgitatorS();
   }
   /**
    * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
    */
   private void createCommands() {
-    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
-    agitatorSpinC = new AgitatorSpinC(agitatorS, driverController);
+    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController, driveConstants);
   }
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
-   // drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
-    agitatorS.setDefaultCommand(agitatorSpinC);
-  }
-  /**
-   * Instantiates the various controller profiles for optional use.
-   */
-  private void createControllerProfiles() {
-    ogXboxControllerTriggerDriveProfile = new OGXboxControllerTriggerDriveProfile();
+    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
   }
   /**
    * Creates the user controllers.
    */
   private void createControllers() {
-    driverController = new NomadDriverController(driverControllerProfile, ogXboxControllerTriggerDriveProfile);
+    driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT).setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
   }
 
   /**
@@ -117,7 +95,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An ExampleCommand will run in autonomous
-    return new DrivebaseArcadeDriveStickC(drivebaseS, driverController);
+    return drivebaseArcadeDriveStickC;
   }
+
+public NomadMappedGenericHID getDriverController() {
+	return driverController;
+}
 
 }
