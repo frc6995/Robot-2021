@@ -17,7 +17,7 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
 import frc.robot.wrappers.motorcontrollers.NomadBaseMotor;
 
-public abstract class DrivebaseS<LeaderType extends NomadBaseMotor, FollowerType extends NomadBaseMotor> extends SubsystemBase {
+public abstract class DrivebaseS extends SubsystemBase {
   DifferentialDriveOdometry differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
 
   /**
@@ -34,7 +34,7 @@ public abstract class DrivebaseS<LeaderType extends NomadBaseMotor, FollowerType
    * @param leftFollower
    * @param rightFollower
    */
-  public abstract void instantiateConfigureMotors(DriveConstants driveConstants, LeaderType leftLeader, LeaderType rightLeader, FollowerType leftFollower, FollowerType rightFollower);
+
 
   public abstract double getYaw();
 

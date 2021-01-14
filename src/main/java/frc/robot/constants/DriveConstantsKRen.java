@@ -8,7 +8,8 @@ import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 public final class DriveConstantsKRen extends DriveConstants {
     @Override
     /** The CAN ID for the left master motor controller. */
-    public int getCanIDLeftDriveMaster() {return 10;}
+    public int getCanIDLeftDriveMaster() {
+        return 10;}
 
     @Override
     /** The CAN ID for the right master motor controller. */

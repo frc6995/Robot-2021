@@ -27,11 +27,11 @@ import frc.robot.constants.AutoConversionFactors;
 import frc.robot.constants.DriveConstants;
 import frc.robot.utility.drivebase.DrivebaseWheelPercentages;
 
-public class DrivebaseTalonVictorS extends DrivebaseS<NomadTalonSRX<NomadNoneMotor>, NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>>> {
-  public NomadTalonSRX<NomadNoneMotor> leftLeader;
-  public NomadTalonSRX<NomadNoneMotor> rightLeader;
-  public NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> leftFollower;
-  public NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightFollower;
+public class DrivebaseTalonVictorS extends DrivebaseS {
+  public NomadTalonSRX leftLeader;
+  public NomadTalonSRX rightLeader;
+  public NomadVictorSPX leftFollower;
+  public NomadVictorSPX rightFollower;
   private DriveConstants driveConstants;
   private AutoConstants autoConstants;
   /**
@@ -48,12 +48,12 @@ public class DrivebaseTalonVictorS extends DrivebaseS<NomadTalonSRX<NomadNoneMot
    */
   public DrivebaseTalonVictorS(DriveConstants driveConstants, AutoConstants autoConstants) {
     this(
-      new NomadTalonSRX<NomadNoneMotor>(driveConstants.getCanIDLeftDriveMaster()), 
-      new NomadTalonSRX<NomadNoneMotor>(driveConstants.getCanIDRightDriveMaster()), 
+      new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster()), 
+      new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster()), 
       driveConstants, autoConstants);
   }
 
-  public DrivebaseTalonVictorS(NomadTalonSRX<NomadNoneMotor> leftTalonSRX, NomadTalonSRX<NomadNoneMotor> rightTalonSRX, DriveConstants driveConstants, AutoConstants autoConstants){
+  public DrivebaseTalonVictorS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX, DriveConstants driveConstants, AutoConstants autoConstants){
     super(driveConstants, autoConstants);
     leftLeader = leftTalonSRX;
     rightLeader = rightTalonSRX;
@@ -62,8 +62,8 @@ public class DrivebaseTalonVictorS extends DrivebaseS<NomadTalonSRX<NomadNoneMot
     differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(gyro.getYaw())));
   }
 
-  public DrivebaseTalonVictorS(NomadTalonSRX<NomadNoneMotor> leftTalonSRX, NomadTalonSRX<NomadNoneMotor> rightTalonSRX, NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> leftVictorSPX,
-NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants driveConstants, AutoConstants autoConstants){
+  public DrivebaseTalonVictorS(NomadTalonSRX leftTalonSRX, NomadTalonSRX rightTalonSRX, NomadVictorSPX leftVictorSPX,
+NomadVictorSPX rightVictorSPX, DriveConstants driveConstants, AutoConstants autoConstants){
     super(driveConstants, autoConstants);
     leftLeader = leftTalonSRX;
     rightLeader = rightTalonSRX;
@@ -121,16 +121,15 @@ NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightVictorSPX, DriveConstants dri
     //rightLeader.set(ControlMode.PercentOutput, percentages.getRightPercentage());
   }
 
-  @Override
-  public void instantiateConfigureMotors(DriveConstants driveConstants, NomadTalonSRX<NomadNoneMotor> leftLeader,
-      NomadTalonSRX<NomadNoneMotor> rightLeader, NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> leftFollower,
-      NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>> rightFollower) {
+  public void instantiateConfigureMotors(DriveConstants driveConstants, NomadTalonSRX leftLeader,
+      NomadTalonSRX rightLeader, NomadVictorSPX leftFollower,
+      NomadVictorSPX rightFollower) {
       //Create motors not yet instantiated (ex. by constructor parameter)
-      if(!(leftLeader == null)) leftLeader = new NomadTalonSRX<NomadNoneMotor>(driveConstants.getCanIDLeftDriveMaster());
-      if(!(leftFollower == null)) leftFollower = new NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>>(driveConstants.getCanIDLeftDriveFollower());
-      if(!(rightLeader == null)) rightLeader = new NomadTalonSRX<NomadNoneMotor>(driveConstants.getCanIDRightDriveMaster());
-      if(!(rightFollower == null)) rightFollower = new NomadVictorSPX<NomadTalonSRX<NomadNoneMotor>>(driveConstants.getCanIDRightDriveFollower());
-      // TODO configure motors with drive constants.
+      if((leftLeader == null)) leftLeader = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster());
+      if((leftFollower == null)) leftFollower = new NomadVictorSPX(driveConstants.getCanIDLeftDriveFollower());
+      if((rightLeader == null)) rightLeader = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster());
+      if((rightFollower == null)) rightFollower = new NomadVictorSPX(driveConstants.getCanIDRightDriveFollower());
+      // DO configure motors with drive constants.
       
 
   }

@@ -38,10 +38,10 @@ import frc.robot.wrappers.motorcontrollers.NomadTalonSRX;
 public class DrivebaseTalonVictorSTest {
     @SuppressWarnings("unchecked")
     @Mock
-    NomadTalonSRX<NomadNoneMotor> leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
+    NomadTalonSRX leftTalonSRX = Mockito.mock(NomadTalonSRX.class);
     @SuppressWarnings("unchecked")
     @Mock
-    NomadTalonSRX<NomadNoneMotor> rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
+    NomadTalonSRX rightTalonSRX = Mockito.mock(NomadTalonSRX.class);
     
     
     DrivebaseTalonVictorS drivebaseSTest;

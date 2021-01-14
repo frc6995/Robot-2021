@@ -1,25 +1,28 @@
 package frc.robot.wrappers.motorcontrollers;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.ControlType;;
+import com.revrobotics.ControlType;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
  * for forcing common settings.
  */
-public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMax implements NomadBaseMotor {
+public class NomadSparkMaxBrushless extends CANSparkMax implements NomadBaseMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
-
+    protected NomadBaseMotor leader = NomadNoneMotor.noneMotor;
     protected double lastPower = Double.NaN;
     protected ControlType lastMode = null;
-
+    // for following
+    protected boolean manualFollowing = false;
+    protected double lastLeaderOutput = Double.NaN;
+    protected double currentLeaderOutput = Double.NaN;
     /**
      * Constructs a SparkMAX, reverts it to factory default, and sets brake mode.
      * 
      * @param port The CAN ID of this SparkMAX
      */
-    public NomadSparkMax(int port) {
+    public NomadSparkMaxBrushless(int port) {
         super(port, MotorType.kBrushless);
         restoreFactoryDefaults();
         setIdleMode(IdleMode.kBrake);
@@ -32,7 +35,7 @@ public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMa
      * @param port     The CAN ID of this SparkMAX.
      * @param inverted True for inverted, false if not.
      */
-    public NomadSparkMax(int port, boolean inverted) {
+    public NomadSparkMaxBrushless(int port, boolean inverted) {
         this(port);
         setInverted(inverted);
     }
@@ -43,11 +46,11 @@ public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMa
      * 
      * @param port     The CAN ID of this SparkMAX.
      * @param inverted True for inverted, false if not.
-     * @param master   The NomadSparkMAX to follow.
+     * @param leader   The NomadSparkMAX to follow.
      */
-    public NomadSparkMax(int port, boolean inverted, NomadSparkMax<NomadNoneMotor> master) {
+    public NomadSparkMaxBrushless(int port, boolean inverted, NomadBaseMotor leader) {
         this(port, inverted);
-        follow(master);
+        setLeader(leader);
     }
 
     /**
@@ -66,6 +69,16 @@ public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMa
      */
     public void setLazy(boolean isLazy) {
         lazy = isLazy;
+    }
+    public NomadBaseMotor setLeader(NomadBaseMotor leader){
+        manualFollowing = false;
+        this.leader = leader;
+        if (leader instanceof NomadSparkMaxBrushless) {
+            follow((NomadSparkMaxBrushless) leader);
+        } else {
+            manualFollowing = true;
+        }
+        return this;
     }
 
     /**
@@ -96,14 +109,21 @@ public class NomadSparkMax<LeaderType extends NomadBaseMotor> extends CANSparkMa
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public void setLeader( NomadBaseMotor leader){
-        if (leader instanceof NomadSparkMax) {
-            follow((NomadSparkMax<NomadNoneMotor>) leader);
+
+    @Override
+    public double getActualOutputPercent() {
+        // TODO Auto-generated method stub
+        return getAppliedOutput();
+    }
+
+    @Override
+    public void updateFollower(){
+        if( manualFollowing && !(leader instanceof NomadNoneMotor)){ //If we're following something that's not officially supported
+            currentLeaderOutput = leader.getActualOutputPercent();
+            if (lazy && currentLeaderOutput != lastLeaderOutput) { //jank it.
+                lastLeaderOutput = currentLeaderOutput;
+                set(currentLeaderOutput);
+            }
         }
-        else if (leader instanceof NomadNoneMotor) {
-            System.out.println("NomadSparkMax tried to follow NomadNoneMotor, skipping...");
-        }
-        else throw new IllegalArgumentException("NomadSparkMax can only follow a NomadSparkMax!");
     }
 }

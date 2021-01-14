@@ -7,10 +7,12 @@
 
 package frc.robot.wrappers.motorcontrollers;
 
+import edu.wpi.first.wpilibj.SpeedController;
+
 /**
  * Add your docs here.
  */
-public interface NomadBaseMotor {
+public interface NomadBaseMotor extends SpeedController{
 
 
 
@@ -27,8 +29,16 @@ public interface NomadBaseMotor {
      */
     public void setLazy(boolean isLazy);
 
-    public void setLeader(NomadBaseMotor leader);
+    public NomadBaseMotor setLeader(NomadBaseMotor leader) throws IllegalArgumentException;
 
     public void setInverted(boolean inverted);
+
+    public double getActualOutputPercent();
+
+    public void updateFollower();
+
+
+
+
 
 }

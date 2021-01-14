@@ -8,9 +8,11 @@
 package frc.robot.wrappers.motorcontrollers;
 
 /**
- * Add your docs here.
+ * A stubbed-out NomadBaseMotor for use as a "dummy" leader.
  */
 public class NomadNoneMotor implements NomadBaseMotor{
+
+    public static NomadNoneMotor noneMotor = new NomadNoneMotor();
 
     @Override
     public boolean isLazy() {
@@ -25,14 +27,62 @@ public class NomadNoneMotor implements NomadBaseMotor{
     }
 
     @Override
-    public void setLeader(NomadBaseMotor leader) {
-        
+    public NomadBaseMotor setLeader(NomadBaseMotor leader) {
+        return this;
 
     }
 
     @Override
     public void setInverted(boolean inverted) {
         
+
+    }
+
+    @Override
+    public void set(double speed) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public double get() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public boolean getInverted() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public void disable() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void stopMotor() {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public void pidWrite(double output) {
+        // TODO Auto-generated method stub
+
+    }
+
+    @Override
+    public double getActualOutputPercent() {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
+    @Override
+    public void updateFollower() {
+        // TODO Auto-generated method stub
 
     }
 }
