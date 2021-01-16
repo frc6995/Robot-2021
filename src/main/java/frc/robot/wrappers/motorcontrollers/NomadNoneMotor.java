@@ -79,10 +79,4 @@ public class NomadNoneMotor implements NomadBaseMotor{
         // TODO Auto-generated method stub
         return 0;
     }
-
-    @Override
-    public void updateFollower() {
-        // TODO Auto-generated method stub
-
-    }
 }

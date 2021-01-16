@@ -6,6 +6,8 @@ import edu.wpi.first.hal.HAL;
 import frc.robot.utility.inputs.NomadInputMaps.NomadMappingEnum;
 
 public class NomadAxis {
+
+    public static NomadAxis noneAxis = new NomadAxis();
     /**
      * A brief description of the Axis's functionality.
      */
@@ -14,7 +16,7 @@ public class NomadAxis {
      * The map 
      */
     private NomadMappingEnum map = NomadMappingEnum.UNCATEGORIZED;
-    private NomadMappedGenericHID controller;
+    private NomadMappedGenericHID controller = NomadMappedGenericHID.noneMappedHID;
     private int id;
     private DoubleSupplier customBehavior;
 
@@ -23,6 +25,14 @@ public class NomadAxis {
    * overridden).
    */
   public NomadAxis() {}
+  /**
+   * Default with id for filling in input maps.
+   * @param id
+   */
+  public NomadAxis(int id) {
+      super();
+      this.id = id;
+  }
 
     /**
      * Constructs a NomadAxis
@@ -32,10 +42,9 @@ public class NomadAxis {
      * @param axisName A brief summary of the axis' functionality
      * @param axisMap Which input map this axis belongs to.
      */
-  public NomadAxis(NomadMappedGenericHID controller, int id, String axisName) {
+  public NomadAxis(int id, String axisName) {
       super();
       this.id = id;
-      this.controller = controller;
       name = axisName;
   }
 
@@ -47,10 +56,10 @@ public class NomadAxis {
      * @param axisMap Which input map this axis belongs to.
      * @param customAxisBehavior A function that returns the axis value.
      */
-    public NomadAxis(NomadMappedGenericHID controller, int id, String axisName, DoubleSupplier customAxisBehavior) {
+    public NomadAxis(int id, String axisName, DoubleSupplier customAxisBehavior) {
         super();
         this.id = id;
-        this.controller = controller;
+        //this.controller = controller;
         name = axisName;
         customBehavior = customAxisBehavior;
     }
@@ -59,12 +68,16 @@ public class NomadAxis {
      * @return the value of the axis.
      */
   public final double get() {
-      if (map == controller.getSelectedMap()) {
-        if (id > 0 && id < HAL.kMaxJoystickAxes) {
-            return (controller.getRawAxis(id));
+      if (map.equals(controller.getSelectedMap()) 
+      && !(map.equals(NomadMappingEnum.UNCATEGORIZED))) {
+        if (id >= 0 && id < controller.getAxisCount()) {
+            return (controller.getHIDRawAxis(id));
         }    
-        else{
+        else if (customBehavior != null){
             return customBehavior.getAsDouble();
+        }
+        else {
+            return 0.0;
         }
       }
       return 0.0;
@@ -90,6 +103,11 @@ public class NomadAxis {
 
   public NomadAxis withCustomBehavior(DoubleSupplier behavior) {
       customBehavior = behavior;
+      return this;
+  }
+
+  public NomadAxis withController(NomadMappedGenericHID controller){
+      this.controller = controller;
       return this;
   }
 }

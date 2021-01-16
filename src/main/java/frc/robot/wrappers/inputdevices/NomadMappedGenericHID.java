@@ -13,12 +13,14 @@ import frc.robot.utility.inputs.NomadInputMaps;
 import frc.robot.utility.inputs.NomadXboxInputMap;
 import frc.robot.utility.inputs.NomadInputMaps.NomadMappingEnum;
 
+
 /**
  * A controller wrapper specifically for the driver controller.
  * Provides convenience methods that get the correct axis/button value for the role (fwdBackAxis, etc), based on the passed in DrivercontrollerProfile.
  */
 public class NomadMappedGenericHID extends GenericHID {
-    private NomadMappingEnum selectedMap;
+    public static NomadMappedGenericHID noneMappedHID = new NomadMappedGenericHID(Integer.MIN_VALUE);
+    private NomadMappingEnum selectedMap = NomadMappingEnum.UNCATEGORIZED;
 
     public NomadMappedGenericHID(int port) {
         super(port);
@@ -47,12 +49,21 @@ public class NomadMappedGenericHID extends GenericHID {
 
     @Override
     public double getRawAxis(int id){
-        return selectedMap.getMap().getRawAxis(id);
+        return NomadInputMaps.inputEnumMap.get(selectedMap)
+        .getRawAxis(id);
     }
 
     @Override
     public boolean getRawButton(int id){
-        return selectedMap.getMap().getRawButton(id);
+        return NomadInputMaps.inputEnumMap.get(selectedMap).getRawButton(id);
+    }
+
+    public double getHIDRawAxis(int id){
+        return super.getRawAxis(id);
+    }
+    
+    public boolean getHIDRawButton(int id){
+        return super.getRawButton(id);
     }
 
 

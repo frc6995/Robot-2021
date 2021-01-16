@@ -10,5 +10,5 @@ import frc.robot.utility.inputs.NomadInputMaps.NomadMappingEnum;
 /** Add your docs here. */
 public class DriverStationConstants extends Constants {
     public static final int DRIVER_CONTROLLER_USB_PORT = 0;
-	public static final NomadMappingEnum DRIVER_CONTROLLER_MAP = NomadMappingEnum.TRIGGER_DRIVE;
+	public static final NomadMappingEnum DRIVER_CONTROLLER_MAP = NomadMappingEnum.DEFAULT_DRIVE;
 }

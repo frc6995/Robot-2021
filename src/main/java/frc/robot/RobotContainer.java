@@ -9,6 +9,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.constants.AutoConstants;
@@ -17,6 +18,7 @@ import frc.robot.constants.DriveConstants;
 import frc.robot.constants.DriveConstantsKRen;
 import frc.robot.constants.DriverStationConstants;
 import frc.robot.subsystems.DrivebaseTalonVictorS;
+import frc.robot.utility.inputs.NomadInputMaps;
 import frc.robot.wrappers.inputdevices.NomadMappedGenericHID;
 
 /**
@@ -35,16 +37,19 @@ public class RobotContainer {
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
 
   private NomadMappedGenericHID driverController;
+
+  private boolean init = false;
   /**
    * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
   public RobotContainer() {
     createConstantsFiles();
-    createSubsystems();
     createControllers();
+    createSubsystems();
     createCommands();
     configureButtonBindings();
     configureDefaultCommands();
+    init = true;
   }
 
   /**
@@ -76,7 +81,9 @@ public class RobotContainer {
    * Creates the user controllers.
    */
   private void createControllers() {
-    driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT).setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
+    driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT);
+    NomadInputMaps.createMaps(driverController, driveConstants);
+    driverController.setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
   }
 
   /**
@@ -101,5 +108,11 @@ public class RobotContainer {
 public NomadMappedGenericHID getDriverController() {
 	return driverController;
 }
+  public void updateTelemetry(){
+    if(init) {
+      SmartDashboard.putNumber("driveFwdBack", driverController.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
+      SmartDashboard.putString("Driver Map", driverController.getSelectedMap().toString());
+    }
+  }
 
 }

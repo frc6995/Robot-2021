@@ -4,6 +4,7 @@
 
 package frc.robot.utility.inputs;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.function.BiConsumer;
 
@@ -13,10 +14,10 @@ import frc.robot.wrappers.inputdevices.NomadButton;
 
 /** A way to   */
 public class NomadXboxInputMap {
-    private NomadMappingEnum mapType;
+    private NomadMappingEnum mapType = NomadMappingEnum.UNCATEGORIZED;
     private String mapName;
-    private Map<Integer, NomadButton> buttons;
-    private Map<Integer, NomadAxis> axes; //
+    private Map<Integer, NomadButton> buttons = new HashMap<Integer, NomadButton>();
+    private Map<Integer, NomadAxis> axes = new HashMap<Integer, NomadAxis>(); //
 
     public NomadXboxInputMap(NomadMappingEnum map, String name) {
         mapType = map;
@@ -43,7 +44,9 @@ public class NomadXboxInputMap {
     }
 
     public NomadXboxInputMap withAxis(NomadAxis axis) {
-        axes.put(axis.getId(), axis.withMap(mapType));
+        axis.withMap(mapType);
+        axes.put(axis.getId(),
+        axis);
         return this;
     }
 
@@ -54,7 +57,9 @@ public class NomadXboxInputMap {
     }
 
     public double getRawAxis(int id){
-        return axes.get((Integer) id).get();
+        return getAxis(id)
+        .get();
+        
     }
 
     public boolean getRawButton(int id){
@@ -62,7 +67,30 @@ public class NomadXboxInputMap {
     }
 
     public NomadAxis getAxis(int id){
-        return axes.get(id);
+        try{
+            NomadAxis axis = axes.get(id);
+            if(axis != null) {
+                return axes.get(id);
+            } else throw new NullPointerException();
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    public NomadButton getButton(int id){
+        try{
+            return buttons.get(id);
+        } catch (NullPointerException e) {
+            return null;
+        }
+    }
+
+    public String getName() {
+        return mapName;
+    }
+
+    public NomadMappingEnum getType() {
+        return mapType;
     }
 
     

@@ -35,9 +35,6 @@ public interface NomadBaseMotor extends SpeedController{
 
     public double getActualOutputPercent();
 
-    public void updateFollower();
-
-
 
 
 

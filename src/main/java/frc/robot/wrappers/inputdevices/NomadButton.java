@@ -16,47 +16,49 @@ import frc.robot.utility.inputs.NomadInputMaps.NomadMappingEnum;
 
 /** Add your docs here. */
 public class NomadButton extends Button {
-    /**
+    public static NomadButton noneButton = new NomadButton();
+	/**
      * A brief description of the button's functionality.
      */
     private String name = "unnamed";
     /**
      * The map 
      */
-    private NomadMappingEnum map;
-    private NomadMappedGenericHID controller;
+    private NomadMappingEnum map = NomadMappingEnum.UNCATEGORIZED;
+    private NomadMappedGenericHID controller = NomadMappedGenericHID.noneMappedHID;
     private int id;
-    private BooleanSupplier customBehavior;
+    private BooleanSupplier customBehavior = () -> {return false;};
 
     /**
    * Default constructor; creates a button that is never pressed (unless {@link Button#get()} is
    * overridden).
    */
   public NomadButton() {}
+  public NomadButton(int id) {
+      super();
+      this.id = id;
+  }
 
     /**
    * 
    */
-  public NomadButton(NomadMappedGenericHID controller, int id, String buttonName, NomadMappingEnum buttonMap) {
+  public NomadButton(int id, String buttonName) {
       super();
       this.id = id;
-      this.controller = controller;
-      name = buttonName;
-      map = buttonMap;
-      
+      name = buttonName;      
   }
 
   @Override
   public boolean get() {
-    if (map == controller.getSelectedMap()) {
-        if (id > 0 && id < 31) { // DS limitation on buttons sent from a single controller
-            return (controller.getRawButton(id));
+    if (map.equals(controller.getSelectedMap())) {
+        if (id > 0 && id < controller.getButtonCount()) { // DS limitation on buttons sent from a single controller is 32
+            return (controller.getHIDRawButton(id));
         }    
         else{
-            return customBehavior.getAsBoolean();
+            return customBehavior.getAsBoolean(); // custom behavior for custom buttons
         }
       }
-    return false;
+    return false; //real button, does not exist on current controller.
   }
 
   public int getId() {
@@ -74,5 +76,15 @@ public class NomadButton extends Button {
   public NomadButton withName(String name) {
       this.name = name;
       return this;
+  }
+
+  public NomadButton withCustomBehavior(BooleanSupplier behavior) {
+    customBehavior = behavior;
+        return this;
+    }
+  
+  public NomadButton withController(NomadMappedGenericHID controller){
+    this.controller = controller;
+    return this;
   }
 }

@@ -19,7 +19,10 @@ import frc.robot.wrappers.motorcontrollers.NomadBaseMotor;
 
 public abstract class DrivebaseS extends SubsystemBase {
   DifferentialDriveOdometry differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
-
+  public NomadBaseMotor leftLeader;
+  public NomadBaseMotor rightLeader;
+  public NomadBaseMotor leftFollower;
+  public NomadBaseMotor rightFollower;
   /**
    * Creates a new DrivebaseS.
    */
@@ -40,7 +43,7 @@ public abstract class DrivebaseS extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run    
+    updateTelemetry();   
   }
   
   public Pose2d getPose(){
@@ -60,4 +63,8 @@ public abstract class DrivebaseS extends SubsystemBase {
   public abstract DrivebaseWheelPercentages arcadeDriveController(double fwdBack, double leftRight);
 
   public abstract void drivePercentages(DrivebaseWheelPercentages percentages);
+
+  public abstract void updateTelemetry();
+
+  public abstract void stopMotor();
 }

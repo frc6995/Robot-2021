@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
+import edu.wpi.first.wpilibj.RobotBase;
+
 /**
  * This class is an encapsulation of WPI_TalonSRX that add a couple constructors
  * for forcing common settings. It takes inspiration for the lazy feature from
@@ -126,13 +128,17 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
             follow((IMotorController) leader);
         }
         else{
-            manualFollowing = true;
+            throw new IllegalArgumentException(getClass().toString() + getDeviceID() + " tried to follow an incompatible controller");
         }
         return this;
     }
     @Override
     public double getActualOutputPercent() {
         // TODO Auto-generated method stub
-        return getMotorOutputPercent();
+        if(RobotBase.isReal()) {
+            return get(); //getMotorOutputPercent();
+        } else {
+            return get();
+        }
     }
 }

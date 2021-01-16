@@ -68,7 +68,7 @@ dependencies {
 // Simulation configuration (e.g. environment variables).
 sim {
     // Sets the websocket client remote host.
-    // envVar "HALSIMWS_HOST", "10.0.0.2"
+    //envVar "HALSIMWS_HOST", "10.0.0.2"
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')

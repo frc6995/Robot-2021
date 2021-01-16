@@ -5,6 +5,8 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_VictorSPX;
 
+import edu.wpi.first.wpilibj.RobotBase;
+
 /**
  * This class is an encapsulation of WPI_VictorSPX that add a couple
  * constructors for forcing common settings. It takes inspiration for the lazy feature from
@@ -108,15 +110,6 @@ public class NomadVictorSPX extends WPI_VictorSPX implements NomadBaseMotor {
         }
     }
 
-    public void updateFollower(){
-        if( manualFollowing && !(leader instanceof NomadNoneMotor)){ //If we're following something that's not officially supported
-            currentLeaderOutput = leader.getActualOutputPercent();
-            if (lazy && currentLeaderOutput != lastLeaderOutput) { //jank it.
-                lastLeaderOutput = currentLeaderOutput;
-                set(currentLeaderOutput);
-            }
-        }
-    }
 
     @SuppressWarnings("unchecked")
     public NomadBaseMotor setLeader( NomadBaseMotor leader){
@@ -126,13 +119,17 @@ public class NomadVictorSPX extends WPI_VictorSPX implements NomadBaseMotor {
             follow((IMotorController) leader);
         }
         else{
-            manualFollowing = true;
+            throw new IllegalArgumentException(getClass().toString() + getDeviceID() + " tried to follow an incompatible controller");
         }
         return this;
     }
     @Override
     public double getActualOutputPercent() {
         // TODO Auto-generated method stub
-        return getMotorOutputPercent();
+        if(RobotBase.isReal()) {
+            return getMotorOutputPercent();
+        } else {
+            return get();
+        }
     }
 }
