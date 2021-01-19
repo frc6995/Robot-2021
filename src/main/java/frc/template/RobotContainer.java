@@ -12,16 +12,16 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
-import frc.template.constants.AutoConstants;
+import frc.lib.constants.AutoConstants;
 import frc.template.constants.AutoConstantsKRen;
-import frc.template.constants.DriveConstants;
+import frc.lib.constants.DriveConstants;
 import frc.template.constants.DriveConstantsKRen;
 import frc.template.constants.DriverStationConstants;
 import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
-import frc.lib.utility.inputs.NomadInputMaps;
 import frc.lib.utility.inputs.NomadInputMap;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 import frc.lib.wrappers.inputdevices.NomadMappedGenericHID;
+import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -38,11 +38,9 @@ public class RobotContainer {
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
 
-  private NomadMappedGenericHID driverController;
+  //private NomadMappedGenericHID driverController;
 
   private boolean init = false;
-
-  private NomadMappingEnum selectedMap = NomadMappingEnum.UNCATEGORIZED;
   /**
    * The container for the robot.  Contains constant files, subsystems, commands, controller profiles, and controllers, to be created in that order.
    */
@@ -73,7 +71,7 @@ public class RobotContainer {
    * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
    */
   private void createCommands() {
-    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driverController, driveConstants);
+    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
   }
   /**
    * Configures the default Commands for the subsystems.
@@ -85,9 +83,12 @@ public class RobotContainer {
    * Creates the user controllers.
    */
   private void createControllers() {
-    driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT);
+    NomadOperatorConsole.init();
+    NomadInputMaps.createMaps(driveConstants);
+    NomadOperatorConsole.setMap(NomadMappingEnum.DEFAULT_DRIVE);
+    /*driverController = new NomadMappedGenericHID(DriverStationConstants.DRIVER_CONTROLLER_USB_PORT);
     NomadInputMaps.createMaps(driverController, driveConstants);
-    selectedMap = DriverStationConstants.DRIVER_CONTROLLER_MAP;
+    selectedMap = DriverStationConstants.DRIVER_CONTROLLER_MAP;*/
     //driverController.setMap(DriverStationConstants.DRIVER_CONTROLLER_MAP);
   }
 
@@ -110,13 +111,10 @@ public class RobotContainer {
     return drivebaseArcadeDriveStickC;
   }
 
-public NomadMappedGenericHID getDriverController() {
-	return driverController;
-}
   public void updateTelemetry(){
     if(init) {
-      SmartDashboard.putNumber("driveFwdBack", driverController.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
-      SmartDashboard.putString("Driver Map", driverController.getSelectedMap().toString());
+      SmartDashboard.putNumber("driveFwdBack", NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
+      SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
     }
   }
 

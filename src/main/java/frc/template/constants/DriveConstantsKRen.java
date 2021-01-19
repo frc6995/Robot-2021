@@ -1,6 +1,7 @@
 package frc.template.constants;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import frc.lib.constants.DriveConstants;
 
 /**
  * Drive Constants for our 2020 bot KRen

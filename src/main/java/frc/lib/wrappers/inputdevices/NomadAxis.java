@@ -14,6 +14,7 @@ public class NomadAxis {
      * A brief description of the Axis's functionality.
      */
     private String name = "unnamed";
+    private boolean isCustomAxis;
     /**
      * The map 
      */
@@ -58,7 +59,7 @@ public class NomadAxis {
      * @param axisMap Which input map this axis belongs to.
      * @param customAxisBehavior A function that returns the axis value.
      */
-    public NomadAxis(int id, String axisName, DoubleSupplier customAxisBehavior) {
+    public NomadAxis(/*NomadMappedGenericHID controller,*/ int id, String axisName, DoubleSupplier customAxisBehavior) {
         super();
         this.id = id;
         //this.controller = controller;
@@ -70,17 +71,9 @@ public class NomadAxis {
      * @return the value of the axis.
      */
   public final double get() {
-      if (map.equals(controller.getSelectedMap()) 
+      if (map.equals(NomadOperatorConsole.getSelectedMap()) 
       && !(map.equals(NomadMappingEnum.UNCATEGORIZED))) {
-        if (id >= 0 && id < controller.getAxisCount()) {
-            return (controller.getHIDRawAxis(id));
-        }    
-        else if (customBehavior != null){
-            return customBehavior.getAsDouble();
-        }
-        else {
-            return 0.0;
-        }
+        return customBehavior.getAsDouble();
       }
       return 0.0;
 

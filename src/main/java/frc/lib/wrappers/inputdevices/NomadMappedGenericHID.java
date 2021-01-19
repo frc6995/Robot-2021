@@ -8,7 +8,6 @@
 package frc.lib.wrappers.inputdevices;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import frc.lib.utility.inputs.NomadInputMaps;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
 
@@ -47,13 +46,13 @@ public class NomadMappedGenericHID extends GenericHID {
 
     @Override
     public double getRawAxis(int id){
-        return NomadInputMaps.inputEnumMap.get(selectedMap)
+        return NomadOperatorConsole.inputEnumMap.get(selectedMap)
         .getRawAxis(id);
     }
 
     @Override
     public boolean getRawButton(int id){
-        return NomadInputMaps.inputEnumMap.get(selectedMap).getRawButton(id);
+        return NomadOperatorConsole.inputEnumMap.get(selectedMap).getRawButton(id);
     }
 
     public double getHIDRawAxis(int id){

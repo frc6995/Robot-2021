@@ -13,6 +13,7 @@ import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
 /** A way to   */
 public class NomadInputMap {
+    
     private NomadMappingEnum mapType = NomadMappingEnum.UNCATEGORIZED;
     private String mapName;
     private Map<Integer, NomadButton> buttons = new HashMap<Integer, NomadButton>();

@@ -7,6 +7,9 @@
 
 package frc.template.constants;
 
+import frc.lib.constants.AutoConstants;
+import frc.lib.constants.DriveConstants;
+
 /**
  * Add your docs here.
  */

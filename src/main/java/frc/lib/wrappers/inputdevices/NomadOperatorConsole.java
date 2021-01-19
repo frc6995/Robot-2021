@@ -6,28 +6,34 @@ package frc.lib.wrappers.inputdevices;
 
 import java.util.EnumMap;
 import java.util.HashMap;
+import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import frc.lib.utility.inputs.NomadInputMap;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+import frc.template.NomadInputMaps;
 
 /**
  * This class condenses all operator input into one class.
  */
 public class NomadOperatorConsole {
     public static final int maxSupportedPOVs = 8; // 12 is too many to easily fit in the mapping. Plus, who does that?
-    private NomadMappingEnum selectedMap = NomadMappingEnum.UNCATEGORIZED;
+    private static NomadMappingEnum selectedMap = NomadMappingEnum.UNCATEGORIZED;
+    private static  NetworkButton rescanButton;
+    private static RunCommand rescanCommand;
     public static enum NomadMappingEnum {
         UNCATEGORIZED,
         TRIGGER_DRIVE,
         OG_TRIGGER_DRIVE,
-        DEFAULT_DRIVE
-        /*UNCATEGORIZED (NomadInputMaps.baseControllerMap),
-        TRIGGER_DRIVE (NomadInputMaps.controllerTriggerDrive),
-        OG_TRIGGER_DRIVE (NomadInputMaps.driveControllerOgXboxTriggerDrive),
-        DEFAULT_DRIVE (NomadInputMaps.driveControllerMap);*/
+        DEFAULT_DRIVE,
+        BASE_MAP
 
     }
-    public static final EnumMap<NomadMappingEnum, NomadInputMap> inputEnumMap = new EnumMap<NomadMappingEnum, NomadInputMap>(NomadMappingEnum.class);
+    public static final EnumMap<NomadMappingEnum, NomadInputMap> inputEnumMap = 
+    new EnumMap<NomadMappingEnum, NomadInputMap>(NomadMappingEnum.class);
     private static HashMap<Integer, NomadMappedGenericHID> controllers = new HashMap<>();
 
     public static void init() {
@@ -35,17 +41,30 @@ public class NomadOperatorConsole {
             NomadMappedGenericHID controller = new NomadMappedGenericHID(i);
             controllers.put(i, controller);
         }
+        SmartDashboard.putBoolean("Controller Rescan", false);
+        rescanButton = new NetworkButton("SmartDashboard/", "Controller Rescan");
+        rescanCommand = new RunCommand(()-> {
+            NomadInputMaps.repopulateMaps();
+            SmartDashboard.putBoolean("Controller Rescan", false);
+            System.out.println("Rescan Controllers");
+        });
+        rescanButton.whenPressed(rescanCommand);
     }
-    /**
-     * 
-     */
    
     public static boolean getRawButton(int id) {
-        return controllers.get(getControllerPort(id)).getRawButton(getInputPort(id));
+        try{
+            return controllers.get(getControllerPort(id)).getRawButton(getInputPort(id));
+        } catch (NullPointerException e) {
+            return false;
+        } 
     }
 
     public static double getRawAxis(int id) {
-        return controllers.get(getControllerPort(id)).getRawAxis(getInputPort(id));
+        try{
+            return controllers.get(getControllerPort(id)).getRawAxis(getInputPort(id));
+        } catch (NullPointerException e) {
+            return 0;
+        }
     }
 
     public static int getControllerPort(int id) {
@@ -67,21 +86,22 @@ public class NomadOperatorConsole {
      * @return the populated map.
      */
     public static NomadInputMap populateMap(NomadInputMap map) {
-        controllers.forEach(
+        controllers.forEach((BiConsumer<Integer,NomadMappedGenericHID>)
             (port, controller) -> {
                 for (int axisId = 0; axisId < controller.getAxisCount(); axisId++) {
                     if (map.getAxis(axisId) == null) { //make sure we actually need to make a new axis.
-                        map.withAxis(new NomadAxis(
-                            axisId + 100*port, "" + axisId)
-                            .withController(controller));
+                        final int id = axisId;
+                        map.withAxis(new NomadAxis(axisId + 100*port, "" + axisId)
+                        .withCustomBehavior((DoubleSupplier) ()-> {return controller.getHIDRawAxis(id);}));
                     }
                 }
                 for (int buttonId = 0; buttonId < controller.getButtonCount(); buttonId++) {
                     if (map.getButton(buttonId) == null) {
+                        final int id = buttonId;
                         map.withButton(
                             new NomadButton(
                                 buttonId + 100*port, "" + buttonId)
-                                .withController(controller));
+                                .withCustomBehavior((BooleanSupplier) ()-> {return controller.getHIDRawButton(id);}));
                     }
                 }
                 for (int pov = 0; pov < ((controller.getPOVCount() < maxSupportedPOVs) ? controller.getPOVCount(): maxSupportedPOVs); pov++){
@@ -99,7 +119,7 @@ public class NomadOperatorConsole {
                                         return controller.getPOV(povId) == povAngle;
                                     }
                                 )
-                                .withController(controller)
+                                
                             );
                         }
                     }
@@ -109,5 +129,19 @@ public class NomadOperatorConsole {
 
         inputEnumMap.put(map.getType(), map);
         return map;
+    }
+
+    public static void setMap(NomadMappingEnum map) {
+        selectedMap = map;
+        controllers.forEach((port, controller) ->
+            {controller.setMap(map);});
+    }
+
+    public static NomadMappingEnum getSelectedMap() {
+        return selectedMap;
+    }
+
+    public static int getCombinedID(int controllerPort, int id){
+        return 100*controllerPort + id;
     }
 }

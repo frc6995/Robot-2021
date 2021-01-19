@@ -8,6 +8,7 @@
 package frc.template.constants;
 
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import frc.lib.constants.DriveConstants;
 
 /**
  * Add your docs here.

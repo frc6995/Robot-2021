@@ -8,22 +8,21 @@
 package frc.template.commands.drivebase;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.template.constants.DriveConstants;
+import frc.lib.constants.DriveConstants;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
 import frc.lib.wrappers.inputdevices.NomadMappedGenericHID;
+import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 
 public class DrivebaseArcadeDriveStickC extends CommandBase {
   DifferentialDrivebaseS drivebaseS;
-  NomadMappedGenericHID driveStick;
   DriveConstants driveConstants;
   /**
    * Creates a new DrivebaseArcadeDriveStick.
    */
-  public DrivebaseArcadeDriveStickC(DifferentialDrivebaseS drivebase, NomadMappedGenericHID stick, DriveConstants driveConstants) {
+  public DrivebaseArcadeDriveStickC(DifferentialDrivebaseS drivebase, DriveConstants driveConstants) {
     drivebaseS = drivebase;
     addRequirements(drivebaseS);
-    driveStick = stick;
     this.driveConstants = driveConstants;
     // Use addRequirements() here to declare subsystem dependencies.
   }
@@ -36,8 +35,8 @@ public class DrivebaseArcadeDriveStickC extends CommandBase {
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.drivePercentages(
       drivebaseS.arcadeDriveController(
-        driveStick.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()), 
-        driveStick.getRawAxis(driveConstants.getDriveControllerLeftRightAxis())
+        NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()), 
+        NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerLeftRightAxis())
       ).clamp()
     );
   }
