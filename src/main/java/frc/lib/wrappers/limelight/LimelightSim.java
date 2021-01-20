@@ -6,6 +6,7 @@ import edu.wpi.first.hal.SimDevice;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.hal.SimEnum;
 import edu.wpi.first.hal.SimValue;
+import edu.wpi.first.hal.SimDevice.Direction;
 import frc.lib.utility.util.NomadEnumUtil;
 
 /**
@@ -49,13 +50,13 @@ public class LimelightSim extends Limelight{
     public LimelightSim(String name) {
         super(name, false, false);
         limelightSim = SimDevice.create(name);
-        hasTargetSim = limelightSim.createBoolean("tv", false, false);
-        simTx = limelightSim.createDouble("tx", false, 0.0);
-        simTy = limelightSim.createDouble("ty", false, 0.0);
-        simTs = limelightSim.createDouble("ts", false, 0.0);
-        simPipeline = limelightSim.createValue("pipeline", false, HALValue.makeInt(0));
-        simCamMode = limelightSim.createEnum("mode", false, NomadEnumUtil.enumToStringArray(CameraMode.class), CameraMode.Driver.getValue());
-        sim3dMode = limelightSim.createBoolean("3Dmode", false, true);
+        hasTargetSim = limelightSim.createBoolean("tv", Direction.kInput, false);
+        simTx = limelightSim.createDouble("tx", Direction.kInput, 0.0);
+        simTy = limelightSim.createDouble("ty", Direction.kInput, 0.0);
+        simTs = limelightSim.createDouble("ts", Direction.kInput, 0.0);
+        simPipeline = limelightSim.createValue("pipeline", Direction.kBidir, HALValue.makeInt(0));
+        simCamMode = limelightSim.createEnum("mode", Direction.kBidir, NomadEnumUtil.enumToStringArray(CameraMode.class), CameraMode.Driver.getValue());
+        sim3dMode = limelightSim.createBoolean("3Dmode", Direction.kBidir, true);
     }
 
     /**
