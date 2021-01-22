@@ -8,11 +8,10 @@ public class AgitatorS extends SubsystemBase {
   private NomadVictorSPX rightMotor;
   
   /** Creates a new AgitatorS.*/
-
   public AgitatorS() {
     leftMotor = new NomadVictorSPX(30);
     rightMotor = new NomadVictorSPX(31);
-  }  
+  }
   
   @Override
   public void periodic() {
@@ -22,7 +21,6 @@ public class AgitatorS extends SubsystemBase {
   /**
    * Sets the speed of the left motor to a given value
    */
-
   public void setLeftMotor(double motorSpeed){
     leftMotor.set(motorSpeed);
   }
@@ -31,7 +29,6 @@ public class AgitatorS extends SubsystemBase {
    * Sets the speed of the right motor to a given value
    * @param motorSpeed
    */
-
   public void setRightMotor(double motorSpeed){
     rightMotor.set(motorSpeed);
   }
@@ -39,7 +36,6 @@ public class AgitatorS extends SubsystemBase {
   /**
    * Stops the left motor
    */
-
   public void stopLeftMotor(){
     leftMotor.stopMotor();
   }
@@ -47,7 +43,6 @@ public class AgitatorS extends SubsystemBase {
   /**
    * Stops the right motor
    */
-
   public void stopRightMotor(){
     rightMotor.stopMotor();
   }
