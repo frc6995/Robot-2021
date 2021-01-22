@@ -8,14 +8,15 @@
                 "linuxaarch64bionic",
                 "linuxx86-64",
                 "linuxathena",
-                "linuxraspbian"
+                "linuxraspbian",
+                "osxx86-64"
             ],
             "groupId": "com.revrobotics.frc",
             "headerClassifier": "headers",
             "libName": "SparkMax",
             "sharedLibrary": false,
             "skipInvalidPlatforms": true,
-            "version": "1.5.2"
+            "version": "1.5.4"
         },
         {
             "artifactId": "SparkMax-driver",
@@ -25,18 +26,15 @@
                 "linuxaarch64bionic",
                 "linuxx86-64",
                 "linuxathena",
-                "linuxraspbian"
+                "linuxraspbian",
+                "osxx86-64"
             ],
             "groupId": "com.revrobotics.frc",
             "headerClassifier": "headers",
             "libName": "SparkMaxDriver",
             "sharedLibrary": false,
             "skipInvalidPlatforms": true,
-<<<<<<< HEAD
             "version": "1.5.4"
-=======
-            "version": "1.5.2"
->>>>>>> e46223126da1c301714f1eb2a6143f84bc9d2d71
         }
     ],
     "fileName": "REVRobotics.json",
@@ -44,11 +42,7 @@
         {
             "artifactId": "SparkMax-java",
             "groupId": "com.revrobotics.frc",
-<<<<<<< HEAD
             "version": "1.5.4"
-=======
-            "version": "1.5.2"
->>>>>>> e46223126da1c301714f1eb2a6143f84bc9d2d71
         }
     ],
     "jniDependencies": [
@@ -63,13 +57,10 @@
                 "linuxaarch64bionic",
                 "linuxx86-64",
                 "linuxathena",
-                "linuxraspbian"
+                "linuxraspbian",
+                "osxx86-64"
             ],
-<<<<<<< HEAD
             "version": "1.5.4"
-=======
-            "version": "1.5.2"
->>>>>>> e46223126da1c301714f1eb2a6143f84bc9d2d71
         }
     ],
     "jsonUrl": "http://www.revrobotics.com/content/sw/max/sdk/REVRobotics.json",
@@ -78,9 +69,5 @@
     ],
     "name": "REVRobotics",
     "uuid": "3f48eb8c-50fe-43a6-9cb7-44c86353c4cb",
-<<<<<<< HEAD
     "version": "1.5.4"
-=======
-    "version": "1.5.2"
->>>>>>> e46223126da1c301714f1eb2a6143f84bc9d2d71
 }
