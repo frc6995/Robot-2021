@@ -77,7 +77,14 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
         lazy = isLazy;
     }
     
-    public NomadBaseMotor setLeader( NomadBaseMotor leader){
+    /**
+     * Sets this motor's leader, or throws an <b>IllegalArgumentException</b> if an improper motor type is supplied.
+     * 
+     * @param leader The {@link NomadBaseMotor} that this should follow
+     * @throws IllegalArgumentException An exception that occurs if the specified motor is not a {@link NomadSparkMax}
+     * @return This motor
+     */
+    public NomadBaseMotor setLeader(NomadBaseMotor leader) throws IllegalArgumentException{
         this.leader = leader;
         if (leader instanceof NomadSparkMax) {
             follow((NomadSparkMax) leader);
