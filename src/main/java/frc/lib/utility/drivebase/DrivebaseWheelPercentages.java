@@ -19,7 +19,7 @@ public class DrivebaseWheelPercentages {
     /**
      * Set the left side wheel percentage to the given value.
      * @param left The percentage
-     * @return This {@link #DrivebaseWheelPercentages()}
+     * @return This {@link DrivebaseWheelPercentages}
      */
     public DrivebaseWheelPercentages setLeftPercentage(double left) {
         leftPercentage = left;
@@ -29,7 +29,7 @@ public class DrivebaseWheelPercentages {
     /**
      * Set the right side wheel percentage to the given value.
      * @param right The percentage
-     * @return This {@link #DrivebaseWheelPercentages()}
+     * @return This {@link DrivebaseWheelPercentages}
      */
     public DrivebaseWheelPercentages setRightPercentage(double right) {
         rightPercentage = right;
@@ -54,7 +54,7 @@ public class DrivebaseWheelPercentages {
 
     /**
      * Clamp both sides' wheel percentages between -100% and 100%.
-     * @return this {@link #DrivebaseWheelPercentages()}
+     * @return this {@link DrivebaseWheelPercentages}
      */
     public DrivebaseWheelPercentages clamp(){
         leftPercentage = MathUtil.clamp(leftPercentage, -1, 1);
