@@ -8,7 +8,15 @@ import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.limelight.Limelight.CameraMode;
+import frc.lib.wrappers.limelight.Limelight.LedState;
+import frc.robot.constants.LimelightConstants;
 
+/**
+ * The Limelight Subsystem.
+ * Contains methods for getting the x and y-offsets, filtered or unfiltered.
+ * 
+ * @author Joey Fabel
+ */
 public class LimelightS extends SubsystemBase {
   private Limelight limelight;
 
@@ -20,21 +28,15 @@ public class LimelightS extends SubsystemBase {
 
   private int numberOfRegisters;
   
-  /**
-   * Linear filter with time constant of 0.1 seconds and period of 0.02 seconds - the standard FRC main Loop period
-   */
-  private static LinearFilter standardMainLoopPeriodFilter = LinearFilter.singlePoleIIR(0.1, 0.02);
-
   /** Creates a new LimelightS.
    * 
-   * @param Limelight The Limelight wrapper
-   * @author Joey Fabel
+   * @param Limelight The {@link Limelight} wrapper
    */
   public LimelightS(Limelight limelight) {
     this.limelight = limelight;
 
-    xOffsetFilter = standardMainLoopPeriodFilter;
-    yOffsetFilter = standardMainLoopPeriodFilter;
+    xOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);
+    yOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);    
 
     numberOfRegisters = 0;
   }
@@ -80,28 +82,32 @@ public class LimelightS extends SubsystemBase {
   /**
    * Registers a command as using the Limelight.
    */
-  public void Register(){
+  public void register(){
     numberOfRegisters++;
     
-    SetCameraMode(CameraMode.Vision);
+    setCameraMode(CameraMode.Vision);
+    setLEDState(LedState.On);
   }
 
   /**
    * Removes a command from the Limelight's registry
    */
-  public void Deregister(){
+  public void deregister(){
     numberOfRegisters--;
 
-    if (numberOfRegisters == 0) SetCameraMode(CameraMode.Driver);
+    if (numberOfRegisters == 0){
+      setCameraMode(CameraMode.Driver);
+      setLEDState(LedState.Off);
+    }
   }
 
     /**
      * Set the camera mode to the specified state. This sets the network table entry
      * 'camMode'.
      * 
-     * @param state The desired {@link CameraMode}.
+     * @param mode The desired {@link CameraMode}.
      */
-  public void SetCameraMode(Limelight.CameraMode mode){
+  public void setCameraMode(Limelight.CameraMode mode){
     limelight.setCamMode(mode);
   }
 
@@ -110,7 +116,7 @@ public class LimelightS extends SubsystemBase {
      * 
      * @param state The desired {@link LedState}
      */
-  public void SetLEDState(Limelight.LedState state){
+  public void setLEDState(Limelight.LedState state){
     limelight.setLedMode(state);
   }
 }
