@@ -1,16 +1,16 @@
 package frc.template.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
+import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 
 public class AgitatorS extends SubsystemBase {
-  private NomadVictorSPX leftMotor;
-  private NomadVictorSPX rightMotor;
+  private NomadTalonSRX leftMotor;
+  private NomadTalonSRX rightMotor;
   
   /** Creates a new AgitatorS.*/
   public AgitatorS() {
-    leftMotor = new NomadVictorSPX(30);
-    rightMotor = new NomadVictorSPX(31);
+    leftMotor = new NomadTalonSRX(31);
+    rightMotor = new NomadTalonSRX(32);
   }
   
   @Override

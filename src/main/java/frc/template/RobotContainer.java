@@ -11,17 +11,16 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.lib.constants.AutoConstants;
-import frc.template.constants.AutoConstantsKRen;
 import frc.lib.constants.DriveConstants;
-import frc.template.constants.DriveConstantsKRen;
-import frc.template.constants.DriverStationConstants;
-import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
-import frc.lib.utility.inputs.NomadInputMap;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
-import frc.lib.wrappers.inputdevices.NomadMappedGenericHID;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
+import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+import frc.template.commands.AgitatorSpinC;
+import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.template.constants.AutoConstantsKRen;
+import frc.template.constants.DriveConstantsKRen;
+import frc.template.subsystems.AgitatorS;
+import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
 
 /**
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -35,8 +34,10 @@ public class RobotContainer {
   private DriveConstants driveConstants;
   //Subsystems
   private DifferentialDrivebaseTalonVictorS drivebaseS;
+  private AgitatorS agitatorS;
   //Commands
   private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
+  private AgitatorSpinC agitatorSpinC;
 
   //private NomadMappedGenericHID driverController;
 
@@ -66,18 +67,21 @@ public class RobotContainer {
    */
   private void createSubsystems() {
     drivebaseS = new DifferentialDrivebaseTalonVictorS(driveConstants, autoConstants);
+    agitatorS = new AgitatorS();
   }
   /**
    * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
    */
   private void createCommands() {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
+    agitatorSpinC = new AgitatorSpinC(agitatorS);
   }
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
     drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    agitatorS.setDefaultCommand(agitatorSpinC);
   }
   /**
    * Creates the user controllers.
