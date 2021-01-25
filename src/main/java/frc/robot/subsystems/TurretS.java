@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -122,6 +123,28 @@ public class TurretS extends SubsystemBase {
 
   public double convertAngleToEncoderTicks(double degrees){
     return degrees * TurretConstants.encoderTicksPerDegree;
+  }
+
+  public double getTurretEncoderPosition(){
+    return encoder.getPosition();
+  }
+
+  public void runPID(){
+    sparkMax.getPIDController().setP(TurretConstants.kP);
+    sparkMax.getPIDController().setI(TurretConstants.kI);
+    sparkMax.getPIDController().setD(TurretConstants.kD);
+    sparkMax.getPIDController().setFF(TurretConstants.kFF);
+    sparkMax.getPIDController().setReference(setpoint, ControlType.kPosition);    
+  }
+
+  public void runPIDWithMotionMagic(){
+    sparkMax.getPIDController().setP(TurretConstants.kP);
+    sparkMax.getPIDController().setI(TurretConstants.kI);
+    sparkMax.getPIDController().setD(TurretConstants.kD);
+    sparkMax.getPIDController().setFF(TurretConstants.kFF);
+
+    // TODO - set velocity/acceleration limits
+    sparkMax.getPIDController().setReference(setpoint, ControlType.kSmartMotion);    
   }
 
   private void stateMachineLoop(){
