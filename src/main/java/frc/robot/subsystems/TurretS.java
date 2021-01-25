@@ -115,6 +115,8 @@ public class TurretS extends SubsystemBase {
     // This method will be called once per scheduler run    
     stateMachineLoop();
 
+    //TODO - implement soft limit
+
     // Increase counter if at setpoint, or reset if it is not
     if (internalState == TurretInternalStates.AtSetpoint) withinSetpointCounter++;
     else withinSetpointCounter = 0;     
@@ -197,13 +199,19 @@ public class TurretS extends SubsystemBase {
 
   /**
    * Request the Turret to go to into the specified state with a target setpoint.
+   * If {@link TurretRequestedStates}.None is requested, the internal state is not changed.
    * 
    * @param desiredState The {@link TurretRequestedStates} that you want the turret to enter
    * @param setpoint The desired position for the turret
    */
-  public void requestState(TurretRequestedStates desiredState, double setpoint){
+  public void requestState(TurretRequestedStates desiredState, double setpoint){    
     requestedState = desiredState;
     this.setpoint = setpoint;
+
+    if (requestedState == TurretRequestedStates.Home) internalState = TurretInternalStates.Homing;
+    else if (requestedState == TurretRequestedStates.MoveToSetpoint) internalState = TurretInternalStates.MovingToSetpoint;
+    else if (requestedState == TurretRequestedStates.Stop) internalState = TurretInternalStates.Stopped;
+    // If requestedState is None, do not update the internal state
   }
 
   /**

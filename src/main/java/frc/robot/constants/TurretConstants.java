@@ -32,7 +32,7 @@ public class TurretConstants extends Constants{
     /**
      * The number of encoder ticks per degree traveled on the Turret
      */
-    public static final double encoderTicksPerDegree = (42.0 /*Encoder ticks per rev*/ * 150 / 18 /*Gear ration*/) / 360 /*Degrees per revolution*/;
+    public static final double encoderTicksPerDegree = 42.0 /*Encoder ticks per rev*/ * 150 / 18 /*Gear ratio*/ / 360 /*Degrees per revolution*/;
     /**
      * The encoder count when the Turret is in the homed postion
      */
