@@ -112,8 +112,12 @@ public class TurretS extends SubsystemBase {
 
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    // This method will be called once per scheduler run    
     stateMachineLoop();
+
+    // Increase counter if at setpoint, or reset if it is not
+    if (internalState == TurretInternalStates.AtSetpoint) withinSetpointCounter++;
+    else withinSetpointCounter = 0;     
   }
 
   /**
