@@ -8,11 +8,37 @@ import frc.template.Constants;
 
 /** Add your docs here. */
 public class TurretConstants extends Constants{
+    /**
+     * The allowed margin of error when checking if the Turret is at its setpoint.
+     * The Turret must be withing setpoint - marginOfError < TurretPosition < setpoint + marginOfError
+     */
     public static final double marginOfError = 50;
+    /**
+     * The PID Proportional constant
+     */
     public static final double kP = 1;
+    /**
+     * The PID Integral constant
+     */
     public static final double kI = 1;
+    /**
+     * The PID Derivative constant
+     */
     public static final double kD = 1;
+    /**
+     * The PID Feed Forward constant
+     */
     public static final double kFF = 1;
-    public static final double encoderTicksPerDegree = 8192 /*Ticks per revolution*/ * 1 /*Revolutions per degree - fix this*/;
+    /**
+     * The number of encoder ticks per degree traveled on the Turret
+     */
+    public static final double encoderTicksPerDegree = (42.0 /*Encoder ticks per rev*/ * 150 / 18 /*Gear ration*/) / 360 /*Degrees per revolution*/;
+    /**
+     * The encoder count when the Turret is in the homed postion
+     */
     public static final double homePosition = 0;
+    /**
+     * The possible range of motion of the Turret, in degrees
+     */
+    public static final double softLimit = 270;
 }
