@@ -1,0 +1,18 @@
+Instead of NomadDriverController taking a DrivebaseControllerProfile and an AgitatorControllerProfile and so on:
+
+All mappings are instances of NomadXboxInputMapping, which contains constants as follows:
+	NomadMappingEnum mapName; // A NomadMappingEnum lists the available mappings. 
+							  // If the selected one matches the mapName, the commands here will run.
+	NomadButton button_A;     
+	NomadButton button_B;
+	.
+	.
+	.
+	//NomadButton extends Button is created as follows: new NomadButton(id, mapName, buttonName)
+	//id (XboxController.Button) is the button id to monitor.
+	//mapName (NomadMappingEnum) is the map name to match in order to actually run the command.
+	//This will match to the NomadDriverController's selectedMap
+	//buttonName (string) is a short description of what the button does, for auto-gen mapping guides.
+	//
+	//NomadButton overrides all whenPressed, etc, injecting a ConditionalCommand(command, (selectedMap == mapName)) for commands and a ConditionalCommand(new RunCommand(toRun, requirements), (selectedMap == mapName))
+		
