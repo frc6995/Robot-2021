@@ -4,10 +4,13 @@
 
 package frc.robot.subsystems;
 
+import com.revrobotics.CANEncoder;
+
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
+import frc.robot.constants.TurretConstants;
 
 public class TurretS extends SubsystemBase {
   
@@ -83,6 +86,10 @@ public class TurretS extends SubsystemBase {
    * The magnetic limit switch on the Turret, located on its home position
    */
   DigitalInput limitSwitch;
+  /**
+   * The Throughbore encoder, plugged directly into the Spark Max
+   */
+  CANEncoder encoder;
 
   /* Test counter, not implemented yet, that could be used to more accurately check if the Turret is homed */
   Counter homedCounter;
@@ -95,10 +102,29 @@ public class TurretS extends SubsystemBase {
     requestedState = TurretRequestedStates.Home;
     sparkMax = new NomadSparkMax(1); // TODO - make a RobotMap or something similar with port numbers
     homedCounter = new Counter(limitSwitch);
+    encoder = sparkMax.getEncoder();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
+
+    stateMachineLoop();
+  }
+
+  public double convertEncoderTicksToAngle(){
+    return encoder.getPosition() / TurretConstants.encoderTicksPerDegree;
+  }
+
+  public double convertEncoderTicksToAngle(double encoderTicks){
+    return encoderTicks / TurretConstants.encoderTicksPerDegree;
+  }
+
+  public double convertAngleToEncoderTicks(double degrees){
+    return degrees * TurretConstants.encoderTicksPerDegree;
+  }
+
+  private void stateMachineLoop(){
+
   }
 }
