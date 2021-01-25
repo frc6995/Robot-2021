@@ -137,6 +137,9 @@ public class TurretS extends SubsystemBase {
     sparkMax.getPIDController().setReference(setpoint, ControlType.kPosition);    
   }
 
+  /**
+   * Run PID to the setpoint, using motion magic. Currently Incomplete (commented out lines need to be added)
+   */
   public void runPIDWithMotionMagic(){
     sparkMax.getPIDController().setP(TurretConstants.kP);
     sparkMax.getPIDController().setI(TurretConstants.kI);
@@ -144,6 +147,13 @@ public class TurretS extends SubsystemBase {
     sparkMax.getPIDController().setFF(TurretConstants.kFF);
 
     // TODO - set velocity/acceleration limits
+    //sparkMax.getPIDController().setSmartMotionMaxAccel(maxAccel, slotID);
+    //sparkMax.getPIDController().setSmartMotionMaxVelocity(maxVel, slotID);
+    //sparkMax.getPIDController().setSmartMotionMinOutputVelocity(minVel, slotID);
+    //sparkMax.getPIDController().setSmartMotionAccelStrategy(accelStrategy, slotID);
+    //sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(allowedErr, slotID);
+    //-------------------------------------------------------------------------------------
+
     sparkMax.getPIDController().setReference(setpoint, ControlType.kSmartMotion);    
   }
 
