@@ -113,26 +113,47 @@ public class TurretS extends SubsystemBase {
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
-
     stateMachineLoop();
   }
 
+  /**
+   * Convert the current encoder reading from ticks to the angle of the turret.
+   * 
+   * @return The angle of the turret, in degrees
+   */
   public double convertEncoderTicksToAngle(){
     return encoder.getPosition() / TurretConstants.encoderTicksPerDegree;
   }
 
+  /**
+   * Convert the specified number of encoder ticks into an angle.
+   * 
+   * @return The angle of the turret, in degrees
+   */
   public double convertEncoderTicksToAngle(double encoderTicks){
     return encoderTicks / TurretConstants.encoderTicksPerDegree;
   }
 
+  /**
+   * Convert the specified angle of the turret from degrees into encoder ticks.
+   * 
+   * @return The number of ticks in the specified angle
+   */
   public double convertAngleToEncoderTicks(double degrees){
     return degrees * TurretConstants.encoderTicksPerDegree;
   }
 
+  /**
+   * Get the current position of the encoder.
+   * @return The encoder's position, in ticks
+   */
   public double getTurretEncoderPosition(){
     return encoder.getPosition();
   }
 
+  /**
+   * Run PID on the Spark Max to the specified setpoint.
+   */
   public void runPID(){
     sparkMax.getPIDController().setP(TurretConstants.kP);
     sparkMax.getPIDController().setI(TurretConstants.kI);
@@ -161,15 +182,29 @@ public class TurretS extends SubsystemBase {
     sparkMax.getPIDController().setReference(setpoint, ControlType.kSmartMotion);    
   }
 
+  /**
+   * Is the Turret currently at its setpoint?
+   *  
+   * @return <b>true</b> if is at the setpoint, <b>false</b> otherwise
+   */
   public boolean isAtSetpoint(){
     return withinSetpointCounter > 10;
   }
 
+  /**
+   * Request the Turret to go to into the specified state with a target setpoint.
+   * 
+   * @param desiredState The {@link TurretRequestedStates} that you want the turret to enter
+   * @param setpoint The desired position for the turret
+   */
   public void requestState(TurretRequestedStates desiredState, double setpoint){
     requestedState = desiredState;
     this.setpoint = setpoint;
   }
 
+  /**
+   * Update method that is called in period. It updates the Turret based on its current internal state.
+   */
   private void stateMachineLoop(){
     switch (internalState){
       case Homed:
