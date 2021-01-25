@@ -14,4 +14,5 @@ public class TurretConstants extends Constants{
     public static final double kD = 1;
     public static final double kFF = 1;
     public static final double encoderTicksPerDegree = 8192 /*Ticks per revolution*/ * 1 /*Revolutions per degree - fix this*/;
+    public static final double homePosition = 0;
 }

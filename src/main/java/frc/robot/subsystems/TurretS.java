@@ -102,7 +102,11 @@ public class TurretS extends SubsystemBase {
     internalState = TurretInternalStates.Homing;
     requestedState = TurretRequestedStates.Home;
     sparkMax = new NomadSparkMax(1); // TODO - make a RobotMap or something similar with port numbers
+    limitSwitch = new DigitalInput(2);
+    // Currently, limit switch is counted as pressed if counter is greater than 0. 
+    // The Counter can catch it pushing if it is faster than the periodic check, so this can help there.
     homedCounter = new Counter(limitSwitch);
+    homedCounter.reset();
     encoder = sparkMax.getEncoder();
   }
 
@@ -157,7 +161,36 @@ public class TurretS extends SubsystemBase {
     sparkMax.getPIDController().setReference(setpoint, ControlType.kSmartMotion);    
   }
 
-  private void stateMachineLoop(){
+  public boolean isAtSetpoint(){
+    return withinSetpointCounter > 10;
+  }
 
+  public void requestState(TurretRequestedStates desiredState, double setpoint){
+    requestedState = desiredState;
+    this.setpoint = setpoint;
+  }
+
+  private void stateMachineLoop(){
+    switch (internalState){
+      case Homed:
+        sparkMax.stopMotor();
+        homedCounter.reset();
+        break;
+      case Homing:
+        runPID();
+        if ((getTurretEncoderPosition() > TurretConstants.homePosition - TurretConstants.marginOfError && getTurretEncoderPosition() < TurretConstants.homePosition + TurretConstants.marginOfError) || homedCounter.get() > 0) internalState = TurretInternalStates.Homed;
+        break;
+      case MovingToSetpoint:
+        runPID();
+        if (isAtSetpoint()) internalState = TurretInternalStates.AtSetpoint;
+        break;
+      case AtSetpoint:
+        if (!isAtSetpoint()) internalState = TurretInternalStates.MovingToSetpoint;
+        break;
+      case Stopped:
+        sparkMax.stopMotor();
+        homedCounter.reset();
+        break;
+      }
   }
 }
