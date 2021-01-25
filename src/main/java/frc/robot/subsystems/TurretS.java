@@ -10,6 +10,7 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.TurretConstants;
 
@@ -205,13 +206,24 @@ public class TurretS extends SubsystemBase {
    * @param setpoint The desired position for the turret
    */
   public void requestState(TurretRequestedStates desiredState, double setpoint){    
-    requestedState = desiredState;
-    this.setpoint = setpoint;
+    if (setpoint < TurretConstants.softLimit || setpoint > TurretConstants.softLimit) return;
+    
+    requestedState = desiredState;    
+    this.setpoint = setpoint;    
 
     if (requestedState == TurretRequestedStates.Home) internalState = TurretInternalStates.Homing;
     else if (requestedState == TurretRequestedStates.MoveToSetpoint) internalState = TurretInternalStates.MovingToSetpoint;
     else if (requestedState == TurretRequestedStates.Stop) internalState = TurretInternalStates.Stopped;
     // If requestedState is None, do not update the internal state
+  }
+
+  private void checkForSoftLimit(){
+    if (convertEncoderTicksToAngle(getTurretEncoderPosition()) < -TurretConstants.softLimit){
+      requestState(TurretRequestedStates.MoveToSetpoint, setpoint + 10);
+    }
+    else if (convertEncoderTicksToAngle(getTurretEncoderPosition()) > TurretConstants.softLimit){
+      requestState(TurretRequestedStates.MoveToSetpoint, setpoint - 10);
+    }
   }
 
   /**
@@ -229,6 +241,7 @@ public class TurretS extends SubsystemBase {
         break;
       case MovingToSetpoint:
         runPID();
+        checkForSoftLimit();
         if (isAtSetpoint()) internalState = TurretInternalStates.AtSetpoint;
         break;
       case AtSetpoint:
