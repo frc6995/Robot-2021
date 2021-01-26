@@ -50,6 +50,7 @@ public class LimelightS extends SubsystemBase {
 
   /**
    * Get the X-offset of the Limelight without filtering.
+   * 
    * @return The X-offset between the Limelight and the target
    */
   public double getXOffset(){
