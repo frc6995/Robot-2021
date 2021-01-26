@@ -239,7 +239,7 @@ public class TurretS extends SubsystemBase {
         break;
       case Homing:
         runPID();
-        if ((getTurretEncoderPosition() > constants.homePosition() - constants.marginOfError() && getTurretEncoderPosition() < constants.homePosition + constants.marginOfError) || homedCounter.get() > 0) internalState = TurretInternalStates.Homed;
+        if ((getTurretEncoderPosition() > constants.homePosition() - constants.marginOfError() && getTurretEncoderPosition() < constants.homePosition() + (constants.marginOfError())) || homedCounter.get() > 0) internalState = TurretInternalStates.Homed;
         break;
       case MovingToSetpoint:
         runPID();
