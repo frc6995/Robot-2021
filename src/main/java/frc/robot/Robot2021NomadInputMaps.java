@@ -2,9 +2,11 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.lib.constants;
+package frc.robot;
 
-/** Subclass this class to describe the operator console-related constants. */
-public class DriverStationConstants {
+import frc.lib.utility.inputs.NomadInputMaps;
+
+/** Add your docs here. */
+public class Robot2021NomadInputMaps extends NomadInputMaps{
     
 }

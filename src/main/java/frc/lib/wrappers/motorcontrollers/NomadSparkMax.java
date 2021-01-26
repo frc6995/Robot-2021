@@ -15,16 +15,8 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     protected NomadBaseMotor leader = NomadNoneMotor.noneMotor;
     protected double lastPower = Double.NaN;
     protected ControlType lastMode = null;
-
     /**
-     * Creates a new brushless {@link CANSparkMax} with the given port
-     */
-    public NomadSparkMax(int port){
-        this(port, MotorType.kBrushless);
-    }
-
-    /**
-     * Constructs a {@link CANSparkMax}, reverts it to factory default, and sets brake mode.
+     * Constructs a SparkMAX, reverts it to factory default, and sets brake mode.
      * 
      * @param port The CAN ID of this SparkMAX
      */
@@ -35,7 +27,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
 
     /**
-     * Constructs a {@link CANSparkMax}, reverts it to factory default, and sets brake mode and
+     * Constructs a SparkMAX, reverts it to factory default, and sets brake mode and
      * inversion status.
      * 
      * @param port     The CAN ID of this SparkMAX.
@@ -47,7 +39,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
 
     /**
-     * Constructs a {@link CANSparkMax}, reverts it to factory default, sets brake mode and
+     * Constructs a SparkMAX, reverts it to factory default, sets brake mode and
      * inversion status, and slaves it to a specified NomadSparkMAX.
      * 
      * @param port     The CAN ID of this SparkMAX.
@@ -76,15 +68,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     public void setLazy(boolean isLazy) {
         lazy = isLazy;
     }
-    
-    /**
-     * Sets this motor's leader, or throws an <b>IllegalArgumentException</b> if an improper motor type is supplied.
-     * 
-     * @param leader The {@link NomadBaseMotor} that this should follow
-     * @throws IllegalArgumentException An exception that occurs if the specified motor is not a {@link NomadSparkMax}
-     * @return This motor
-     */
-    public NomadBaseMotor setLeader(NomadBaseMotor leader) throws IllegalArgumentException{
+    public NomadBaseMotor setLeader( NomadBaseMotor leader){
         this.leader = leader;
         if (leader instanceof NomadSparkMax) {
             follow((NomadSparkMax) leader);

@@ -7,6 +7,10 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
+/**
+ * A representation of a controller axis, with its behavior defined at construction.
+ * This allows a NomadAxis to perform calculations on inputs before returning its value.
+ */
 public class NomadAxis {
 
     public static NomadAxis noneAxis = new NomadAxis();
@@ -14,17 +18,15 @@ public class NomadAxis {
      * A brief description of the Axis's functionality.
      */
     private String name = "unnamed";
-    private boolean isCustomAxis;
     /**
      * The map 
      */
     private NomadMappingEnum map = NomadMappingEnum.UNCATEGORIZED;
-    private NomadMappedGenericHID controller = NomadMappedGenericHID.noneMappedHID;
     private int id;
-    private DoubleSupplier customBehavior;
+    private DoubleSupplier customBehavior = () -> {return 0.0;};
 
     /**
-   * Default constructor; creates a Axis that is never pressed (unless {@link Axis#get()} is
+   * Default constructor; creates a Axis that is never moved away from 0 (unless {@link Axis#get()} is
    * overridden).
    */
   public NomadAxis() {}
@@ -33,42 +35,36 @@ public class NomadAxis {
    * @param id
    */
   public NomadAxis(int id) {
-      super();
+      
       this.id = id;
   }
 
-    /**
-     * Constructs a NomadAxis
-     * @param controller the NomadMappedGenericHID this axis pulls inputs from
-     * @param id The identifier of this axis. Axes 0-11 are reserved for direct hardware access
-     * If you are overriding get() to make a custom axis behavior, use an id above 11. 
-     * @param axisName A brief summary of the axis' functionality
-     * @param axisMap Which input map this axis belongs to.
-     */
+  /**
+   * Creates a NomadAxis with an id and name.
+   * @param id The id.
+   * @param axisName The name.
+   */
   public NomadAxis(int id, String axisName) {
-      super();
+      
       this.id = id;
       name = axisName;
   }
 
-      /**
+    /**
      * Constructs a NomadAxis with a custom behavior.
-     * @param controller the NomadMappedGenericHID this axis pulls inputs from
      * @param id The identifier of this axis. Axes 0-11 are reserved for direct hardware access. The custom behavior will not run if id is below 11.
      * @param axisName A brief summary of the axis' functionality
-     * @param axisMap Which input map this axis belongs to.
      * @param customAxisBehavior A function that returns the axis value.
      */
-    public NomadAxis(/*NomadMappedGenericHID controller,*/ int id, String axisName, DoubleSupplier customAxisBehavior) {
-        super();
+    public NomadAxis(int id, String axisName, DoubleSupplier customAxisBehavior) {
+        
         this.id = id;
-        //this.controller = controller;
         name = axisName;
         customBehavior = customAxisBehavior;
     }
     /**
-     * Read the value of the axis. Depending on the id, this will either read from the controller's hardware axis or the defined custom behavior.
-     * @return the value of the axis.
+     * If the operator console's selected map matches this map, read the value of the axis using the defined custom behavior (which may be a simple hardware controller call).
+     * @return the value of the axis, or 0.0 if the map is not correct.
      */
   public final double get() {
       if (map.equals(NomadOperatorConsole.getSelectedMap()) 
@@ -78,31 +74,46 @@ public class NomadAxis {
       return 0.0;
 
   }
-
+  /**
+   * 
+   * @return The axis's ID.
+   */
   public int getId() {
       return id;
   }
+
+  /**
+   * 
+   * @return The axis name.
+   */
   public String getName() {
       return name;
   }
-
+  /**
+   * Set the map this axis is a part of.
+   * @param mapType The map as an enum.
+   * @return This axis, modified.
+   */
   public NomadAxis withMap(NomadMappingEnum mapType) {
       map = mapType;
       return this;
   }
-
+  /**
+   * Set the name for this axis.
+   * @param name The new name.
+   * @return This axis, modified.
+   */
   public NomadAxis withName(String name) {
       this.name = name;
       return this;
   }
-
+  /**
+   * Set the custom behavior of the axis.
+   * @param customBehavior The functionality that returns this axis's value.
+   * @return This axis, modified.
+   */
   public NomadAxis withCustomBehavior(DoubleSupplier behavior) {
       customBehavior = behavior;
-      return this;
-  }
-
-  public NomadAxis withController(NomadMappedGenericHID controller){
-      this.controller = controller;
       return this;
   }
 }
