@@ -41,4 +41,12 @@ public class TurretConstants extends Constants{
      * The possible range of motion of the Turret, in degrees
      */
     public static final double softLimit = 270;
+    /**
+     * The Spark Max's port ID
+     */
+    public static final int sparkMaxPortID = 1;
+    /**
+     * The magnetic limit switch's channel ID
+     */
+    public static final int limitSwitchChannelID = 2;
 }

@@ -102,8 +102,8 @@ public class TurretS extends SubsystemBase {
     withinSetpointCounter = 0;
     internalState = TurretInternalStates.Homing;
     requestedState = TurretRequestedStates.Home;
-    sparkMax = new NomadSparkMax(1); // TODO - make a RobotMap or something similar with port numbers
-    limitSwitch = new DigitalInput(2);
+    sparkMax = new NomadSparkMax(TurretConstants.sparkMaxPortID);
+    limitSwitch = new DigitalInput(TurretConstants.limitSwitchChannelID);
     // Currently, limit switch is counted as pressed if counter is greater than 0. 
     // The Counter can catch it pushing if it is faster than the periodic check, so this can help there.
     homedCounter = new Counter(limitSwitch);
