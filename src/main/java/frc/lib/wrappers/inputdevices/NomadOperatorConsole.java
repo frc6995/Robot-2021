@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.NetworkButton;
 import frc.lib.utility.inputs.NomadInputMap;
 import frc.lib.utility.inputs.NomadInputMaps;
-import frc.robot.Robot2021NomadInputMaps;
 
 /**
  * This class condenses all operator input into one class.
@@ -68,7 +67,7 @@ public class NomadOperatorConsole {
         SmartDashboard.putBoolean("Controller Rescan", false);
         rescanButton = new NetworkButton("SmartDashboard/", "Controller Rescan");
         rescanCommand = new RunCommand(()-> {
-            Robot2021NomadInputMaps.repopulateMaps();
+            NomadInputMaps.repopulateMaps();
             SmartDashboard.putBoolean("Controller Rescan", false);
             System.out.println("Rescan Controllers");
         });

@@ -28,6 +28,7 @@ public class NomadInputMaps {
      */
     public static final NomadInputMap uncategorized = new NomadInputMap(NomadMappingEnum.UNCATEGORIZED, "Uncategorized");
 
+    public static void createMaps() {}
     public static void repopulateMaps() {
         for (NomadInputMap map : NomadOperatorConsole.inputEnumMap.values()) {
             if (map.getType() != NomadMappingEnum.UNCATEGORIZED) {
