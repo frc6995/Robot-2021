@@ -4,7 +4,7 @@
 
 package frc.robot.constants;
 
-import frc.template.Constants;
+import frc.robot.Constants;
 
 /** Add your docs here. */
 public class LimelightConstants extends Constants {
