@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
@@ -10,7 +6,6 @@ import com.revrobotics.ControlType;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.TurretConstantsKRen;
 
@@ -96,11 +91,14 @@ public class TurretS extends SubsystemBase {
   /* Test counter, not implemented yet, that could be used to more accurately check if the Turret is homed */
   Counter homedCounter;
 
+  /**
+   * Instance of the {@link TurretConstantsKRen}, allowing access to the constants
+   */
   TurretConstantsKRen constants;
 
   /** Creates a new TurretS. */
   public TurretS() {
-    constants = new TurretConstantsKRen(); // Is this how I am supposed to use this?
+    constants = new TurretConstantsKRen();
 
     setpoint = 0;
     withinSetpointCounter = 0;

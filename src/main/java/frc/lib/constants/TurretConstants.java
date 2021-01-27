@@ -1,6 +1,6 @@
 package frc.lib.constants;
 
-/** Add your docs here. */
+/** An interface containing constants for the Turret */
 public interface TurretConstants {
     /**
      * The allowed margin of error when checking if the Turret is at its setpoint.
