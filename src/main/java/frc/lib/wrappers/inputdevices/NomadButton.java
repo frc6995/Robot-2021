@@ -26,7 +26,7 @@ public class NomadButton extends Button {
      */
     private NomadMappingEnum map = NomadMappingEnum.UNCATEGORIZED;
     private int id;
-    private BooleanSupplier customBehavior = () -> {return false;};
+    private BooleanSupplier customBehavior = () -> false;
 
     /**
    * Default constructor; creates a button that is never pressed (unless {@link Button#get()} is
@@ -59,8 +59,7 @@ public class NomadButton extends Button {
    */
   @Override
   public boolean get() {
-    if (map.equals(NomadOperatorConsole.getSelectedMap()) 
-      && !(map.equals(NomadMappingEnum.UNCATEGORIZED))) {
+    if (map.equals(NomadOperatorConsole.getSelectedMap())) {
         return customBehavior.getAsBoolean();
       }
       return false;

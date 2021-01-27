@@ -23,7 +23,7 @@ public class NomadOperatorConsole {
     /**
      * The maximum supported POV switches on a single controller.
      */
-    public static final int maxSupportedPOVs = 6; // 12 is too many to easily fit in the mapping. Plus, who does that?
+    public static final int MAX_SUPPORTED_POVS = 6; // 12 is too many to easily fit in the mapping. Plus, who does that?
     /**
      * The selected input mapping.
      */
@@ -50,7 +50,7 @@ public class NomadOperatorConsole {
     /**
      * An EnumMap linking the NomadMappingEnum values to their input maps.
      */
-    public static final EnumMap<NomadMappingEnum, NomadInputMap> inputEnumMap = 
+    public static final EnumMap<NomadMappingEnum, NomadInputMap> INPUT_ENUM_MAP = 
     new EnumMap<NomadMappingEnum, NomadInputMap>(NomadMappingEnum.class);
     /**
      * A HashMap of the controllers plugged into the driver station.
@@ -143,7 +143,7 @@ public class NomadOperatorConsole {
                                 .withCustomBehavior((BooleanSupplier) ()-> {return controller.getHIDRawButton(id);}));
                     }
                 }
-                for (int pov = 0; pov < ((controller.getPOVCount() < maxSupportedPOVs) ? controller.getPOVCount(): maxSupportedPOVs); pov++){
+                for (int pov = 0; pov < ((controller.getPOVCount() < MAX_SUPPORTED_POVS) ? controller.getPOVCount(): MAX_SUPPORTED_POVS); pov++){
                     final int povId = pov;
                     for(int angle = 0; angle < 360; angle += 45) {
                         final int povAngle = angle;
@@ -166,7 +166,7 @@ public class NomadOperatorConsole {
             }
         );
 
-        inputEnumMap.put(map.getType(), map);
+        INPUT_ENUM_MAP.put(map.getType(), map);
         return map;
     }
     /**

@@ -68,7 +68,7 @@ public class NomadMappedGenericHID extends GenericHID {
      */
     @Override
     public double getRawAxis(int id){
-        return NomadOperatorConsole.inputEnumMap.get(selectedMap)
+        return NomadOperatorConsole.INPUT_ENUM_MAP.get(selectedMap)
         .getRawAxis(id);
     }
     /**
@@ -76,7 +76,7 @@ public class NomadMappedGenericHID extends GenericHID {
      */
     @Override
     public boolean getRawButton(int id){
-        return NomadOperatorConsole.inputEnumMap.get(selectedMap).getRawButton(id);
+        return NomadOperatorConsole.INPUT_ENUM_MAP.get(selectedMap).getRawButton(id);
     }
     /**
      * Gets the raw axis value at the given id, not counting for any custom maps or behaviors

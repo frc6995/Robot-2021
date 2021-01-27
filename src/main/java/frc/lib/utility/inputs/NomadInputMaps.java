@@ -30,7 +30,7 @@ public class NomadInputMaps {
 
     public static void createMaps() {}
     public static void repopulateMaps() {
-        for (NomadInputMap map : NomadOperatorConsole.inputEnumMap.values()) {
+        for (NomadInputMap map : NomadOperatorConsole.INPUT_ENUM_MAP.values()) {
             if (map.getType() != NomadMappingEnum.UNCATEGORIZED) {
                 NomadOperatorConsole.populateMap(map);
             }
@@ -40,7 +40,7 @@ public class NomadInputMaps {
     public static NomadInputMap createControllerMap(NomadInputMap map, String name){
         map.withName(name);
         NomadOperatorConsole.populateMap(map);
-        NomadOperatorConsole.inputEnumMap.put(map.getType(), map);
+        NomadOperatorConsole.INPUT_ENUM_MAP.put(map.getType(), map);
         return map;
     }
 }

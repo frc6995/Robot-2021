@@ -16,14 +16,14 @@ public class DrivebaseWheelPercentages {
     /**
      * The percentage as a decimal for the left side of the drivebase.
      */
-    double leftPercentage;
+    private double leftPercentage;
     /**
      * The percentage as a decimal for the right side of the drivebase.
      */
-    double rightPercentage;
+    private double rightPercentage;
 
     /**
-     * Sets the left side percentage.
+     * Sets the left side wheel percentage.
      * @param left The new value.
      * @return This DrivebaseWheelPercentages object, modified with the new percentage.
      */
@@ -32,7 +32,7 @@ public class DrivebaseWheelPercentages {
         return this;
     }
     /**
-     * Sets the right percentage.
+     * Sets the right side wheel percentage.
      * @param right The new value.
      * @return This DrivebaseWheelPercentages object, modified with the new percentage.
      */

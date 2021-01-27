@@ -43,84 +43,82 @@ public interface DriveConstants {
      * The custom axis ID that will be used for the driving forward/back speed.
      * @return the axis id, defaults to 33
      */
-    public int getDriveControllerFwdBackAxis();
+    int getDriveControllerFwdBackAxis();
     /**
      * The custom axis ID that will be used for the driving turning.
      * @return the axis id, defaults to 34
      */
-    public int getDriveControllerLeftRightAxis() ;
+    int getDriveControllerLeftRightAxis() ;
     /** The CAN ID for the left master motor controller. */
-    public int getCanIDLeftDriveMaster();
-    public boolean getLeftEncoderReversed();
-    public int[] getLeftEncoderPorts();
+    int getCanIDLeftDriveMaster();
+    boolean getLeftEncoderReversed();
+    int[] getLeftEncoderPorts();
     /** The CAN ID for the right master motor controller. */
-    public int getCanIDRightDriveMaster();
-    public boolean getRightEncoderReversed();
-    public int[] getRightEncoderPorts();
+    int getCanIDRightDriveMaster();
+    boolean getRightEncoderReversed();
+    int[] getRightEncoderPorts();
     /** The CAN ID for the left follower motor controller. */
-    public int getCanIDLeftDriveFollower();
+    int getCanIDLeftDriveFollower();
 
     /** The CAN ID for the right follower motor controller. */
-    public int getCanIDRightDriveFollower();
+    int getCanIDRightDriveFollower();
 
     /** Whether or not the gyro is reversed */
-    public boolean getGyroReversed();
+    boolean getGyroReversed();
 
     /** The number of encoder counts per encoder revolution. */
-    public double getEncoderCountsPerEncoderRevolution();
+    double getEncoderCountsPerEncoderRevolution();
 
     /**
      * The number of encoder counts per wheel revolution (7 encoder revolutions per
      * 3 wheel revolutions).
      */
-    public double getEncoderCountsPerWheelRevolution();/* {
+    double getEncoderCountsPerWheelRevolution();/* {
         return getEncoderCountsPerEncoderRevolution() *
         getEncoderRevolutionsPerWheelRevolution();}*/
 
-    public double getEncoderRevolutionsPerWheelRevolution();
-    public double getEncoderDistancePerPulse(); /* {
+    double getEncoderRevolutionsPerWheelRevolution();
+    double getEncoderDistancePerPulse(); /* {
         return (getkWheelDiameter() * Math.PI) / (double) getEncoderCountsPerEncoderRevolution();
     }*/
     // Drive characterization DriveConstants
 
-    public double getKsVolts();
-    public double getKvVoltSecondsPerMeter();
-    public double getKaVoltSecondsSquaredPerMeter();
-    public double getKvVoltSecondsPerRadian();
-    public double getKaVoltSecondsSquaredPerRadian();
-    public double getkWheelDiameter();
-
-    public double getkPDriveVel();
-    public double getkPDriveVelLeft();
-    public double getkPDriveVelRight();
-    public double getkTrackWidthMeters();
-
-    public DifferentialDriveKinematics getDifferentialDriveKinematics(); /* {
+    double getKsVolts();
+    double getKaVoltSecondsSquaredPerMeter();
+    double getKvVoltSecondsPerRadian();
+    double getKaVoltSecondsSquaredPerRadian();
+    double getkWheelDiameter();
+    double getKvVoltSecondsPerMeter();
+    double getkPDriveVel();
+    double getkPDriveVelLeft();
+    double getkPDriveVelRight();
+    double getkTrackWidthMeters();
+    DifferentialDriveKinematics getDifferentialDriveKinematics(); /* {
         return kDifferentialDriveKinematics;
     }*/
-    public LinearSystem<N2, N2, N2> getDrivetrainPlant();/*{
+    LinearSystem<N2, N2, N2> getDrivetrainPlant();/*{
         return kDrivetrainPlant;
     }*/
-    public DCMotor getDriveGearbox();
+    DCMotor getDriveGearbox();
 
-    public double getDriveGearingRatio();
+    double getDriveGearingRatio();
 
-    public Vector<N7> getSimEncoderStdDev();
+    Vector<N7> getSimEncoderStdDev();
 
        /**
      * 
      * @return The value to multiply the drive controller forward back axis by 
      */
-    public int getDriveControllerFwdBackAxisMultiplier();
+    int getDriveControllerFwdBackAxisMultiplier();
     /**
      * 
      * @return The value to multiply the drive controller turning axis by
      */
-    public int getDriveControllerLeftRightAxisMultiplier();
+    int getDriveControllerLeftRightAxisMultiplier();
 
     /**
      * 
      */
-    public boolean getDrivebaseRightSideInverted();
+    boolean getDrivebaseRightSideInverted();
     
 }   

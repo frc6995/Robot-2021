@@ -23,7 +23,7 @@ public class NomadAxis {
      */
     private NomadMappingEnum map = NomadMappingEnum.UNCATEGORIZED;
     private int id;
-    private DoubleSupplier customBehavior = () -> {return 0.0;};
+    private DoubleSupplier customBehavior = () -> 0.0;
 
     /**
    * Default constructor; creates a Axis that is never moved away from 0 (unless {@link Axis#get()} is
@@ -45,8 +45,7 @@ public class NomadAxis {
    * @param axisName The name.
    */
   public NomadAxis(int id, String axisName) {
-      
-      this.id = id;
+      this(id);
       name = axisName;
   }
 
@@ -57,9 +56,7 @@ public class NomadAxis {
      * @param customAxisBehavior A function that returns the axis value.
      */
     public NomadAxis(int id, String axisName, DoubleSupplier customAxisBehavior) {
-        
-        this.id = id;
-        name = axisName;
+        this(id, axisName);
         customBehavior = customAxisBehavior;
     }
     /**
@@ -67,8 +64,7 @@ public class NomadAxis {
      * @return the value of the axis, or 0.0 if the map is not correct.
      */
   public final double get() {
-      if (map.equals(NomadOperatorConsole.getSelectedMap()) 
-      && !(map.equals(NomadMappingEnum.UNCATEGORIZED))) {
+      if (map.equals(NomadOperatorConsole.getSelectedMap())) {
         return customBehavior.getAsDouble();
       }
       return 0.0;

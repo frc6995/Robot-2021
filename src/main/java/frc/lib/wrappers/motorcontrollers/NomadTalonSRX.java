@@ -145,7 +145,7 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
     public double getActualOutputPercent() {
         
         if(RobotBase.isReal()) {
-            return get(); //getMotorOutputPercent();
+            return getMotorOutputPercent();
         } else {
             return get();
         }

@@ -21,7 +21,7 @@ public final class NomadMathUtil {
      * @return The interpolated value.
      */
     public static double lerp(double value, double min1, double max1, double min2, double max2){
-        double percent = (double)(value-min1) / (double)(max1 - min1); //calculates where in the input range the value is.
+        double percent = (value-min1) / (max1 - min1); //calculates where in the input range the value is.
         double output = min2 + (percent* (max2-min2));
         return output;
     }

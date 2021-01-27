@@ -24,11 +24,11 @@ public class NomadInputMap {
     /**
      * A HashMap of button IDs to NomadButtons. The Nomad-specific ID standard is described in {link NomadOperatorConsole}
      */
-    private Map<Integer, NomadButton> buttons = new HashMap<Integer, NomadButton>();
+    private Map<Integer, NomadButton> buttons = new HashMap<>();
     /**
      * A HashMap of axis IDs to NomadAxes. The Nomad-specific ID standard is described in {link NomadOperatorConsole}
      */
-    private Map<Integer, NomadAxis> axes = new HashMap<Integer, NomadAxis>(); //
+    private Map<Integer, NomadAxis> axes = new HashMap<>(); //
     /**
      * Create a new NomadInputMap with the given type and name.
      * @param map The map type. Must be unique.
@@ -109,24 +109,16 @@ public class NomadInputMap {
      * @param id The axis ID
      * @return
      */
-    public NomadAxis getAxis(int id){
-        try{
-            return axes.get(id);
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public NomadAxis getAxis(int id) throws NullPointerException{
+        return axes.get(id);
     }
     /**
      * Returns the NomadButton object (not its value) with the given ID.
      * @param id The button ID
      * @return
      */
-    public NomadButton getButton(int id){
-        try{
-            return buttons.get(id);
-        } catch (NullPointerException e) {
-            return null;
-        }
+    public NomadButton getButton(int id) throws NullPointerException{
+        return buttons.get(id);
     }
     /**
      * 
