@@ -103,7 +103,7 @@ public class NomadOperatorConsole {
      * @return The matching controller port.
      */
     public static int getControllerPort(int id) {
-        int controllerPort = (int) (id/100.0);
+        int controllerPort = id / 100;
         return controllerPort;
     }
     /**
