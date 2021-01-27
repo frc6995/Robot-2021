@@ -96,8 +96,6 @@ public class LimelightS extends SubsystemBase {
   public void deregister(){
     numberOfConsumersRegistered--;
 
-    limelight.hashCode()
-
     if (numberOfConsumersRegistered == 0){
       setCameraMode(CameraMode.Driver);
       setLEDState(LedState.Off);
