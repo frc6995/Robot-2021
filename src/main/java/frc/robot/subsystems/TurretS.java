@@ -106,8 +106,8 @@ public class TurretS extends SubsystemBase {
     withinSetpointCounter = 0;
     internalState = TurretInternalStates.Homing;
     requestedState = TurretRequestedStates.Home;
-    sparkMax = new NomadSparkMax(constants.sparkMaxPortID());
-    limitSwitch = new DigitalInput(constants.limitSwitchChannelID());
+    sparkMax = new NomadSparkMax(constants.getSparkMaxPortID());
+    limitSwitch = new DigitalInput(constants.getLimitSwitchChannelID());
     // Currently, limit switch is counted as pressed if counter is greater than 0. 
     // The Counter can catch it pushing if it is faster than the periodic check, so this can help there.
     homedCounter = new Counter(limitSwitch);
@@ -131,7 +131,7 @@ public class TurretS extends SubsystemBase {
    * @return The angle of the turret, in degrees
    */
   public double convertEncoderTicksToAngle(){
-    return encoder.getPosition() / constants.encoderTicksPerDegree();
+    return encoder.getPosition() / constants.getEncoderTicksPerDegree();
   }
 
   /**
@@ -140,7 +140,7 @@ public class TurretS extends SubsystemBase {
    * @return The angle of the turret, in degrees
    */
   public double convertEncoderTicksToAngle(double encoderTicks){
-    return encoderTicks / constants.encoderTicksPerDegree();
+    return encoderTicks / constants.getEncoderTicksPerDegree();
   }
 
   /**
@@ -149,7 +149,7 @@ public class TurretS extends SubsystemBase {
    * @return The number of ticks in the specified angle
    */
   public double convertAngleToEncoderTicks(double degrees){
-    return degrees * constants.encoderTicksPerDegree();
+    return degrees * constants.getEncoderTicksPerDegree();
   }
 
   /**
@@ -164,10 +164,10 @@ public class TurretS extends SubsystemBase {
    * Run PID on the Spark Max to the specified setpoint.
    */
   public void runPID(){
-    sparkMax.getPIDController().setP(constants.kP());
-    sparkMax.getPIDController().setI(constants.kI());
-    sparkMax.getPIDController().setD(constants.kD());
-    sparkMax.getPIDController().setFF(constants.kFF());
+    sparkMax.getPIDController().setP(constants.getKP());
+    sparkMax.getPIDController().setI(constants.getKI());
+    sparkMax.getPIDController().setD(constants.getKD());
+    sparkMax.getPIDController().setFF(constants.getKFF());
     sparkMax.getPIDController().setReference(setpoint, ControlType.kPosition);    
   }
 
@@ -175,10 +175,10 @@ public class TurretS extends SubsystemBase {
    * Run PID to the setpoint, using motion magic. Currently Incomplete (commented out lines need to be added)
    */
   public void runPIDWithMotionMagic(){
-    sparkMax.getPIDController().setP(constants.kP());
-    sparkMax.getPIDController().setI(constants.kI());
-    sparkMax.getPIDController().setD(constants.kD());
-    sparkMax.getPIDController().setFF(constants.kFF());
+    sparkMax.getPIDController().setP(constants.getKP());
+    sparkMax.getPIDController().setI(constants.getKI());
+    sparkMax.getPIDController().setD(constants.getKD());
+    sparkMax.getPIDController().setFF(constants.getKFF());
 
     // TODO - set velocity/acceleration limits
     //sparkMax.getPIDController().setSmartMotionMaxAccel(maxAccel, slotID);
@@ -208,7 +208,7 @@ public class TurretS extends SubsystemBase {
    * @param setpoint The desired position for the turret
    */
   public void requestState(TurretRequestedStates desiredState, double setpoint){    
-    if (setpoint < constants.softLimit() || setpoint > constants.softLimit()) return;
+    if (setpoint < constants.getSoftLimit() || setpoint > constants.getSoftLimit()) return;
     
     requestedState = desiredState;    
     this.setpoint = setpoint;    
@@ -220,10 +220,10 @@ public class TurretS extends SubsystemBase {
   }
 
   private void checkForSoftLimit(){
-    if (convertEncoderTicksToAngle(getTurretEncoderPosition()) < -constants.softLimit()){
+    if (convertEncoderTicksToAngle(getTurretEncoderPosition()) < -constants.getSoftLimit()){
       requestState(TurretRequestedStates.MoveToSetpoint, setpoint + 10);
     }
-    else if (convertEncoderTicksToAngle(getTurretEncoderPosition()) > constants.softLimit()){
+    else if (convertEncoderTicksToAngle(getTurretEncoderPosition()) > constants.getSoftLimit()){
       requestState(TurretRequestedStates.MoveToSetpoint, setpoint - 10);
     }
   }
@@ -239,7 +239,7 @@ public class TurretS extends SubsystemBase {
         break;
       case Homing:
         runPID();
-        if ((getTurretEncoderPosition() > constants.homePosition() - constants.marginOfError() && getTurretEncoderPosition() < constants.homePosition() + (constants.marginOfError())) || homedCounter.get() > 0) internalState = TurretInternalStates.Homed;
+        if ((getTurretEncoderPosition() > constants.getHomePosition() - constants.getMarginOfError() && getTurretEncoderPosition() < constants.getHomePosition() + (constants.getMarginOfError())) || homedCounter.get() > 0) internalState = TurretInternalStates.Homed;
         break;
       case MovingToSetpoint:
         runPID();

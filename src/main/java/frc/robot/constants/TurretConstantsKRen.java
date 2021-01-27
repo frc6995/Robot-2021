@@ -10,52 +10,52 @@ import frc.lib.constants.TurretConstants;
 public class TurretConstantsKRen implements TurretConstants {
 
     @Override
-    public double marginOfError() {
+    public double getMarginOfError() {
         return 50;
     }
 
     @Override
-    public double kP() {
+    public double getKP() {
         return 1;
     }
 
     @Override
-    public double kI() {
+    public double getKI() {
         return 1;
     }
 
     @Override
-    public double kD() {
+    public double getKD() {
         return 1;
     }
 
     @Override
-    public double kFF() {
+    public double getKFF() {
         return 1;
     }
 
     @Override
-    public double encoderTicksPerDegree() {
+    public double getEncoderTicksPerDegree() {
         return 42.0 /*Encoder ticks per rev*/ * 5 * 150 / 18 /*Gear ratio (5:1 and 150:18*/ / 360 /*Degrees per revolution*/;
     }
 
     @Override
-    public double homePosition() {
+    public double getHomePosition() {
         return 0;
     }
 
     @Override
-    public double softLimit() {
+    public double getSoftLimit() {
         return 270;
     }
 
     @Override
-    public int sparkMaxPortID() {
+    public int getSparkMaxPortID() {
         return 1;
     }
 
     @Override
-    public int limitSwitchChannelID() {
+    public int getLimitSwitchChannelID() {
         return 2;
     }
 
