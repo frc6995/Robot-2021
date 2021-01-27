@@ -27,7 +27,7 @@ public class LimelightS extends SubsystemBase {
   private double filteredXOffset;
   private double filteredYOffset;
 
-  private int numberOfRegisters;
+  private int numberOfConsumersRegistered;
   
   /** Creates a new LimelightS.
    * 
@@ -39,7 +39,7 @@ public class LimelightS extends SubsystemBase {
     xOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);
     yOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);    
 
-    numberOfRegisters = 0;
+    numberOfConsumersRegistered = 0;
   }
 
   @Override
@@ -84,7 +84,7 @@ public class LimelightS extends SubsystemBase {
    * Registers a command as using the Limelight.
    */
   public void register(){
-    numberOfRegisters++;
+    numberOfConsumersRegistered++;
     
     setCameraMode(CameraMode.Vision);
     setLEDState(LedState.On);
@@ -94,9 +94,11 @@ public class LimelightS extends SubsystemBase {
    * Removes a command from the Limelight's registry
    */
   public void deregister(){
-    numberOfRegisters--;
+    numberOfConsumersRegistered--;
 
-    if (numberOfRegisters == 0){
+    limelight.hashCode()
+
+    if (numberOfConsumersRegistered == 0){
       setCameraMode(CameraMode.Driver);
       setLEDState(LedState.Off);
     }

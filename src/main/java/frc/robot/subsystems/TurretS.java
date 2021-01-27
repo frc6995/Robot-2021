@@ -23,23 +23,23 @@ public class TurretS extends SubsystemBase {
     /**
      * Turret is currently homed to its starting position
      */
-    Homed,
+    HOMED,
     /**
      * Turret is currently homing to its starting position
      */
-    Homing,
+    HOMING,
     /**
      * Turret is currently moving to its setpoint
      */
-    MovingToSetpoint,
+    MOVING_TO_SETPOINT,
     /**
      * Turret is currently at its setpoint
      */
-    AtSetpoint,
+    AT_SETPOINT,
     /**
      * Turrent is currently stopped
      */
-    Stopped;
+    STOPPED;
   }
   
   /**
@@ -49,51 +49,51 @@ public class TurretS extends SubsystemBase {
     /**
      * Make the Turret return to its home position
      */
-    Home,
+    HOME,
     /**
      * Make the Turret go to its specified setpoint
      */
-    MoveToSetpoint,
+    MOVE_TO_SETPOINT,
     /**
      * Make the Turret stop moving where it is
      */
-    Stop,
+    STOP,
     /**
      * Do not give the Turret a command
      */
-    None;
+    NONE;
   }
 
   /**
    * The desired setpoint
    */
-  double setpoint;
+  private double setpoint;
   /**
    * The number of periods that the Turret has been within the margin of error of its desired setpoint
    */
-  int withinSetpointCounter;
+  private int withinSetpointCounter;
   /**
    * The current internal state of the Turret
    */
-  TurretInternalStates internalState;
+  private TurretInternalStates internalState;
   /**
    * The requested state of the Turret
    */
-  TurretRequestedStates requestedState;
+  private TurretRequestedStates requestedState;
   /**
    * The motor controlling the Turret
    */
-  NomadSparkMax sparkMax;
+  private NomadSparkMax sparkMax;
   /**
    * The magnetic limit switch on the Turret, located on its home position
    */
-  DigitalInput limitSwitch;
+  private DigitalInput limitSwitch;
   /**
    * The Throughbore encoder, plugged directly into the Spark Max
    */
-  CANEncoder encoder;
+  private CANEncoder encoder;
 
-  /* Test counter, not implemented yet, that could be used to more accurately check if the Turret is homed */
+  /** Counter that checks if the Turret is homed */
   Counter homedCounter;
 
   /**
@@ -107,8 +107,8 @@ public class TurretS extends SubsystemBase {
 
     setpoint = 0;
     withinSetpointCounter = 0;
-    internalState = TurretInternalStates.Homing;
-    requestedState = TurretRequestedStates.Home;
+    internalState = TurretInternalStates.HOMING;
+    requestedState = TurretRequestedStates.HOME;
     sparkMax = new NomadSparkMax(constants.getSparkMaxPortID());
     limitSwitch = new DigitalInput(constants.getLimitSwitchChannelID());
     // Currently, limit switch is counted as pressed if counter is greater than 0. 
@@ -124,7 +124,7 @@ public class TurretS extends SubsystemBase {
     stateMachineLoop();
 
     // Increase counter if at setpoint, or reset if it is not
-    if (internalState == TurretInternalStates.AtSetpoint) withinSetpointCounter++;
+    if (internalState == TurretInternalStates.AT_SETPOINT) withinSetpointCounter++;
     else withinSetpointCounter = 0;     
   }
 
@@ -200,7 +200,7 @@ public class TurretS extends SubsystemBase {
    * @return <b>true</b> if is at the setpoint, <b>false</b> otherwise
    */
   public boolean isAtSetpoint(){
-    return withinSetpointCounter > 10;
+    return withinSetpointCounter > constants.getMinCountsAtSetpoint();
   }
 
   /**
@@ -216,18 +216,18 @@ public class TurretS extends SubsystemBase {
     requestedState = desiredState;    
     this.setpoint = setpoint;    
 
-    if (requestedState == TurretRequestedStates.Home) internalState = TurretInternalStates.Homing;
-    else if (requestedState == TurretRequestedStates.MoveToSetpoint) internalState = TurretInternalStates.MovingToSetpoint;
-    else if (requestedState == TurretRequestedStates.Stop) internalState = TurretInternalStates.Stopped;
+    if (requestedState == TurretRequestedStates.HOME) internalState = TurretInternalStates.HOMING;
+    else if (requestedState == TurretRequestedStates.MOVE_TO_SETPOINT) internalState = TurretInternalStates.MOVING_TO_SETPOINT;
+    else if (requestedState == TurretRequestedStates.STOP) internalState = TurretInternalStates.STOPPED;
     // If requestedState is None, do not update the internal state
   }
 
   private void checkForSoftLimit(){
     if (convertEncoderTicksToAngle(getTurretEncoderPosition()) < -constants.getSoftLimit()){
-      requestState(TurretRequestedStates.MoveToSetpoint, setpoint + 10);
+      requestState(TurretRequestedStates.MOVE_TO_SETPOINT, setpoint + 10);
     }
     else if (convertEncoderTicksToAngle(getTurretEncoderPosition()) > constants.getSoftLimit()){
-      requestState(TurretRequestedStates.MoveToSetpoint, setpoint - 10);
+      requestState(TurretRequestedStates.MOVE_TO_SETPOINT, setpoint - 10);
     }
   }
 
@@ -236,23 +236,23 @@ public class TurretS extends SubsystemBase {
    */
   private void stateMachineLoop(){
     switch (internalState){
-      case Homed:
+      case HOMED:
         sparkMax.stopMotor();
         homedCounter.reset();
         break;
-      case Homing:
+      case HOMING:
         runPID();
-        if ((getTurretEncoderPosition() > constants.getHomePosition() - constants.getMarginOfError() && getTurretEncoderPosition() < constants.getHomePosition() + (constants.getMarginOfError())) || homedCounter.get() > 0) internalState = TurretInternalStates.Homed;
+        if ((getTurretEncoderPosition() > constants.getHomePosition() - constants.getMarginOfError() && getTurretEncoderPosition() < constants.getHomePosition() + (constants.getMarginOfError())) || homedCounter.get() > 0) internalState = TurretInternalStates.HOMED;
         break;
-      case MovingToSetpoint:
+      case MOVING_TO_SETPOINT:
         runPID();
         checkForSoftLimit();
-        if (isAtSetpoint()) internalState = TurretInternalStates.AtSetpoint;
+        if (isAtSetpoint()) internalState = TurretInternalStates.AT_SETPOINT;
         break;
-      case AtSetpoint:
-        if (!isAtSetpoint()) internalState = TurretInternalStates.MovingToSetpoint;
+      case AT_SETPOINT:
+        if (!isAtSetpoint()) internalState = TurretInternalStates.MOVING_TO_SETPOINT;
         break;
-      case Stopped:
+      case STOPPED:
         sparkMax.stopMotor();
         homedCounter.reset();
         break;

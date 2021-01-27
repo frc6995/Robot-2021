@@ -35,7 +35,8 @@ public class TurretConstantsKRen implements TurretConstants {
 
     @Override
     public double getEncoderTicksPerDegree() {
-        return 42.0 /*Encoder ticks per rev*/ * 5 * 150 / 18 /*Gear ratio (5:1 and 150:18*/ / 360 /*Degrees per revolution*/;
+        return 42.0 * 5 * 150 / 18 / 360;
+        /* Encoder ticks per rev * Gear ratio (5:1 and 150:18) / Degrees per revolution */
     }
 
     @Override
@@ -58,4 +59,8 @@ public class TurretConstantsKRen implements TurretConstants {
         return 2;
     }
 
+    @Override
+    public int getMinCountsAtSetpoint(){
+        return 10;
+    }
 }
