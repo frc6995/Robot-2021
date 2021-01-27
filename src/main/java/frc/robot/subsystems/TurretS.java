@@ -9,6 +9,11 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.TurretConstantsKRen;
 
+/**
+ * The Turret on the robot. It controls the horizontal rotation of the {@link ShooterS}.
+ * 
+ * @author JoeyFabel
+ */
 public class TurretS extends SubsystemBase {
   
   /**

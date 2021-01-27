@@ -2,7 +2,10 @@ package frc.robot.constants;
 
 import frc.lib.constants.TurretConstants;
 
-/** {@link TurretConstants} that have been set specifically for KRen*/
+/** {@link TurretConstants} that have been set specifically for KRen
+ * 
+ * @author JoeyFabel
+ */
 public class TurretConstantsKRen implements TurretConstants {
 
     @Override
