@@ -125,7 +125,7 @@ public class NomadVictorSPX extends WPI_VictorSPX implements NomadBaseMotor {
     }
     @Override
     public double getActualOutputPercent() {
-        // TODO Auto-generated method stub
+        
         if(RobotBase.isReal()) {
             return getMotorOutputPercent();
         } else {
