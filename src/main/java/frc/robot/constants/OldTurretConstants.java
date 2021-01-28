@@ -4,10 +4,8 @@
 
 package frc.robot.constants;
 
-import frc.template.Constants;
-
 /** Add your docs here. */
-public class OldTurretConstants extends Constants{
+public class OldTurretConstants{
     /**
      * The allowed margin of error when checking if the Turret is at its setpoint.
      * The Turret must be withing setpoint - marginOfError < TurretPosition < setpoint + marginOfError
