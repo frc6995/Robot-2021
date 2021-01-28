@@ -13,52 +13,54 @@ import edu.wpi.first.wpiutil.math.MathUtil;
  * A simple data carrier to hold a left side wheel percentage and a right side wheel percentage.
  */
 public class DrivebaseWheelPercentages {
-    double leftPercentage;
-    double rightPercentage;
+    /**
+     * The percentage as a decimal for the left side of the drivebase.
+     */
+    private double leftPercentage;
+    /**
+     * The percentage as a decimal for the right side of the drivebase.
+     */
+    private double rightPercentage;
 
     /**
-     * Set the left side wheel percentage to the given value.
-     * @param left The percentage
-     * @return This {@link DrivebaseWheelPercentages}
+     * Sets the left side wheel percentage.
+     * @param left The new value.
+     * @return This DrivebaseWheelPercentages object, modified with the new percentage.
      */
     public DrivebaseWheelPercentages setLeftPercentage(double left) {
-        leftPercentage = left;
+        this.leftPercentage = left;
         return this;
     }
-
     /**
-     * Set the right side wheel percentage to the given value.
-     * @param right The percentage
-     * @return This {@link DrivebaseWheelPercentages}
+     * Sets the right side wheel percentage.
+     * @param right The new value.
+     * @return This DrivebaseWheelPercentages object, modified with the new percentage.
      */
     public DrivebaseWheelPercentages setRightPercentage(double right) {
-        rightPercentage = right;
+        this.rightPercentage = right;
         return this;
     }
-
     /**
-     * Get the left side wheel percentage.
-     * @return the left wheel percentage
+     * Return the left side percentage.
+     * @return
      */
     public double getLeftPercentage(){
         return leftPercentage;
     }
-
     /**
-     * Get the right side wheel percentage.
-     * @return the right wheel percentage
+     * Return the right side percentage.
+     * @return
      */
     public double getRightPercentage(){
         return rightPercentage;
     }
-
     /**
-     * Clamp both sides' wheel percentages between -100% and 100%.
-     * @return this {@link DrivebaseWheelPercentages}
+     * Clamps this object's percentages to a [-1, 1] range.
+     * @return The object with percentages clamped 
      */
     public DrivebaseWheelPercentages clamp(){
-        leftPercentage = MathUtil.clamp(leftPercentage, -1, 1);
-        rightPercentage = MathUtil.clamp(rightPercentage, -1, 1);
+        this.leftPercentage = MathUtil.clamp(this.leftPercentage, -1, 1);
+        this.rightPercentage = MathUtil.clamp(this.rightPercentage, -1, 1);
         return this;
     }
 

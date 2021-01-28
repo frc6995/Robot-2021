@@ -10,7 +10,7 @@ package frc.lib.wrappers.motorcontrollers;
 import edu.wpi.first.wpilibj.SpeedController;
 
 /**
- * Add your docs here.
+ * Defines the base functionality, as an extension of SpeedController, for subclasses of NomadBaseMotor.
  */
 public interface NomadBaseMotor extends SpeedController{
 
@@ -29,10 +29,22 @@ public interface NomadBaseMotor extends SpeedController{
      */
     public void setLazy(boolean isLazy);
 
+    /**
+     * Attempts to set follower mode, following the given NomadBaseMotor.
+     * @param leader The NomadBaseMotor to follow.
+     * @return This object, modified.
+     * @throws IllegalArgumentException if the given motor is an incompatible type.
+     */
+
     public NomadBaseMotor setLeader(NomadBaseMotor leader) throws IllegalArgumentException;
-
+    /**
+     * Set whether the motor is inverted.
+     * @param inverted Inverted is true.
+     */
     public void setInverted(boolean inverted);
-
+    /**
+     * @return The actual percent output applied to the motor. 
+     */
     public double getActualOutputPercent();
 
 

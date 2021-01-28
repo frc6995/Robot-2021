@@ -12,41 +12,26 @@ import frc.lib.constants.DriveConstants;
  * 
  * @author Sammcdo, EliSauder, JoeyFabel, Shueja, AriShashivkopanazak
  */
-public abstract class AutoConstants {
-      protected SimpleMotorFeedforward TRAJECTORY_FEED_FORWARD;
-      protected DifferentialDriveVoltageConstraint AUTO_VOLTAGE_CONSTRAINT;
-      protected CentripetalAccelerationConstraint CENTRIPETAL_ACCELERATION_CONSTRAINT;
-      protected TrajectoryConfig TRAJECTORY_CONFIG;
-      protected RamseteController RAMSETE_CONTROLLER;
-      protected DriveConstants driveConstants;
-      public AutoConstants(DriveConstants drivebaseConstants){
-            driveConstants = drivebaseConstants;
-      }
-      public abstract double getkMaxAccelerationMetersPerSecondSquared();
-      public abstract double getkMaxSpeedMetersPerSecond();
-      public abstract double getkRamseteB();
-      public abstract double getkRamseteZeta();
+public interface AutoConstants {
+
+      /**
+       * The maximum acceleration, in m/s^2
+       * @return The max acceleration
+       */
+      public double getkMaxAccelerationMetersPerSecondSquared();
+      public double getkMaxSpeedMetersPerSecond();
+      public double getkRamseteB();
+      public double getkRamseteZeta();
 
       /**
        * The SimpleMotorFeedForward object for trajectory generation on the talon.
        */
-      public SimpleMotorFeedforward getTrajectoryFeedForward() {
-            return TRAJECTORY_FEED_FORWARD;
-      }
+      public SimpleMotorFeedforward getTrajectoryFeedForward();
+      public DifferentialDriveVoltageConstraint getAutoVoltageConstraint();
       
-      public DifferentialDriveVoltageConstraint getAutoVoltageConstraint() {
-            return AUTO_VOLTAGE_CONSTRAINT;
-      }
+      public CentripetalAccelerationConstraint getAutoCentripetalConstraint();
       
-      public CentripetalAccelerationConstraint getAutoCentripetalConstraint() {
-            return CENTRIPETAL_ACCELERATION_CONSTRAINT;
-      }
+      public TrajectoryConfig getTrajectoryConfig();
       
-      public TrajectoryConfig getTrajectoryConfig() {
-            return TRAJECTORY_CONFIG;
-      }
-      
-      public RamseteController getRamseteController() {
-            return RAMSETE_CONTROLLER;
-      }
+      public RamseteController getRamseteController();
 }

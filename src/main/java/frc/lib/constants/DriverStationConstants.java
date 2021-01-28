@@ -4,7 +4,10 @@
 
 package frc.lib.constants;
 
-/** Add your docs here. */
-public class DriverStationConstants {
-    
+import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+
+/** Subclass this class to describe the operator console-related constants. */
+public interface DriverStationConstants {
+    int getDriveControllerUsbPort();
+    NomadMappingEnum getSelectedMap();
 }
