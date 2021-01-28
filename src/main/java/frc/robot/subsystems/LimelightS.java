@@ -103,7 +103,9 @@ public class LimelightS extends SubsystemBase {
   public void deregister(){
     numberOfConsumersRegistered--;    
 
-    if (numberOfConsumersRegistered == 0){
+    // If it went negative, reset the count to 0 and don't mess with the limelight
+    if (numberOfConsumersRegistered < 0) numberOfConsumersRegistered = 0;
+    else if (numberOfConsumersRegistered == 0){
       setCameraMode(CameraMode.Driver);
       setLEDState(LedState.Off);
     }
@@ -133,6 +135,7 @@ public class LimelightS extends SubsystemBase {
    * @param key The registry key
    */
   public void deregister(String key){
+    // Check if the provided registry key is valid
     if (registryKeys.contains(key)) {
       registryKeys.remove(key);     
 
@@ -141,6 +144,7 @@ public class LimelightS extends SubsystemBase {
         setLEDState(LedState.Off);
       }
     }
+    // Don't do anything with an invalid key
   }
 
     /**

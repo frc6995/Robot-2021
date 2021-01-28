@@ -15,6 +15,16 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     protected NomadBaseMotor leader = NomadNoneMotor.noneMotor;
     protected double lastPower = Double.NaN;
     protected ControlType lastMode = null;
+
+    /**
+     * Constructs a brushless {@link CANSparkMax} with the given port.
+     * 
+     * @param port The CAN ID of this SparkMax
+     */
+    public NomadSparkMax(int port){
+        super(port, MotorType.kBrushless);
+    }
+
     /**
      * Constructs a SparkMAX, reverts it to factory default, and sets brake mode.
      * 
