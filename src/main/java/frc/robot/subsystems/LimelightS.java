@@ -4,6 +4,10 @@
 
 package frc.robot.subsystems;
 
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.Random;
+
 import edu.wpi.first.wpilibj.LinearFilter;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.limelight.Limelight;
@@ -28,6 +32,8 @@ public class LimelightS extends SubsystemBase {
   private double filteredYOffset;
 
   private int numberOfConsumersRegistered;
+
+  private ArrayList<String> registryKeys;
   
   /** Creates a new LimelightS.
    * 
@@ -40,6 +46,7 @@ public class LimelightS extends SubsystemBase {
     yOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);    
 
     numberOfConsumersRegistered = 0;
+    registryKeys = new ArrayList<String>();
   }
 
   @Override
@@ -94,11 +101,45 @@ public class LimelightS extends SubsystemBase {
    * Removes a command from the Limelight's registry
    */
   public void deregister(){
-    numberOfConsumersRegistered--;
+    numberOfConsumersRegistered--;    
 
     if (numberOfConsumersRegistered == 0){
       setCameraMode(CameraMode.Driver);
       setLEDState(LedState.Off);
+    }
+  }
+
+  /**
+   * Register to the Limelight and generate a registry key.
+   * 
+   * @return The unique registry key, make sure you store this if you want to be able to deregister
+   */
+  public String registerWithKey(){
+    // Generate a new registry key
+    byte[] array = new byte[7];
+    new Random().nextBytes(array);
+    String key = new String(array, Charset.forName("UTF-8"));
+
+    // add it to the list
+    registryKeys.add(key);
+
+    setCameraMode(CameraMode.Vision);
+    setLEDState(LedState.On);
+    return key;    
+  }
+
+  /**
+   * Deregister from the Limelight, if a valid registry key is provided.
+   * @param key The registry key
+   */
+  public void deregister(String key){
+    if (registryKeys.contains(key)) {
+      registryKeys.remove(key);     
+
+      if (registryKeys.size() == 0){
+        setCameraMode(CameraMode.Driver);
+        setLEDState(LedState.Off);
+      }
     }
   }
 
