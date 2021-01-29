@@ -1,5 +1,6 @@
 package frc.lib.wrappers.motorcontrollers;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
@@ -94,15 +95,15 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
      * @return CANError Set to REV_OK if successful
      *
      */
-    public void set(ControlType type, double setpoint) {
+    public void set(ControlMode percentoutput, double setpoint) {
         if (lazy) {
-            if (setpoint != lastPower || type != lastMode) {
+            if (setpoint != lastPower || percentoutput != lastMode) {
                 lastPower = setpoint;
-                lastMode = type;
-                super.getPIDController().setReference(setpoint, type);
+                lastMode = percentoutput;
+                super.getPIDController().setReference(setpoint, percentoutput);
             }
         } else {
-            super.getPIDController().setReference(setpoint, type);
+            super.getPIDController().setReference(setpoint, percentoutput);
         }
     }
     
