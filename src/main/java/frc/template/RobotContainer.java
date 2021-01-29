@@ -66,22 +66,22 @@ public class RobotContainer {
    * Creates the subsystem.
    */
   private void createSubsystems() {
-    drivebaseS = new DifferentialDrivebaseTalonVictorS(driveConstants, autoConstants);
+    //drivebaseS = new DifferentialDrivebaseTalonVictorS(driveConstants, autoConstants);
     agitatorS = new AgitatorS();
   }
   /**
    * Creates the commands that will be started. By creating them once and reusing them, we should save on garbage collection.
    */
   private void createCommands() {
-    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
+    //drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
     agitatorSpinC = new AgitatorSpinC(agitatorS);
   }
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
-    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
-    agitatorS.setDefaultCommand(agitatorSpinC);
+    //drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    //agitatorS.setDefaultCommand(agitatorSpinC);
   }
   /**
    * Creates the user controllers.
@@ -119,6 +119,7 @@ public class RobotContainer {
     if(init) {
       SmartDashboard.putNumber("driveFwdBack", NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
       SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
+      SmartDashboard.putData(agitatorSpinC);
     }
   }
 

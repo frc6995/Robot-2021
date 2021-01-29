@@ -41,7 +41,9 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
 
 
 
-  public abstract double getYaw();
+  public double getYaw() {
+    return 0;
+  }
 
   @Override
   public void periodic() {
