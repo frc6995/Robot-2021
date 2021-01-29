@@ -1,6 +1,5 @@
 package frc.lib.wrappers.motorcontrollers;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
@@ -18,10 +17,12 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     protected ControlType lastMode = null;
 
     /**
-     * Creates a new brushless {@link CANSparkMax} with the given port
+     * Constructs a brushless {@link CANSparkMax} with the given port.
+     * 
+     * @param port The CAN ID of this SparkMax
      */
     public NomadSparkMax(int port){
-        this(port, MotorType.kBrushless);
+        super(port, MotorType.kBrushless);
     }
 
     /**
@@ -104,15 +105,15 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
      * @return CANError Set to REV_OK if successful
      *
      */
-    public void set(ControlType percentoutput, double setpoint) {
+    public void set(ControlType type, double setpoint) {
         if (lazy) {
-            if (setpoint != lastPower || percentoutput != lastMode) {
+            if (setpoint != lastPower || type != lastMode) {
                 lastPower = setpoint;
-                lastMode = percentoutput;
-                super.getPIDController().setReference(setpoint, percentoutput);
+                lastMode = type;
+                super.getPIDController().setReference(setpoint, type);
             }
         } else {
-            super.getPIDController().setReference(setpoint, percentoutput);
+            super.getPIDController().setReference(setpoint, type);
         }
     }
     
@@ -126,6 +127,4 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
             return get();
         }
     }
-
-
 }
