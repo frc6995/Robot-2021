@@ -15,8 +15,18 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     protected NomadBaseMotor leader = NomadNoneMotor.noneMotor;
     protected double lastPower = Double.NaN;
     protected ControlType lastMode = null;
+
     /**
-     * Constructs a SparkMAX, reverts it to factory default, and sets brake mode.
+     * Constructs a brushless {@link CANSparkMax} with the given port.
+     * 
+     * @param port The CAN ID of this SparkMax
+     */
+    public NomadSparkMax(int port){
+        super(port, MotorType.kBrushless);
+    }
+
+    /**
+     * Constructs a {@link CANSparkMax}, reverts it to factory default, and sets brake mode.
      * 
      * @param port The CAN ID of this SparkMAX
      */
@@ -27,15 +37,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
 
     /**
-     * Constructs a brushless SparkMAX, reverts it to factory default, and sets brake mode.
-     * @param port The CAN ID of this SparkMAX
-     */
-    public NomadSparkMax(int port) {
-        super(port, MotorType.kBrushless)
-    }
-
-    /**
-     * Constructs a SparkMAX, reverts it to factory default, and sets brake mode and
+     * Constructs a {@link CANSparkMax}, reverts it to factory default, and sets brake mode and
      * inversion status.
      * 
      * @param port     The CAN ID of this SparkMAX.
@@ -47,7 +49,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
 
     /**
-     * Constructs a SparkMAX, reverts it to factory default, sets brake mode and
+     * Constructs a {@link CANSparkMax}, reverts it to factory default, sets brake mode and
      * inversion status, and slaves it to a specified NomadSparkMAX.
      * 
      * @param port     The CAN ID of this SparkMAX.
@@ -76,6 +78,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     public void setLazy(boolean isLazy) {
         lazy = isLazy;
     }
+    
     public NomadBaseMotor setLeader( NomadBaseMotor leader){
         this.leader = leader;
         if (leader instanceof NomadSparkMax) {
