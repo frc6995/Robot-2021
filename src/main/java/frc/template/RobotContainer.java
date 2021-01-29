@@ -19,7 +19,7 @@ import frc.template.commands.AgitatorSpinC;
 import frc.template.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.template.constants.AutoConstantsKRen;
 import frc.template.constants.DriveConstantsKRen;
-import frc.template.subsystems.AgitatorS;
+import frc.robot.subsystems.AgitatorS;
 import frc.template.subsystems.DifferentialDrivebaseTalonVictorS;
 
 /**

@@ -95,7 +95,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
      * @return CANError Set to REV_OK if successful
      *
      */
-    public void set(ControlMode percentoutput, double setpoint) {
+    public void set(ControlType percentoutput, double setpoint) {
         if (lazy) {
             if (setpoint != lastPower || percentoutput != lastMode) {
                 lastPower = setpoint;

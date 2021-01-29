@@ -1,7 +1,7 @@
 package frc.template.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.template.subsystems.AgitatorS;
+import frc.robot.subsystems.AgitatorS;
 
 public class AgitatorSpinC extends CommandBase {
   /** Creates a new AgitatorSpinC. */
