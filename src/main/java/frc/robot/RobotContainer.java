@@ -17,6 +17,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
@@ -61,7 +62,7 @@ public class RobotContainer {
    */
   public RobotContainer() {
     createConstantsFiles();
-    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
+    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
     createSubsystems();
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createCommands();
@@ -98,6 +99,7 @@ public class RobotContainer {
 
     ramseteCommandGroup = new InstantCommand(() -> 
     drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS)
+    .andThen(new WaitCommand(0.2))
     .andThen(ramseteCommand)
     .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
   }

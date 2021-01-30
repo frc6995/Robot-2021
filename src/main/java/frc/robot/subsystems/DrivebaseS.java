@@ -192,6 +192,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
+    gyro.reset();
     m_driveSim.setPose(pose);
     m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getYaw()));
   }

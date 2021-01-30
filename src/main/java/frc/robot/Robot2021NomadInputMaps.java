@@ -56,11 +56,14 @@ public class Robot2021NomadInputMaps extends NomadInputMaps {
             //new NomadAxis(id, axisName, customAxisBehavior)
             new NomadAxis(driveConstants.getDriveControllerFwdBackAxis(), "FWD/BACK", (DoubleSupplier) () -> {
                 return driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(driverStationConstants.getDriveControllerUsbPort(), XboxController.Axis.kLeftY.value));
-            }))
+            }).withNegativeDeadzone(-0.1).withPositiveDeadzone(0.1))
         .withAxis(
             new NomadAxis(driveConstants.getDriveControllerLeftRightAxis(), "LEFT/RIGHT", (DoubleSupplier) () -> {
                 return driveConstants.getDriveControllerLeftRightAxisMultiplier() * NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftX.value);
-            }));
+            })
+            .withNegativeDeadzone(-0.1)
+            .withPositiveDeadzone(0.1)
+            .withScaleFactor(0.5));
         return map;
     }
 
