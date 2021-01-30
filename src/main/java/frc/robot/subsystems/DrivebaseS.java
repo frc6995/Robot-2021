@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
+import frc.lib.wrappers.motorcontrollers.NomadPWMMotor;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.constants.AutoConstants;
@@ -33,7 +34,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private NomadSparkMax rightLeader;
   private NomadSparkMax leftFollower;
   private NomadSparkMax rightFollower;
-
+  
   //private DifferentialDrive m_drive;
 
   private Encoder m_leftEncoder;
@@ -71,10 +72,12 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     rightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
         MotorType.kBrushless,
         driveConstants.getRightDriveFollowerInverted(), rightLeader);
-
+    
 
 
     //m_drive = new DifferentialDrive(leftLeader, rightLeader);
+
+    
 
     m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
         driveConstants.getLeftEncoderReversed());
@@ -94,7 +97,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         driveConstants.getDriveGearbox(),
         driveConstants.getEncoderRevolutionsPerWheelRevolution(),
         driveConstants.getkTrackWidthMeters(),
-        driveConstants.getkWheelDiameter()/2,
+        driveConstants.getkWheelDiameter()/2.0,
         driveConstants.getSimEncoderStdDev());
 
         
@@ -108,6 +111,8 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   @Override
   public void periodic() {
     m_odometry.update(gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+    SmartDashboard.putNumber("PoseX", m_odometry.getPoseMeters().getX());
+    SmartDashboard.putNumber("PoseY", m_odometry.getPoseMeters().getY());
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
@@ -115,20 +120,26 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     // Set the inputs to the system. Note that we need to convert
     // the [-1, 1] PWM signal to voltage by multiplying it by the
     // robot controller voltage.
-    m_driveSim.setInputs(leftLeader.getActualOutputPercent() * RobotController.getInputVoltage(),
-    (driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightLeader.getActualOutputPercent() * RobotController.getInputVoltage());
+    m_driveSim.setInputs(leftLeader.get() * RobotController.getInputVoltage(),
+    (driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightLeader.get() * RobotController.getInputVoltage());
 
     // Advance the model by 20 ms. Note that if you are running this
     // subsystem in a separate thread or have changed the nominal timestep
     // of TimedRobot, this value needs to match it.
     m_driveSim.update(0.02);
+    SmartDashboard.putNumber("Left position", m_driveSim.getLeftPositionMeters());
 
     // Update all of our sensors.
     m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
     m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
     m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
     m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
+
+
+    
     m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+
+
   }
 
   @Override
@@ -191,7 +202,6 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     SmartDashboard.putData("Drivebase", this);
     // SmartDashboard.putNumber("fwdbackaxis",
     // driveConstants.getDriveControllerFwdBackAxis());
-    SmartDashboard.putData("Field", m_field);
   }
 
   @Override

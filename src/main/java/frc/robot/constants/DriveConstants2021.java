@@ -32,6 +32,11 @@ public class DriveConstants2021 implements DriveConstants {
     }
 
     @Override
+    public boolean getLeftDriveLeaderInverted() {
+        return true;
+    }
+
+    @Override
     public int getDriveControllerLeftRightAxis() {
         return 34;
     }
@@ -68,6 +73,10 @@ public class DriveConstants2021 implements DriveConstants {
         int[] ports = { 2, 3 };
         return ports;
     }
+    @Override
+    public boolean getRightDriveLeaderInverted() {
+        return true;
+    }
 
     @Override
     public int getCanIDLeftDriveFollower() {
@@ -76,7 +85,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public boolean getLeftDriveFollowerInverted() {
-        return true;
+        return false;
     }
 
     @Override
@@ -86,7 +95,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public boolean getRightDriveFollowerInverted() {
-        return true;
+        return false;
     }
 
     @Override
@@ -182,7 +191,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public Vector<N7> getSimEncoderStdDev() {
-        return VecBuilder.fill(0.0001, 0.0001, 0.0001, 0.01, 0.01, 0.0005, 0.0005);
+        return VecBuilder.fill(0, 0, 0, 0, 0, 0, 0);//VecBuilder.fill(0.0001, 0.0001, 0.0001, 0.01, 0.01, 0.0005, 0.0005);
     }
 
     @Override

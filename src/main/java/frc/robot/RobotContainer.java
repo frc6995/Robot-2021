@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -91,12 +92,14 @@ public class RobotContainer {
    */
   private void createCommands() {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
+
     ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory,
     drivebaseS, driveConstants, autoConstants);
-    ramseteCommandGroup = new RunCommand(() -> 
-    drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()))
+
+    ramseteCommandGroup = new InstantCommand(() -> 
+    drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS)
     .andThen(ramseteCommand)
-    .andThen(() -> drivebaseS.tankDriveVolts(0, 0));
+    .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
   }
 
   /**
@@ -133,7 +136,6 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     // Reset odometry to starting pose of trajectory.
-    ;
 
     // Run path following command, then stop at the end.
     return ramseteCommandGroup;
