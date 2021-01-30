@@ -51,18 +51,20 @@ public interface DriveConstants {
     int getDriveControllerLeftRightAxis() ;
     /** The CAN ID for the left master motor controller. */
     int getCanIDLeftDriveMaster();
+    default boolean getLeftDriveLeaderInverted(){return false;};
     boolean getLeftEncoderReversed();
     int[] getLeftEncoderPorts();
     /** The CAN ID for the right master motor controller. */
     int getCanIDRightDriveMaster();
+    default boolean getRightDriveLeaderInverted(){return false;}
     boolean getRightEncoderReversed();
     int[] getRightEncoderPorts();
     /** The CAN ID for the left follower motor controller. */
     int getCanIDLeftDriveFollower();
-
+    default boolean getLeftDriveFollowerInverted(){return false;}
     /** The CAN ID for the right follower motor controller. */
     int getCanIDRightDriveFollower();
-
+    default boolean getRightDriveFollowerInverted(){return false;}
     /** Whether or not the gyro is reversed */
     boolean getGyroReversed();
 
@@ -100,8 +102,6 @@ public interface DriveConstants {
         return kDrivetrainPlant;
     }*/
     DCMotor getDriveGearbox();
-
-    double getDriveGearingRatio();
 
     Vector<N7> getSimEncoderStdDev();
 

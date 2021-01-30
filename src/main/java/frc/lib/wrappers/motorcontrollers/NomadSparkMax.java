@@ -4,6 +4,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
@@ -125,6 +126,15 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
             return getAppliedOutput();
         } else {
             return get();
+        }
+    }
+
+    public void setOutputVoltage(double outputVolts) {
+        // TODO Auto-generated method stub
+        if (RobotBase.isReal()) {
+            super.setVoltage(outputVolts);
+        } else{
+            set(outputVolts / RobotController.getBatteryVoltage());
         }
     }
 
