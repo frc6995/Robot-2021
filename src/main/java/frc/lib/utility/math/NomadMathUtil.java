@@ -44,6 +44,6 @@ public final class NomadMathUtil {
      * @return The percentage at which <b>value</b> is between <b>a</b> and <b>b</b>
      */
     public static double inverseLerp(double a, double b, double value){
-        return (value - 1) / (b - a);
+        return (value - a) / (b - a);
     }
 }

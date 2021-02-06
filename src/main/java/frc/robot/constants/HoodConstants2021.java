@@ -6,7 +6,7 @@ import java.awt.Point;
 public class HoodConstants2021 implements HoodConstants {
 
     public Point[] getDataPointArray() {                
-        return new Point[] {new Point(0, 0), new Point(1, 1), new Point(2, 2), new Point(3, 3), new Point(4, 4)};
+        return new Point[] {new Point(0, 0), new Point(1, 1), new Point(2, 2), new Point(3, 4), new Point(4, 10)};
     }
 
     public int getNumDataPoints() {        
@@ -16,9 +16,8 @@ public class HoodConstants2021 implements HoodConstants {
     public Point getClosestEndpointDownard(double point){
         Point closestDataPoint = getDataPointArray()[0];
 
-        for (var currentPoint : getDataPointArray()){
-            if (currentPoint.getX() > closestDataPoint.getX() && currentPoint.getX() <= point) closestDataPoint = currentPoint;            
-            // otherwise, compare the two. If the current point is greater than the current closest point and less than the input point, then set it as the new closest point
+        for (var currentPoint : getDataPointArray()){            
+            if (currentPoint.getX() > closestDataPoint.getX() && (currentPoint.getX() <= point)) closestDataPoint = currentPoint;            
         }
 
         return closestDataPoint;
@@ -26,12 +25,13 @@ public class HoodConstants2021 implements HoodConstants {
 
     @Override
     public Point getClosestEndpointUpward(double point) {
-        Point closestDataPoint = getDataPointArray()[0];
+        Point closestDataPoint = getDataPointArray()[getNumDataPoints() - 1];
 
         for (var currentPoint : getDataPointArray()){
             if (currentPoint.getX() < closestDataPoint.getX() && currentPoint.getX() >= point) closestDataPoint = currentPoint;
-        }
 
+        }
+        
         return closestDataPoint;
     }
 
