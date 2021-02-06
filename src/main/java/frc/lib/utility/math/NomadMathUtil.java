@@ -34,5 +34,16 @@ public final class NomadMathUtil {
      */
     public static double lerp(double min, double max, double percent) {
         return min + (percent * (max-min));
-      }
+    }
+
+    /**
+     * Calculates the percentage at which the value lies between <b>a</b> and <b>b</b>. <i>Please</i> make sure <b>value</b> is between <b>a</b> and <b>b</b>.
+     * @param a The lower bound
+     * @param b The upper bound
+     * @param value The value between <b>a</b> and <b>b</b> to check
+     * @return The percentage at which <b>value</b> is between <b>a</b> and <b>b</b>
+     */
+    public static double inverseLerp(double a, double b, double value){
+        return (value - 1) / (b - a);
+    }
 }

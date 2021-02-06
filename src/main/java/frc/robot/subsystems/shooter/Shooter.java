@@ -8,7 +8,9 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.constants.ShooterConstants2021;
 
-/** The flywheel that shoots the power cells into the power port. */
+/** The flywheel that shoots the power cells into the power port. 
+ * @author JoeyFabel
+*/
 public class Shooter {
     /**
      * The Spark Max's encoder
