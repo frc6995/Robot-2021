@@ -63,6 +63,23 @@ public class Hood {
         return NomadMathUtil.lerp(leftEndPoint.getY(), rightEndPoint.getY(), percentage);
     }
 
+    /**
+     * Get the position of the linear servos, by averaging the two.
+     * @return The position of the linear servo
+     */
+    public double getLinearServoPosition(){
+        return (leftLinearServo.get() + rightLinearServo.get()) / 2;
+    }
+
+    /**
+     * Get the position of the linear servos, choosing whether or not to average.
+     * @param averageOfTwo If true, averages the linear servo positions. If false, just get the left servo's position
+     * @return The position of the linear servo
+     */
+    public double getLinearServoPosition(boolean averageOfTwo){
+        return averageOfTwo ? getLinearServoPosition() : leftLinearServo.get();
+    }
+
     public void moveHoodToPosition(double position){
         leftLinearServo.set(position);
     }
