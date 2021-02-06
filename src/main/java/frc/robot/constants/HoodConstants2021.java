@@ -5,12 +5,12 @@ import java.awt.Point;
 /** The {@link Hood} constants for the 2021 robot. */
 public class HoodConstants2021 implements HoodConstants {
 
-    public Point[] getDataPointArray() {        
-        return null;
+    public Point[] getDataPointArray() {                
+        return new Point[] {new Point(0, 0), new Point(1, 1), new Point(2, 2), new Point(3, 3), new Point(4, 4)};
     }
 
     public int getNumDataPoints() {        
-        return 0;
+        return 5;
     }
 
     public Point getClosestEndpointDownard(double point){
