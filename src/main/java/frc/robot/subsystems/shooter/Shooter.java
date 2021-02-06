@@ -51,6 +51,9 @@ public class Shooter {
     }
 
     public void pidToTargetSpeed(double speed){
+        if (speed > 0.8) speed = 0.8;
+        else if (speed < -0.8) speed = -0.8;
+
         leadMotor.getPIDController().setP(constants.getKP());
         leadMotor.getPIDController().setI(constants.getKI());
         leadMotor.getPIDController().setD(constants.getKD());
