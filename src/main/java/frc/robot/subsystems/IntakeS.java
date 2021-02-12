@@ -10,16 +10,19 @@ import frc.robot.constants.IntakeConstantsKRen;
 public class IntakeS extends SubsystemBase {
   private NomadSparkMax intakeMotor;
   private DoubleSolenoid intakeSolenoid;
+  private IntakeConstants constants;
 
   /**
    * Creates a new IntakeS.
    */
-  public IntakeS() {
-    IntakeConstants constants = new IntakeConstantsKRen();
-    intakeMotor = new NomadSparkMax(constants.getIntakeMotorPort());
-    intakeSolenoid = new DoubleSolenoid(1,
-              constants.getSolenoidFwdPort(), 
-              constants.getSolenoidRevPort());
+  public IntakeS(IntakeConstants constants, NomadSparkMax intakeMotor, DoubleSolenoid solenoid) {
+    this.constants = constants;
+    this.intakeMotor = intakeMotor;
+    this.intakeSolenoid = solenoid;
+  }
+
+  public IntakeConstants getConstants(){
+    return constants;
   }
 
   public void setSpeed(double speed) {

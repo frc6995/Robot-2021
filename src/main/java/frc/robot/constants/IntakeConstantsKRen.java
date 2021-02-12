@@ -19,4 +19,9 @@ public class IntakeConstantsKRen implements IntakeConstants {
         return 3;
     }
 
+    @Override
+    public double getIntakeSpeed() {
+        return 0.75;
+    }
+
 }

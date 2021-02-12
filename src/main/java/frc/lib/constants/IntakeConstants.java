@@ -23,4 +23,10 @@ public interface IntakeConstants {
      * @return pcm id
      */
     int getSolenoidRevPort();
+
+    /**
+     * The speed of the intake 
+     * @return intake speed
+     */
+    double getIntakeSpeed();
 }

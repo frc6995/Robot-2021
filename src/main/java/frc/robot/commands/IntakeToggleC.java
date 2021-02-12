@@ -20,7 +20,7 @@ public class IntakeToggleC extends InstantCommand {
     }
     else if (intakeS.getSolenoidPosition() == Value.kReverse){
       intakeS.extend();
-      intakeS.setSpeed(0.75);
+      intakeS.setSpeed(intakeS.getConstants().getIntakeSpeed());
     }
     else {
       intakeS.setSpeed(0);
