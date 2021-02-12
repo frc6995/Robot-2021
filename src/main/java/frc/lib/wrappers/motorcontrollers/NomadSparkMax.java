@@ -127,6 +127,4 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
             return get();
         }
     }
-
-
 }
