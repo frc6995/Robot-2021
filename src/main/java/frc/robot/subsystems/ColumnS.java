@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.constants.ColumnConstants;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 
@@ -10,11 +11,18 @@ public class ColumnS extends SubsystemBase {
   private NomadTalonSRX front;
   private NomadVictorSPX back;
   private DoubleSolenoid solenoid; 
+  private ColumnConstants constants;
+  
   /** Creates a new ColumnS. */
-  public ColumnS() {
-    front = new NomadTalonSRX(41);
-    back = new NomadVictorSPX(42);
-    solenoid = new DoubleSolenoid(1, 4, 5);
+  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid) {
+    this.constants = constants;
+    this.front = front;
+    this.back = back;
+    this.solenoid = solenoid;
+  }
+
+  public ColumnConstants getConstants(){
+    return constants;
   }
 
   @Override
@@ -34,5 +42,11 @@ public class ColumnS extends SubsystemBase {
     back.set(speed);
   }
 
+  public void enableStopper(){
+    solenoid.set(Value.kForward);
+  }
   
+  public void disableStopper(){
+    solenoid.set(Value.kReverse);
+  }
 }
