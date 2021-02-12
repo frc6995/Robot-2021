@@ -1,21 +1,25 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.constants.AgitatorConstants;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
-import frc.robot.constants.AgitatorConstantsKRen;
 
 public class AgitatorS extends SubsystemBase {
   private NomadTalonSRX leftMotor;
   private NomadVictorSPX rightMotor;
-  private AgitatorConstantsKRen constants;
+  private AgitatorConstants constants;
   
   /** Creates a new AgitatorS.*/
-  public AgitatorS() {
-    constants = new AgitatorConstantsKRen();
+  public AgitatorS(AgitatorConstants constants, NomadTalonSRX leftMotor, NomadVictorSPX rightMotor) {
+    this.constants = constants;
 
-    leftMotor = new NomadTalonSRX(constants.getLeftMotorID());
-    rightMotor = new NomadVictorSPX(constants.getRightMotorID());
+    this.leftMotor = leftMotor;
+    this.rightMotor = rightMotor;
+  }
+
+  public AgitatorConstants getConstants() {
+    return constants;
   }
   
   @Override

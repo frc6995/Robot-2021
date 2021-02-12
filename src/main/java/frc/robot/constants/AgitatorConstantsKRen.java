@@ -15,4 +15,14 @@ public class AgitatorConstantsKRen implements AgitatorConstants{
     public int getRightMotorID(){
         return 32;
     }
+
+    @Override
+    public double getRightSpeed() {
+        return 0.8;
+    }
+
+    @Override
+    public double getLeftSpeed() {
+        return 0.5;
+    }
 }
