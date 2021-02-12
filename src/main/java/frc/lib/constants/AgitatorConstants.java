@@ -6,6 +6,9 @@ package frc.lib.constants;
 
 /** Add your docs here. */
 public interface AgitatorConstants {
-    public int getRightMotorID();
-    public int getLeftMotorID();
+    int getRightMotorID();
+    int getLeftMotorID();
+
+    double getRightSpeed();
+    double getLeftSpeed();
 }
