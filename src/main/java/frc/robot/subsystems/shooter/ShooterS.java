@@ -19,11 +19,11 @@ public class ShooterS extends SubsystemBase {
   private SuperShooterSConstants constants;
 
   /** Creates a new ShooterS. */
-  public ShooterS(SuperShooterSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax shooterFollowerMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
+  public ShooterS(SuperShooterSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     this.constants = constants;
 
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
-    shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor, shooterFollowerMotor);
+    shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor);
     turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
   }
 

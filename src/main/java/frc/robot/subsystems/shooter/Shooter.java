@@ -27,10 +27,6 @@ public class Shooter {
      */
     private NomadSparkMax leadMotor;
     /**
-     * The Shooter's follower Spark Max
-     */
-    private NomadSparkMax followerMotor;
-    /**
      * The constants for the Shooter
      */
     private ShooterConstants constants;
@@ -41,18 +37,17 @@ public class Shooter {
     /**
      * Create a new Shooter with 2021 constants.
      */
-    public Shooter(NomadSparkMax leadMotor, NomadSparkMax followerMotor){
-        this(new ShooterConstants2021(), leadMotor, followerMotor);
+    public Shooter(NomadSparkMax leadMotor){
+        this(new ShooterConstants2021(), leadMotor);
     }
     
     /**
      * Create a new Shooter with the specified constants file.
      * @param shooterConstants The {@link ShooterConstants} for this to use
      */
-    public Shooter(ShooterConstants shooterConstants, NomadSparkMax leadMotor, NomadSparkMax followerMotor){
+    public Shooter(ShooterConstants shooterConstants, NomadSparkMax leadMotor){
         constants = shooterConstants;
         this.leadMotor = leadMotor;
-        this.followerMotor = followerMotor;
         followerMotor.follow(leadMotor);
         encoder = leadMotor.getEncoder();
         shooterState = ShooterStates.OFF;
