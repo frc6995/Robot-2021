@@ -57,7 +57,6 @@ public class Hood {
 
         // percentage is the inverse lerp between x-values
         double percentage = NomadMathUtil.inverseLerp(leftEndPoint.getX(), rightEndPoint.getX(), distance);
-        System.out.println("Percentage: " + percentage);
 
         // angle is the lerp between the y-values
         return NomadMathUtil.lerp(leftEndPoint.getY(), rightEndPoint.getY(), percentage);
