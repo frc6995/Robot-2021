@@ -20,15 +20,15 @@ public class Hood {
     /**
      * The Hood's left linear servo
      */
-    Servo leftLinearServo;
+    private Servo leftLinearServo;
     /**
      * The Hood's right linear servo
      */
-    Servo rightLinearServo;
+    private Servo rightLinearServo;
     /**
      * The constants for the Hood
      */
-    HoodConstants constants;
+    private HoodConstants constants;
 
     /**
      * Create a new Hood with the {@link HoodConstants2021} as the constants.
