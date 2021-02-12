@@ -1,17 +1,25 @@
 package frc.robot;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import frc.lib.constants.AgitatorConstants;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
 import frc.lib.constants.DriverStationConstants;
+import frc.lib.constants.IntakeConstants;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
+import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
+import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.commands.AgitatorSpinC;
 import frc.robot.commands.IntakeToggleC;
+import frc.robot.constants.AgitatorConstantsKRen;
+import frc.robot.constants.IntakeConstantsKRen;
 import frc.robot.subsystems.AgitatorS;
 import frc.robot.subsystems.IntakeS;
 
@@ -27,6 +35,8 @@ public class RobotContainer {
   private AutoConstants autoConstants;
   private DriveConstants driveConstants;
   private DriverStationConstants driverStationConstants;
+  private IntakeConstants intakeConstants;
+  private AgitatorConstants agitatorConstants;
   // Subsystems
   private AgitatorS agitatorS;
   private IntakeS intakeS;
@@ -55,14 +65,21 @@ public class RobotContainer {
    * Creates the constants files for each subsystem.
    */
   private void createConstantsFiles() {
+    agitatorConstants = new AgitatorConstantsKRen();
+    intakeConstants = new IntakeConstantsKRen();
   }
 
   /**
    * Creates the subsystems.
    */
   private void createSubsystems() {
-    agitatorS = new AgitatorS();
-    intakeS = new IntakeS();
+    NomadTalonSRX left = new NomadTalonSRX(agitatorConstants.getLeftMotorID());
+    NomadVictorSPX right = new NomadVictorSPX(agitatorConstants.getRightMotorID());
+    agitatorS = new AgitatorS(agitatorConstants, left, right);
+
+    NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
+    DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
+    intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
   }
 
   /**
