@@ -30,6 +30,7 @@ public class ShooterS extends SubsystemBase {
   @Override
   public void periodic() {
     turret.periodic();
+    shooter.periodic();
   }
 
   /**
