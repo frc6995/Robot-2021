@@ -81,5 +81,6 @@ public class Hood {
 
     public void moveHoodToPosition(double position){
         leftLinearServo.set(position);
+        rightLinearServo.set(position);
     }
 }
