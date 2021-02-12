@@ -11,6 +11,13 @@ import frc.robot.constants.ShooterConstants2021;
  * @author JoeyFabel
 */
 public class Shooter {
+    public enum ShooterStates {
+        OFF,
+        RAMPING_UP,
+        AT_TARGET_SPEED,
+        SLOWING_DOWN
+    }
+    
     /**
      * The Spark Max's encoder
      */
@@ -27,6 +34,10 @@ public class Shooter {
      * The constants for the Shooter
      */
     private ShooterConstants constants;
+    /**The curret state of the Shooter */
+    private ShooterStates shooterState;
+    /**The target speed */
+    private double targetSpeed;
     /**
      * Create a new Shooter with 2021 constants.
      */
@@ -44,6 +55,7 @@ public class Shooter {
         this.followerMotor = followerMotor;
         followerMotor.follow(leadMotor);
         encoder = leadMotor.getEncoder();
+        shooterState = ShooterStates.OFF;
     }
 
     public double getEncoderSpeed(){
@@ -53,15 +65,25 @@ public class Shooter {
     public void pidToTargetSpeed(double speed){
         if (speed > 0.8) speed = 0.8;
         else if (speed < -0.8) speed = -0.8;
+        targetSpeed = speed;
 
         leadMotor.getPIDController().setP(constants.getKP());
         leadMotor.getPIDController().setI(constants.getKI());
         leadMotor.getPIDController().setD(constants.getKD());
         leadMotor.getPIDController().setFF(constants.getKFF());
         leadMotor.getPIDController().setReference(speed, ControlType.kPosition);
+
+        shooterState = ShooterStates.RAMPING_UP;
     }
 
     public void spinDown(){
         pidToTargetSpeed(0.0);
+        targetSpeed = 0;
+        shooterState = ShooterStates.SLOWING_DOWN;
     }    
+
+    protected void periodic(){
+        if (shooterState == ShooterStates.RAMPING_UP && getEncoderSpeed() == targetSpeed) shooterState = ShooterStates.AT_TARGET_SPEED;
+        else if (shooterState == ShooterStates.SLOWING_DOWN && getEncoderSpeed() < 0.001) shooterState = ShooterStates.OFF;        
+    }
 }
