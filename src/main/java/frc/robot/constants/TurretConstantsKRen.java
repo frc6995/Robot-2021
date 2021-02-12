@@ -31,6 +31,11 @@ public class TurretConstantsKRen implements TurretConstants {
         return 1;
     }
 
+    public double @Override
+    public double getIZone() {
+        return 1;
+    }
+
     @Override
     public double getEncoderTicksPerDegree() {
         return 42.0 * 5 * 150 / 18 / 360;
