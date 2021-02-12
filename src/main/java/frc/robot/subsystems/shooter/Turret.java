@@ -5,9 +5,8 @@ import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.lib.constants.TurretConstants;
+import frc.robot.constants.TurretConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.robot.constants.TurretConstantsKRen;
 
 /**
  * The Turret on the robot. It controls the horizontal rotation of the {@link ShooterS}.

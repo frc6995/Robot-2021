@@ -4,9 +4,7 @@
 
 package frc.robot.constants;
 
-import java.awt.Point;
-
-/** Add your docs here. */
+/** The constants for the {@link Shooter}. */
 public interface ShooterConstants {
     /**
      * Get the port ID of the lead {@link NomadSparkMax}.
