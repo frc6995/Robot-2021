@@ -31,7 +31,6 @@ public class TurretConstantsKRen implements TurretConstants {
         return 1;
     }
 
-    public double @Override
     public double getIZone() {
         return 1;
     }
