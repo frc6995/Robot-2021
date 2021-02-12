@@ -48,7 +48,6 @@ public class Shooter {
     public Shooter(ShooterConstants shooterConstants, NomadSparkMax leadMotor){
         constants = shooterConstants;
         this.leadMotor = leadMotor;
-        followerMotor.follow(leadMotor);
         encoder = leadMotor.getEncoder();
         shooterState = ShooterStates.OFF;
     }
