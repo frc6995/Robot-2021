@@ -3,7 +3,6 @@ package frc.robot.subsystems.shooter;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 
-import edu.wpi.first.wpilibj.Encoder;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.constants.ShooterConstants2021;
@@ -43,6 +42,7 @@ public class Shooter {
         constants = shooterConstants;
         this.leadMotor = leadMotor;
         this.followerMotor = followerMotor;
+        followerMotor.follow(leadMotor);
         encoder = leadMotor.getEncoder();
     }
 
