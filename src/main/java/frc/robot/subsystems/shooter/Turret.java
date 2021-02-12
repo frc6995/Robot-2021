@@ -1,11 +1,11 @@
-package frc.robot.subsystems;
+package frc.robot.subsystems.shooter;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.constants.TurretConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.TurretConstantsKRen;
 
@@ -14,7 +14,7 @@ import frc.robot.constants.TurretConstantsKRen;
  * 
  * @author JoeyFabel
  */
-public class TurretS extends SubsystemBase {
+public class Turret {
   
   /**
    * An enum containing the different possible internal states of the Turret
@@ -64,53 +64,37 @@ public class TurretS extends SubsystemBase {
     NONE;
   }
 
-  /**
-   * The desired setpoint
-   */
+  /** The desired setpoint */
   private double setpoint;
-  /**
-   * The number of periods that the Turret has been within the margin of error of its desired setpoint
-   */
+  /** The number of periods that the Turret has been within the margin of error of its desired setpoint */
   private int withinSetpointCounter;
-  /**
-   * The current internal state of the Turret
-   */
+  /** The current internal state of the Turret */
   private TurretInternalStates internalState;
-  /**
-   * The requested state of the Turret
-   */
+  /* The requested state of the Turret */
   private TurretRequestedStates requestedState;
-  /**
-   * The motor controlling the Turret
-   */
+  /** The motor controlling the Turret */
   private NomadSparkMax sparkMax;
-  /**
-   * The magnetic limit switch on the Turret, located on its home position
-   */
+  /** The magnetic limit switch on the Turret, located on its home position */
   private DigitalInput limitSwitch;
-  /**
-   * The Throughbore encoder, plugged directly into the Spark Max
-   */
+  /** The Throughbore encoder, plugged directly into the Spark Max */
   private CANEncoder encoder;
 
   /** Counter that checks if the Turret is homed */
   Counter homedCounter;
 
-  /**
-   * Instance of the {@link TurretConstantsKRen}, allowing access to the constants
-   */
-  TurretConstantsKRen constants;
+  /** Instance of the {@link TurretConstantsKRen}, allowing access to the constants */
+  TurretConstants constants;
 
   /** Creates a new TurretS. */
-  public TurretS() {
-    constants = new TurretConstantsKRen();
+  public Turret(TurretConstants constantsFile, NomadSparkMax sparkMax, DigitalInput limitSwitch) {
+    constants = constantsFile;
 
     setpoint = 0;
     withinSetpointCounter = 0;
     internalState = TurretInternalStates.HOMING;
     requestedState = TurretRequestedStates.HOME;
-    sparkMax = new NomadSparkMax(constants.getSparkMaxPortID());
-    limitSwitch = new DigitalInput(constants.getLimitSwitchChannelID());
+    this.sparkMax = sparkMax;
+    this.limitSwitch = limitSwitch;
     // Currently, limit switch is counted as pressed if counter is greater than 0. 
     // The Counter can catch it pushing if it is faster than the periodic check, so this can help there.
     homedCounter = new Counter(limitSwitch);
@@ -118,8 +102,8 @@ public class TurretS extends SubsystemBase {
     encoder = sparkMax.getEncoder();
   }
 
-  @Override
-  public void periodic() {
+  // Don't want anyone to be able to run this, but it will make it easier for the periodic in the subsystem to call this
+  protected void periodic() {
     // This method will be called once per scheduler run    
     stateMachineLoop();
 
