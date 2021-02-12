@@ -82,7 +82,15 @@ public class Shooter {
         shooterState = ShooterStates.SLOWING_DOWN;
     }    
 
+    public ShooterStates getShooterState(){
+        return shooterState;
+    }
+
     protected void periodic(){
+        updateState();
+    }
+    
+    private void updateState(){        
         if (shooterState == ShooterStates.RAMPING_UP && getEncoderSpeed() == targetSpeed) shooterState = ShooterStates.AT_TARGET_SPEED;
         else if (shooterState == ShooterStates.SLOWING_DOWN && getEncoderSpeed() < 0.001) shooterState = ShooterStates.OFF;        
     }
