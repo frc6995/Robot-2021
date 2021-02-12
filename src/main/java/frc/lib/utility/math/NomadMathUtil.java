@@ -46,4 +46,11 @@ public final class NomadMathUtil {
     public static double inverseLerp(double a, double b, double value){
         return (value - a) / (b - a);
     }
+
+    public static <T extends Comparable<T>> T clamp(T min, T max, T value){
+        if (value.compareTo(max) > 0) value = max;
+        else if (value.compareTo(min) < 0) value = min;
+
+        return value;
+    }
 }

@@ -17,23 +17,28 @@ public interface ShooterConstants {
      */
     int getFollowerMotorID();
     /**
-     * Get the PID 'P' constant
+     * Get the PID 'P' constant.
      * @return The P constants
      */
     double getKP();
     /**
-     * Get the PID 'I' constant
+     * Get the PID 'I' constant.
      * @return The I constant
      */
     double getKI();
     /**
-     * Get the PID 'D' constant
+     * Get the PID 'D' constant.
      * @return The D constant
      */
     double getKD();
     /**
-     * Get the PID 'FF' constant
+     * Get the PID 'FF' constant.
      * @return The FF constant
      */
     double getKFF();    
+    /**
+     * Get the PID IZone constants.
+     * @return The IZone constant
+     */
+    double getIZone();
 }

@@ -3,6 +3,7 @@ package frc.robot.subsystems.shooter;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 
+import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.ShooterConstants;
 import frc.robot.constants.ShooterConstants2021;
@@ -11,10 +12,15 @@ import frc.robot.constants.ShooterConstants2021;
  * @author JoeyFabel
 */
 public class Shooter {
+    /** The possible states of the Shooter */
     public enum ShooterStates {
+        /** The shooter is currently off */
         OFF,
+        /** The shooter is currently ramping up */
         RAMPING_UP,
-        AT_TARGET_SPEED,
+        /** The shooter is at full speed */
+        READY,
+        /** The shooter is currently slowing down */
         SLOWING_DOWN
     }
     
@@ -52,40 +58,61 @@ public class Shooter {
         shooterState = ShooterStates.OFF;
     }
 
+    /**
+     * Get the current speed of the Shooter, from the encoder
+     * @return The shooter's speed
+     */
     public double getEncoderSpeed(){
         return encoder.getPosition();
     }
-
+    
+    /**
+     * Make the Shooter PID to the given speed.
+     * @param speed The desired motor speed
+     */
     public void pidToTargetSpeed(double speed){
-        if (speed > 0.8) speed = 0.8;
-        else if (speed < -0.8) speed = -0.8;
+        speed = NomadMathUtil.clamp(-0.8, 0.8, speed);
         targetSpeed = speed;
-
+        
         leadMotor.getPIDController().setP(constants.getKP());
         leadMotor.getPIDController().setI(constants.getKI());
         leadMotor.getPIDController().setD(constants.getKD());
         leadMotor.getPIDController().setFF(constants.getKFF());
-        leadMotor.getPIDController().setReference(speed, ControlType.kPosition);
+        leadMotor.getPIDController().setIZone(constants.getIZone());
+        leadMotor.getPIDController().setReference(speed, ControlType.kVelocity);
 
         shooterState = ShooterStates.RAMPING_UP;
     }
 
+    /**
+     * Have the Shooter spin down and come to a stop.
+     */
     public void spinDown(){
         pidToTargetSpeed(0.0);
         targetSpeed = 0;
         shooterState = ShooterStates.SLOWING_DOWN;
     }    
 
+    /**
+     * Get the Shooter's current state.
+     * @return The {@link ShooterStates}
+     */
     public ShooterStates getShooterState(){
         return shooterState;
     }
 
+    /**
+     * Method that is run every update loop.
+     */
     protected void periodic(){
         updateState();
     }
     
+    /**
+     * Update the state-machine's current state
+     */
     private void updateState(){        
-        if (shooterState == ShooterStates.RAMPING_UP && getEncoderSpeed() == targetSpeed) shooterState = ShooterStates.AT_TARGET_SPEED;
+        if (shooterState == ShooterStates.RAMPING_UP && getEncoderSpeed() == targetSpeed) shooterState = ShooterStates.READY;
         else if (shooterState == ShooterStates.SLOWING_DOWN && getEncoderSpeed() < 0.001) shooterState = ShooterStates.OFF;        
     }
 }

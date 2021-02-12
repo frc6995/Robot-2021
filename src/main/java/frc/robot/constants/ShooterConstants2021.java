@@ -29,4 +29,8 @@ public class ShooterConstants2021 implements ShooterConstants {
     public double getKFF() {
         return 0;
     }
+
+    public double getIZone(){
+        return 0;
+    }
 }

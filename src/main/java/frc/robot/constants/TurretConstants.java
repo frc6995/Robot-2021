@@ -27,6 +27,10 @@ public interface TurretConstants {
      */
     double getKFF();
     /**
+     * The PID IZone constant
+     */
+    double getIZone();
+    /**
      * The number of encoder ticks per degree traveled on the Turret
      */
     double getEncoderTicksPerDegree();
