@@ -79,10 +79,10 @@ public class Turret {
   private CANEncoder encoder;
 
   /** Counter that checks if the Turret is homed */
-  Counter homedCounter;
+  private Counter homedCounter;
 
   /** Instance of the {@link TurretConstantsKRen}, allowing access to the constants */
-  TurretConstants constants;
+  private TurretConstants constants;
 
   /** Creates a new TurretS. */
   public Turret(TurretConstants constantsFile, NomadSparkMax sparkMax, DigitalInput limitSwitch) {
