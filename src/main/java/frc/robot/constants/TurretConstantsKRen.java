@@ -1,6 +1,6 @@
 package frc.robot.constants;
 
-import frc.lib.constants.TurretConstants;
+import frc.robot.constants.interfaces.TurretConstants;
 
 /** {@link TurretConstants} that have been set specifically for KRen
  * 

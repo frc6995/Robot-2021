@@ -4,6 +4,8 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.RobotBase;
+import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * This class is an encapsulation of WPI_SparkMAX that add a couple constructors
@@ -13,16 +15,22 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
     protected NomadBaseMotor leader = NomadNoneMotor.noneMotor;
-    protected double lastPower = Double.NaN;
+    protected double lastPower = 0.0;
     protected ControlType lastMode = null;
 
+    @Override
+    public double get() {
+        // TODO Auto-generated method stub
+        
+        return (RobotBase.isReal() ? super.get() : lastPower);
+    }
     /**
      * Constructs a brushless {@link CANSparkMax} with the given port.
      * 
      * @param port The CAN ID of this SparkMax
      */
     public NomadSparkMax(int port){
-        super(port, MotorType.kBrushless);
+        this(port, MotorType.kBrushless);
     }
 
     /**
@@ -89,23 +97,17 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
         return this;
     }
 
-    /**
-     * Set the controller reference value based on the selected control mode.
-     *
-     * @param value The value to set depending on the control mode. For basic duty
-     *              cycle control this should be a value between -1 and 1 Otherwise:
-     *              Voltage Control: Voltage (volts) Velocity Control: Velocity
-     *              (RPM) Position Control: Position (Rotations) Current Control:
-     *              Current (Amps). Native units can be changed using the
-     *              setPositionConversionFactor() or setVelocityConversionFactor()
-     *              methods of the CANEncoder class
-     *
-     * @param ctrl  Is the control type
-     *
-     * @return CANError Set to REV_OK if successful
-     *
-     */
-    public void set(ControlType type, double setpoint) {
+    @Override
+    public void set(double speed) {
+        // TODO Auto-generated method stub
+        set(speed, ControlType.kDutyCycle);
+    }
+
+    public void set(double setpoint, ControlType type) {
+        SmartDashboard.putNumber("SPARK MAX " + getDeviceId(), setpoint);
+        if(!RobotBase.isReal()){
+            lastPower = setpoint;
+        } else
         if (lazy) {
             if (setpoint != lastPower || type != lastMode) {
                 lastPower = setpoint;
@@ -113,6 +115,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
                 super.getPIDController().setReference(setpoint, type);
             }
         } else {
+            lastPower = setpoint;
             super.getPIDController().setReference(setpoint, type);
         }
     }
@@ -124,7 +127,16 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
         if(RobotBase.isReal()) {
             return getAppliedOutput();
         } else {
-            return get();
+            return lastPower;
+        }
+    }
+
+    public void setOutputVoltage(double outputVolts) {
+        // TODO Auto-generated method stub
+        if (RobotBase.isReal()) {
+            super.setVoltage(outputVolts);
+        } else{
+            set(outputVolts / RobotController.getBatteryVoltage());
         }
     }
 }

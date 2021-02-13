@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import java.util.EnumMap;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.XboxController;
@@ -13,12 +14,14 @@ import frc.lib.utility.inputs.NomadInputMap;
 import frc.lib.utility.inputs.NomadInputMaps;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.inputdevices.NomadAxis;
+import frc.lib.wrappers.inputdevices.NomadButton;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
 /** Add your docs here. */
-public class Robot2021NomadInputMaps extends NomadInputMaps{
-    
+public class Robot2021NomadInputMaps extends NomadInputMaps {
+
+
     //public static final EnumMap<NomadMappingEnum, NomadInputMap> inputEnumMap = new EnumMap<NomadMappingEnum, NomadInputMap>(NomadMappingEnum.class);
     /**
      * All NomadAxes and Buttons are by default part of this map. 
@@ -53,11 +56,14 @@ public class Robot2021NomadInputMaps extends NomadInputMaps{
             //new NomadAxis(id, axisName, customAxisBehavior)
             new NomadAxis(driveConstants.getDriveControllerFwdBackAxis(), "FWD/BACK", (DoubleSupplier) () -> {
                 return driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(driverStationConstants.getDriveControllerUsbPort(), XboxController.Axis.kLeftY.value));
-            }))
+            }).withNegativeDeadzone(-0.1).withPositiveDeadzone(0.1))
         .withAxis(
             new NomadAxis(driveConstants.getDriveControllerLeftRightAxis(), "LEFT/RIGHT", (DoubleSupplier) () -> {
                 return driveConstants.getDriveControllerLeftRightAxisMultiplier() * NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftX.value);
-            }));
+            })
+            .withNegativeDeadzone(-0.1)
+            .withPositiveDeadzone(0.1)
+            .withScaleFactor(0.5));
         return map;
     }
 

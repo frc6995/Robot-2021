@@ -5,6 +5,8 @@ import java.util.function.DoubleSupplier;
 import edu.wpi.first.hal.HAL;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
+import edu.wpi.first.wpiutil.math.MathUtil;
+import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
 /**
@@ -24,6 +26,10 @@ public class NomadAxis {
     private NomadMappingEnum map = NomadMappingEnum.UNCATEGORIZED;
     private int id;
     private DoubleSupplier customBehavior = () -> 0.0;
+    private double positiveDeadzone = 0;
+    private double negativeDeadzone = 0;
+    private double scaleFactor = 1;
+
 
     /**
    * Default constructor; creates a Axis that is never moved away from 0 (unless {@link Axis#get()} is
@@ -65,7 +71,16 @@ public class NomadAxis {
      */
   public final double get() {
       if (map.equals(NomadOperatorConsole.getSelectedMap())) {
-        return customBehavior.getAsDouble();
+        double output = customBehavior.getAsDouble();
+        if(output >= 0) {
+            output = NomadMathUtil.lerp(output, positiveDeadzone, 1, 0, 1); //Deadzone adjustment;
+            output = MathUtil.clamp(output, 0, 1);
+        } else {
+            output = NomadMathUtil.lerp(output, -1, negativeDeadzone, -1, 0); //Deadzone adjustment;
+            output = MathUtil.clamp(output, -1, 0);
+        }
+        output *= scaleFactor;
+        return output;
       }
       return 0.0;
 
@@ -110,6 +125,25 @@ public class NomadAxis {
    */
   public NomadAxis withCustomBehavior(DoubleSupplier behavior) {
       customBehavior = behavior;
+      return this;
+  }
+  /**
+   * Set the deadzone on the custom behaviour output. Result will be as follows:
+   *        0 from x= 0 to x=deadzone
+   * y(x){
+   *        lerp(x, deadzone, 1, 0, 1) from x = deadzone to x= 1
+   */
+  public NomadAxis withPositiveDeadzone(double deadzone){
+      positiveDeadzone = deadzone;
+      return this;
+  }
+  public NomadAxis withNegativeDeadzone(double deadzone){
+      negativeDeadzone = deadzone;
+      return this;
+  }
+
+  public NomadAxis withScaleFactor(double scale){
+      scaleFactor = scale;
       return this;
   }
 }

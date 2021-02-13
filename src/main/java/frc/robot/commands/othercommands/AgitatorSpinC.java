@@ -1,11 +1,11 @@
-package frc.robot.commands;
+package frc.robot.commands.othercommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AgitatorS;
 
 public class AgitatorSpinC extends CommandBase {
   /** Creates a new AgitatorSpinC. */
-  AgitatorS agitator;
+  private AgitatorS agitator;
   
   public AgitatorSpinC(AgitatorS agitatorSubystem) {
     agitator = agitatorSubystem;
@@ -22,8 +22,8 @@ public class AgitatorSpinC extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    agitator.setLeftMotor(0.8);
-    agitator.setRightMotor(0.5);
+    agitator.setLeftMotor(agitator.getConstants().getLeftSpeed());
+    agitator.setRightMotor(agitator.getConstants().getRightSpeed());
   }
 
   // Called once the command ends or is interrupted.

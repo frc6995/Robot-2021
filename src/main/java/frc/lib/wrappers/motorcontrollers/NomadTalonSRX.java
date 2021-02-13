@@ -5,16 +5,8 @@ import com.ctre.phoenix.motorcontrol.IMotorController;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
-import edu.wpi.first.hal.SimDevice;
-import edu.wpi.first.hal.SimDouble;
-import edu.wpi.first.hal.SimDevice.Direction;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.RobotBase;
-import edu.wpi.first.wpilibj.networktables.NetworkTable;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SendableRegistry;
-import frc.lib.constants.DriveConstants;
-import frc.lib.utility.math.NomadUnits;
 
 /**
  * This class is an encapsulation of WPI_TalonSRX that add a couple constructors
@@ -155,5 +147,11 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
     public void initSendable(SendableBuilder builder) {
         // TODO Auto-generated method stub
         super.initSendable(builder);
+    }
+
+    @Override
+    public void setOutputVoltage(double outputVolts) {
+        // TODO Auto-generated method stub
+        super.setVoltage(outputVolts);
     }
 }
