@@ -11,7 +11,7 @@ import frc.robot.subsystems.shooter.Turret.TurretRequestedStates;
  * 
  * @author JoeyFabel
  */
-public class ShooterS extends SubsystemBase {  
+public class SuperShooterS extends SubsystemBase {  
   private Hood hood;
   private Shooter shooter;
   private Turret turret;
@@ -19,7 +19,7 @@ public class ShooterS extends SubsystemBase {
   private SuperShooterSConstants constants;
 
   /** Creates a new ShooterS. */
-  public ShooterS(SuperShooterSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
+  public SuperShooterS(SuperShooterSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     this.constants = constants;
 
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
