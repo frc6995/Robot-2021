@@ -16,8 +16,9 @@ import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
-import frc.robot.commands.AgitatorSpinC;
-import frc.robot.commands.IntakeToggleC;
+import frc.robot.commands.othercommands.AgitatorSpinC;
+import frc.robot.commands.othercommands.StoreBallsCG;
+import frc.robot.commands.intakecommands.IntakeToggleC;
 import frc.robot.constants.AgitatorConstantsKRen;
 import frc.robot.constants.IntakeConstantsKRen;
 import frc.robot.subsystems.AgitatorS;
@@ -43,6 +44,7 @@ public class RobotContainer {
   // Commands
   private AgitatorSpinC agitatorSpinC;
   private IntakeToggleC intakeToggleC;
+  private StoreBallsCG storeBallsCG;
 
   // private NomadMappedGenericHID driverController;
 
@@ -58,6 +60,7 @@ public class RobotContainer {
     createSubsystems();
     createCommands();
     configureDefaultCommands();
+    configureButtonBindings();
     init = true;
   }
 
