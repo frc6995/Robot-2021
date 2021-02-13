@@ -18,8 +18,6 @@ public class FindTargetC extends CommandBase {
   public FindTargetC(LimelightS limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limelight = limelight;
-
-    addRequirements(limelight);
   }
 
   // Called when the command is initially scheduled.

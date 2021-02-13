@@ -82,4 +82,8 @@ public class SuperShooterS extends SubsystemBase {
   public boolean isTurretHomed(){
     return turret.isHomed();
   }
+
+  public boolean isTurretAtSetpoint(){
+    return turret.isAtSetpoint();
+  }
 }
