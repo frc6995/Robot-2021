@@ -41,6 +41,12 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
     //differentialDriveOdometry = new DifferentialDriveOdometry( new Rotation2d(Math.toRadians(getYaw())));
   }
 
+  public DifferentialDrivebaseS(final DriveConstants driveConstants, final AutoConstants autoConstants, final NomadBaseMotor leftLeader, final NomadBaseMotor rightLeader){
+    this(driveConstants, autoConstants);
+    this.leftLeader = leftLeader;
+    this.rightLeader = rightLeader;
+  }
+
   public abstract void tankDriveVolts(double left, double right);
 
 
