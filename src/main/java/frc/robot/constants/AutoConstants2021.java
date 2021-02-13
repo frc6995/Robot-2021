@@ -76,7 +76,7 @@ public class AutoConstants2021 implements AutoConstants {
     @Override
     public double getkMaxSpeedMetersPerSecond() {
         
-        return 3;
+        return 1;
     }
 
     @Override

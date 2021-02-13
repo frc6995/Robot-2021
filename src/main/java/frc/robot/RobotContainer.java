@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
@@ -28,6 +29,7 @@ import frc.robot.auto.Trajectories;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.constants.AutoConstants2021;
 import frc.robot.constants.DriveConstants2021;
+import frc.robot.constants.DriveConstantsKren2021;
 import frc.robot.constants.DriverStationConstants2021;
 import frc.robot.subsystems.DrivebaseS;
 
@@ -74,7 +76,7 @@ public class RobotContainer {
    * Creates the constants files for each subsystem.
    */
   private void createConstantsFiles() {
-    driveConstants = new DriveConstants2021();
+    driveConstants = new DriveConstantsKren2021();
     autoConstants = new AutoConstants2021(driveConstants);
     driverStationConstants = new DriverStationConstants2021();
   }
@@ -99,9 +101,9 @@ public class RobotContainer {
 
     ramseteCommandGroup = new InstantCommand(() -> 
     drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS)
-    .andThen(new WaitCommand(0.2))
+    .andThen(new WaitCommand(2))
     .andThen(ramseteCommand)
-    .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
+    .andThen(new RunCommand(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVelocity(0, 0);}, drivebaseS).withTimeout(1));
   }
 
   /**
@@ -150,6 +152,7 @@ public class RobotContainer {
       SmartDashboard.putNumber("driveFwdBack",
           NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
       SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
+      drivebaseS.updateTelemetry();
     }
   }
 

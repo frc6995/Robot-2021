@@ -32,7 +32,7 @@ public class NomadAutoCommandGenerator {
             PIDController leftPidController = new PIDController(driveConstants.getkPDriveVel(), 0, 0);
             PIDController rightPidController = new PIDController(driveConstants.getkPDriveVel(), 0, 0);
             
-            
+        
         RamseteCommand ramseteCommand =
         new RamseteCommand(
             trajectory,

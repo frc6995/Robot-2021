@@ -5,17 +5,26 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.hal.SimDevice;
+import edu.wpi.first.hal.SimDouble;
+import edu.wpi.first.hal.SimDevice.Direction;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.CounterBase.EncodingType;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
+import edu.wpi.first.wpilibj.simulation.AnalogGyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -24,16 +33,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
 import frc.lib.wrappers.motorcontrollers.NomadPWMMotor;
-import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
+import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
 
 public class DrivebaseS extends DifferentialDrivebaseS {
-  private NomadSparkMax leftLeader;
-  private NomadSparkMax rightLeader;
-  private NomadSparkMax leftFollower;
-  private NomadSparkMax rightFollower;
+  private NomadTalonSRX leftLeader;
+  private NomadTalonSRX rightLeader;
+  private NomadTalonSRX leftFollower;
+  private NomadTalonSRX rightFollower;
   
   //private DifferentialDrive m_drive;
 
@@ -43,8 +52,9 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private EncoderSim m_leftEncoderSim;
   private EncoderSim m_rightEncoderSim;
 
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-  private ADXRS450_GyroSim m_gyroSim;
+  private AHRS gyro = new AHRS(SPI.Port.kMXP);
+  private SimDevice m_gyroSim;
+  private SimDouble m_gyroYawSim;
 
   // Create the simulation model of our drivetrain.
   private DifferentialDrivetrainSim m_driveSim;
@@ -57,20 +67,16 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
     super(driveConstants, autoConstants);
 
-    leftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(),
-        MotorType.kBrushless, 
+    leftLeader = new NomadTalonSRX(driveConstants.getCanIDLeftDriveMaster(), 
         driveConstants.getLeftDriveLeaderInverted());
 
-    rightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
-        MotorType.kBrushless,
+    rightLeader = new NomadTalonSRX(driveConstants.getCanIDRightDriveMaster(),
         driveConstants.getRightDriveLeaderInverted());
 
-    leftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(),
-        MotorType.kBrushless, 
+    leftFollower = new NomadTalonSRX(driveConstants.getCanIDLeftDriveFollower(),
         driveConstants.getLeftDriveFollowerInverted(), leftLeader);
 
-    rightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
-        MotorType.kBrushless,
+    rightFollower = new NomadTalonSRX(driveConstants.getCanIDRightDriveFollower(),
         driveConstants.getRightDriveFollowerInverted(), rightLeader);
     
 
@@ -80,17 +86,16 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     
 
     m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
-        driveConstants.getLeftEncoderReversed());
+        driveConstants.getLeftEncoderReversed(), EncodingType.k4X);
 
     m_rightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
-        driveConstants.getRightEncoderReversed());
+        driveConstants.getRightEncoderReversed(), EncodingType.k4X);
 
     m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
     m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
 
 
-    m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-    m_rightEncoderSim = new EncoderSim(m_rightEncoder);
+
     
     m_driveSim = new DifferentialDrivetrainSim(
         driveConstants.getDrivetrainPlant(),
@@ -100,8 +105,12 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         driveConstants.getkWheelDiameter()/2.0,
         driveConstants.getSimEncoderStdDev());
 
-        
-    m_gyroSim = new ADXRS450_GyroSim(gyro);
+    if(RobotBase.isSimulation()){
+      m_leftEncoderSim = new EncoderSim(m_leftEncoder);
+      m_rightEncoderSim = new EncoderSim(m_rightEncoder);
+      m_gyroSim = SimDevice.create("navX");
+      m_gyroYawSim = m_gyroSim.createDouble("Yaw", Direction.kOutput, 0.0);
+    }
     
     SmartDashboard.putData("Field", m_field);
 
@@ -137,7 +146,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
 
     
-    m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+    m_gyroYawSim.set(driveConstants.getGyroReversed() ? 1: -1 * m_driveSim.getHeading().getDegrees());
 
 
   }
@@ -201,8 +210,12 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   public void updateTelemetry() {
 
     SmartDashboard.putData("Drivebase", this);
+    SmartDashboard.putNumber("Left Position", m_leftEncoder.get());
+    SmartDashboard.putNumber("Right Position", m_rightEncoder.get());
+
     // SmartDashboard.putNumber("fwdbackaxis",
     // driveConstants.getDriveControllerFwdBackAxis());
+    
   }
 
   @Override
@@ -237,6 +250,11 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   public double getRightSetSpeed() {
     // TODO Auto-generated method stub
     return rightLeader.getActualOutputPercent();
+  }
+
+  public void tankDriveVelocity(double leftVelocity, double rightVelocity) {
+    leftLeader.set(ControlMode.Velocity, leftVelocity);
+    rightLeader.set(ControlMode.Velocity, rightVelocity);
   }
 
 }

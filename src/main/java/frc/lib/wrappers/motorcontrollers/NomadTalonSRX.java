@@ -18,12 +18,12 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
     /** This decides if the talon should operate in lazy mode. */
     protected boolean lazy = false;
     protected NomadBaseMotor leader = NomadNoneMotor.noneMotor;
-    protected double lastPower = Double.NaN;
+    protected double lastPower = 0;
     protected ControlMode lastMode = null;
     // for following
     protected boolean manualFollowing = false;
-    protected double lastLeaderOutput = Double.NaN;
-    protected double currentLeaderOutput = Double.NaN;
+    protected double lastLeaderOutput = 0;
+    protected double currentLeaderOutput = 0;
     /**
      * Constructs a TalonSRX, reverts it to factory default, and sets brake mode.
      * 
