@@ -32,8 +32,8 @@ public final class NomadMathUtil {
      * @param percent The percentage, where 0 is the lower bound and 1 is the upper bound.
      * @return The interpolated value.
      */
-    public static double lerp(double min, double max, double percent) {
-        return min + (percent * (max-min));
+    public static <T extends Number> double lerp(T min, T max, double percent){
+        return min.doubleValue() + (percent * (max.doubleValue() - min.doubleValue()));
     }
 
     /**
