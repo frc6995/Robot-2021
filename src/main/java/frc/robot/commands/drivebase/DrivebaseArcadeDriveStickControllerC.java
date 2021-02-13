@@ -32,8 +32,8 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 
   @Override
   public void execute() {
-    double rightTrigger = controller.getRawAxis(3);
-    double leftTrigger = controller.getRawAxis(2);
+    double rightTrigger = controller.getRawAxis(2);
+    double leftTrigger = controller.getRawAxis(3);
 
     if (rightTrigger > -0.02 && rightTrigger < 0.02) rightTrigger = 0;
     if (leftTrigger > -0.02 && leftTrigger < 0.02) leftTrigger = 0;
@@ -45,7 +45,7 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.drivePercentages(
-      drivebaseS.arcadeDriveController(driveSpeed, turnSpeed*0.8).clamp()
+      drivebaseS.arcadeDriveController(driveSpeed*0.4, turnSpeed*-0.25).clamp()
     );
   }
 

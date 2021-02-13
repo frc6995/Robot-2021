@@ -20,17 +20,17 @@ public class ColumnConstantsKRen implements ColumnConstants {
     
     @Override
     public int getFwdPort() {
-        return 5;
+        return 4;
     }
 
     @Override
     public int getRevPort() {
-        return 6;
+        return 5;
     }
 
     @Override
     public double getColumnSpeed() {
-        return 0.8;
+        return 0.25;
     }
 
 }

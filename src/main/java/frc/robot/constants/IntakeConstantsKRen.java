@@ -11,17 +11,17 @@ public class IntakeConstantsKRen implements IntakeConstants {
 
     @Override
     public int getSolenoidFwdPort() {
-        return 2;
+        return 6;
     }
 
     @Override
     public int getSolenoidRevPort() {
-        return 3;
+        return 7;
     }
 
     @Override
     public double getIntakeSpeed() {
-        return 0.75;
+        return -1;
     }
 
 }

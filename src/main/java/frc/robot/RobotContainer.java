@@ -36,6 +36,7 @@ import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intakecommands.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
 import frc.robot.commands.othercommands.ColumnFeedC;
+import frc.robot.commands.othercommands.ExpellBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstantsKRen;
 import frc.robot.constants.AutoConstants2021;
@@ -135,7 +136,7 @@ public class RobotContainer {
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
     NomadTalonSRX front = new NomadTalonSRX(columnConstants.getFrontMotorID());
-    NomadVictorSPX back = new NomadVictorSPX(columnConstants.getBackMotorID());
+    NomadTalonSRX back = new NomadTalonSRX(columnConstants.getBackMotorID());
     DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
     columnS = new ColumnS(columnConstants, front, back, solenoid);
 
@@ -159,7 +160,7 @@ public class RobotContainer {
     .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
-    intakeToggleC = new IntakeToggleC(intakeS);
+    intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
     columnFeedC = new ColumnFeedC(columnS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
   }
@@ -189,10 +190,10 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(controller, 0).whenPressed(intakeToggleC);
-    new JoystickButton(controller, 1).whileHeld(agitatorSpinC);
-    new JoystickButton(controller, 2).whileHeld(storeBallsCG);
-    new JoystickButton(controller, 3).whileHeld(columnFeedC);
+    new JoystickButton(controller, 1).whenPressed(intakeToggleC);
+    new JoystickButton(controller, 2).whileHeld(agitatorSpinC);
+    new JoystickButton(controller, 3).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(controller, 4).whileHeld(new ExpellBallsCG(intakeS, agitatorS, columnS));
   }
 
   /**

@@ -2,26 +2,25 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.othercommands;
+package frc.robot.commands.intakecommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ColumnS;
+import frc.robot.subsystems.IntakeS;
 
-public class ColumnFeedC extends CommandBase {
-  private ColumnS column;
-
-  /** Creates a new ColumnFeedC. */
-  public ColumnFeedC(ColumnS columnS) {
-    this.column = columnS;
-    addRequirements(column);
+public class IntakeSpinWhileHeld extends CommandBase {
+  private IntakeS intake;
+  /** Creates a new IntakeSpinWhileHeld. */
+  public IntakeSpinWhileHeld(IntakeS intake) {
+    this.intake = intake;
+    addRequirements(intake);
+    // Use addRequirements() here to declare subsystem dependencies.
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    column.disableStopper();
-    column.setFrontSpeed(column.getConstants().getColumnSpeed()+0.5);
-    column.setBackSpeed(0.75);
+    intake.extend();
+    intake.setSpeed(intake.getConstants().getIntakeSpeed());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,9 +30,8 @@ public class ColumnFeedC extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    column.setFrontSpeed(0);
-    column.setBackSpeed(0);
-    column.enableStopper();
+    intake.retract();
+    intake.setSpeed(0);
   }
 
   // Returns true when the command should end.
