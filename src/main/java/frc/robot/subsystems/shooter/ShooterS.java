@@ -34,7 +34,7 @@ public class ShooterS extends SubsystemBase {
   }
 
   /**
-   * Move the {@linkn Hood} to the specified position.
+   * Move the {@link Hood} to the specified position.
    * 
    * @param position The desired position
    */
