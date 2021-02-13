@@ -74,4 +74,12 @@ public class SuperShooterS extends SubsystemBase {
   public void requestTurretState(TurretRequestedStates state, double setpoint){
     turret.requestState(state, setpoint);
   }
+
+  /**
+   * Is the Turret homed?
+   * @return <b>true</b> if the Turret is at its home position, <b>false</b> otherwise
+   */
+  public boolean isTurretHomed(){
+    return turret.isHomed();
+  }
 }

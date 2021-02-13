@@ -241,4 +241,13 @@ public class Turret {
         break;
       }
   }
+
+  /**
+   * Is the turret homed?
+   * 
+   * @return <b>true</b> if the Turret is at its home position, <b>false</b> otherwise
+   */
+  public boolean isHomed(){
+    return internalState == TurretInternalStates.HOMED;
+  }
 }
