@@ -5,20 +5,28 @@
 package frc.robot.commands.super_shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.LimelightS;
 
-/** A command that aims the turret.
+/** A command that uses the Limelight to find the target.
  * 
  * @author JoeyFabel
  */
-public class AimTurretC extends CommandBase {
-  /** Creates a new AimTurretC. */
-  public AimTurretC() {
+public class FindTargetC extends CommandBase {
+  LimelightS limelight;
+  
+  /** Creates a new FindTargetC. */
+  public FindTargetC(LimelightS limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.limelight = limelight;
+
+    addRequirements(limelight);
   }
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {}
+  public void initialize() {
+    limelight.register();
+  }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
@@ -31,6 +39,6 @@ public class AimTurretC extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return false;
+    return limelight.isTargetFound();
   }
 }

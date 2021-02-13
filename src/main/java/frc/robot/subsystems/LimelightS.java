@@ -165,4 +165,8 @@ public class LimelightS extends SubsystemBase {
   public void setLEDState(Limelight.LedState state){
     limelight.setLedMode(state);
   }
+
+  public boolean isTargetFound(){
+    return limelight.hasTarget();
+  }
 }

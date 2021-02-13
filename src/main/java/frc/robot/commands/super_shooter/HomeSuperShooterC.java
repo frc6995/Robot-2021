@@ -11,10 +11,14 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.shooter.SuperShooterS;
 import frc.robot.subsystems.shooter.Turret.TurretRequestedStates;
 
+/** A command that homes the SuperShooter.
+ * 
+ * @author JoeyFabel
+ */
 public class HomeSuperShooterC extends CommandBase {
   private SuperShooterS superShooter;
 
-  /** Creates a new HomeSuperShooterC. */
+  /** Creates a new HomeSuperShooterC.   */
   public HomeSuperShooterC(SuperShooterS superShooter, double timeout) {
     this.withTimeout(2.0);  
     // Use addRequirements() here to declare subsystem dependencies.

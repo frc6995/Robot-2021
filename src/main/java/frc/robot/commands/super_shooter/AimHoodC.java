@@ -6,6 +6,11 @@ package frc.robot.commands.super_shooter;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 
+/**
+ * A command that aims the hood.
+ * 
+ * @author JoeyFabel
+ */
 public class AimHoodC extends CommandBase {
   /** Creates a new AimHoodC. */
   public AimHoodC() {
