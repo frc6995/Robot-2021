@@ -124,7 +124,7 @@ public class RobotContainer {
    * Creates the subsystems.
    */
   private void createSubsystems() {
-    NomadTalonSRX left = new NomadTalonSRX(agitatorConstants.getLeftMotorID());
+    NomadVictorSPX left = new NomadVictorSPX(agitatorConstants.getLeftMotorID());
     NomadVictorSPX right = new NomadVictorSPX(agitatorConstants.getRightMotorID());
     agitatorS = new AgitatorS(agitatorConstants, left, right);
 
