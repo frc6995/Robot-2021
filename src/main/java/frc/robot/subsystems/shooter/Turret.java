@@ -9,7 +9,7 @@ import frc.robot.constants.TurretConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 
 /**
- * The Turret on the robot. It controls the horizontal rotation of the {@link ShooterS}.
+ * The Turret on the robot. It controls the horizontal rotation of the {@link SuperShooterS}.
  * 
  * @author JoeyFabel
  */
