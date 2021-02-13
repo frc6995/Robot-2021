@@ -34,15 +34,6 @@ public class SuperShooterS extends SubsystemBase {
   }
 
   /**
-   * Move the {@link Hood} to the specified position.
-   * 
-   * @param position The desired position
-   */
-  public void moveHoodToPosition(double position){
-    hood.moveHoodToPosition(position);
-  }
-
-  /**
    * Have the {@link Shooter} PID to the target speed.
    * @param speed The desired turret speed, between -0.8 and 0.8
    */
@@ -85,5 +76,9 @@ public class SuperShooterS extends SubsystemBase {
 
   public boolean isTurretAtSetpoint(){
     return turret.isAtSetpoint();
+  }
+
+  public void moveHoodToDesiredAngle(double distance){
+    hood.moveHoodToPosition(hood.getAngleBasedOnDistance(distance));
   }
 }

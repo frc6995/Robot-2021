@@ -22,7 +22,6 @@ public class AimTurretC extends CommandBase {
     this.limelight = limelight;
     this.superShooter = superShooter;
 
-    addRequirements(limelight);
     addRequirements(superShooter);
   }
 
@@ -36,7 +35,6 @@ public class AimTurretC extends CommandBase {
   @Override
   public void execute() {                                // if offset > 0, turn left. if offset < 0, turn right
     superShooter.requestTurretState(TurretRequestedStates.MOVE_TO_SETPOINT, 0 - limelight.getFilteredXOffset());
-    superShooter.runTurretPID();
   }
 
   // Called once the command ends or is interrupted.
