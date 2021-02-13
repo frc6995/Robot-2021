@@ -33,4 +33,8 @@ public class ShooterConstants2021 implements ShooterConstants {
     public double getIZone(){
         return 0;
     }
+
+    public double getAllowableRPMError(){
+        return 10;
+    }
 }

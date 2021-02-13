@@ -41,4 +41,10 @@ public interface ShooterConstants {
      * @return The IZone constant
      */
     double getIZone();
+    /**
+     * Get the allowable RPM error: if the shooter RPM is within the error, it counts as being at the desired speed.
+     * 
+     * @return The allowable RPM error
+     */
+    double getAllowableRPMError();
 }

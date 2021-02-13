@@ -112,7 +112,7 @@ public class Shooter {
      * Update the state-machine's current state
      */
     private void updateState(){        
-        if (shooterState == ShooterStates.RAMPING_UP && Math.abs(getEncoderSpeed() - targetSpeed) < 0.001) shooterState = ShooterStates.READY;
-        else if (shooterState == ShooterStates.SLOWING_DOWN && getEncoderSpeed() < 0.001) shooterState = ShooterStates.OFF;        
+        if (shooterState == ShooterStates.RAMPING_UP && Math.abs(getEncoderSpeed() - targetSpeed) < constants.getAllowableRPMError()) shooterState = ShooterStates.READY;
+        else if (shooterState == ShooterStates.SLOWING_DOWN && getEncoderSpeed() < constants.getAllowableRPMError()) shooterState = ShooterStates.OFF;        
     }
 }
