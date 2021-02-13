@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.button.Button;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
 import frc.lib.constants.DriverStationConstants;
@@ -48,6 +49,7 @@ public class RobotContainer {
     createSubsystems();
     createCommands();
     configureDefaultCommands();
+    configureButtonBindings();
     init = true;
   }
 
@@ -79,6 +81,8 @@ public class RobotContainer {
    */
   private void configureDefaultCommands() {
     //drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    // TODO remove
+    //agitatorS.setDefaultCommand(agitatorSpinC);
   }
 
   /**
@@ -88,7 +92,7 @@ public class RobotContainer {
    */
   private void createControllers(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadMappingEnum map) {
     Robot2021NomadInputMaps.createMaps();
-    //NomadOperatorConsole.setMap(map);
+    NomadOperatorConsole.setMap(map);
   }
 
   /**
@@ -98,6 +102,7 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    NomadOperatorConsole.getButton(001).whileHeld(agitatorSpinC);
   }
 
   /**
