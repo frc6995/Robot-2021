@@ -79,4 +79,10 @@ public class NomadNoneMotor implements NomadBaseMotor{
         
         return 0;
     }
+
+    @Override
+    public void setOutputVoltage(double voltage) {
+        // TODO Auto-generated method stub
+
+    }
 }
