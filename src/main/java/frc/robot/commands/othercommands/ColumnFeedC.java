@@ -33,6 +33,7 @@ public class ColumnFeedC extends CommandBase {
   public void end(boolean interrupted) {
     column.setFrontSpeed(0);
     column.setBackSpeed(0);
+    column.enableStopper();
   }
 
   // Returns true when the command should end.

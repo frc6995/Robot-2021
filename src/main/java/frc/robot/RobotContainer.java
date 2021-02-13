@@ -16,9 +16,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AgitatorConstants;
 import frc.lib.constants.AutoConstants;
+import frc.lib.constants.ColumnConstants;
 import frc.lib.constants.DriveConstants;
 import frc.lib.constants.DriverStationConstants;
 import frc.lib.constants.IntakeConstants;
@@ -29,15 +31,19 @@ import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
+import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intakecommands.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
+import frc.robot.commands.othercommands.ColumnFeedC;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstantsKRen;
 import frc.robot.constants.AutoConstants2021;
+import frc.robot.constants.ColumnConstantsKRen;
 import frc.robot.constants.DriveConstants2021;
 import frc.robot.constants.DriverStationConstants2021;
 import frc.robot.constants.IntakeConstantsKRen;
 import frc.robot.subsystems.AgitatorS;
+import frc.robot.subsystems.ColumnS;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.IntakeS;
 
@@ -55,15 +61,20 @@ public class RobotContainer {
   private DriverStationConstants driverStationConstants;
   private IntakeConstants intakeConstants;
   private AgitatorConstants agitatorConstants;
+  private ColumnConstants columnConstants;
   // Subsystems
   private AgitatorS agitatorS;
   private IntakeS intakeS;
+  private ColumnS columnS;
   // Commands
   private AgitatorSpinC agitatorSpinC;
   private IntakeToggleC intakeToggleC;
   private StoreBallsCG storeBallsCG;
+  private ColumnFeedC columnFeedC;
+  private DrivebaseArcadeDriveStickControllerC controllerDrive;
 
   // private NomadMappedGenericHID driverController;
+  private XboxController controller;
 
   // Subsystems
   private DrivebaseS drivebaseS;
@@ -104,6 +115,8 @@ public class RobotContainer {
     driveConstants = new DriveConstants2021();
     autoConstants = new AutoConstants2021(driveConstants);
     driverStationConstants = new DriverStationConstants2021();
+
+    columnConstants = new ColumnConstantsKRen();
   }
 
   /**
@@ -120,6 +133,11 @@ public class RobotContainer {
     
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
+    NomadTalonSRX front = new NomadTalonSRX(columnConstants.getFrontMotorID());
+    NomadVictorSPX back = new NomadVictorSPX(columnConstants.getBackMotorID());
+    DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
+    columnS = new ColumnS(columnConstants, front, back, solenoid);
+
   }
 
   /**
@@ -128,6 +146,7 @@ public class RobotContainer {
    */
   private void createCommands() {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
+    controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
     ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory,
     drivebaseS, driveConstants, autoConstants);
@@ -137,13 +156,18 @@ public class RobotContainer {
     .andThen(new WaitCommand(0.2))
     .andThen(ramseteCommand)
     .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
+
+    agitatorSpinC = new AgitatorSpinC(agitatorS);
+    intakeToggleC = new IntakeToggleC(intakeS);
+    columnFeedC = new ColumnFeedC(columnS);
+    storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
   }
 
   /**
    * Configures the default Commands for the subsystems.
    */
   private void configureDefaultCommands() {
-    drivebaseS.setDefaultCommand(drivebaseArcadeDriveStickC);
+    drivebaseS.setDefaultCommand(controllerDrive);
   }
 
   /**
@@ -152,8 +176,9 @@ public class RobotContainer {
    * @param map The map from NomadInputMaps to select.
    */
   private void createControllers(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadMappingEnum map) {
-    Robot2021NomadInputMaps.createMaps(driveConstants, driverStationConstants);
-    NomadOperatorConsole.setMap(map);
+    //Robot2021NomadInputMaps.createMaps(driveConstants, driverStationConstants);
+    //NomadOperatorConsole.setMap(map);
+    controller = new XboxController(0);
   }
 
   /**
@@ -163,6 +188,10 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    new JoystickButton(controller, 0).whenPressed(intakeToggleC);
+    new JoystickButton(controller, 1).whileHeld(agitatorSpinC);
+    new JoystickButton(controller, 2).whileHeld(storeBallsCG);
+    new JoystickButton(controller, 3).whileHeld(columnFeedC);
   }
 
   /**
