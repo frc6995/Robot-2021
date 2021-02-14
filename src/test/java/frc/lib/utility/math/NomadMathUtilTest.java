@@ -8,7 +8,7 @@
 package frc.lib.utility.math;
 
 import static org.junit.Assert.assertEquals;
-
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Test;
 
@@ -71,4 +71,16 @@ public class NomadMathUtilTest {
     public void clampTestChar(){
         assertEquals((double)(int)'Z', (double)(int)NomadMathUtil.clamp('A', 'Z', 'b'), 0.001);
     }    
+
+    @Test
+    public void undefinedLerpTest(){
+        assertEquals(Double.NaN, NomadMathUtil.lerp(Double.NaN, 20, 0.1), 0.001);
+        assertEquals(Double.NaN, NomadMathUtil.lerp(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, 0.5), 0.001);        
+    }
+
+    @Test
+    public void undefinedInverseLerpTest(){
+        assertEquals(Double.NEGATIVE_INFINITY, NomadMathUtil.inverseLerp(5, 5, 0.5), 0.01);        
+        assertEquals(Double.NaN, NomadMathUtil.inverseLerp(Double.NaN, 5, 0.5), 0.01);
+    }
 }

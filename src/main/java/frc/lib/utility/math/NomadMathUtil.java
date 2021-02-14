@@ -37,7 +37,7 @@ public final class NomadMathUtil {
     }
 
     /**
-     * Calculates the percentage at which the value lies between <b>a</b> and <b>b</b>. <i>Please</i> make sure <b>value</b> is between <b>a</b> and <b>b</b>.
+     * Calculates the percentage at which the value lies between <b>a</b> and <b>b</b>. <i>Please</i> make sure that <b>a</b> and <b>b</b> are different.
      * @param a The lower bound
      * @param b The upper bound
      * @param value The value between <b>a</b> and <b>b</b> to check
