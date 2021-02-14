@@ -183,6 +183,6 @@ public class LimelightS extends SubsystemBase {
    */
   public double getDistanceToTarget(){
     //TODO - Find the actual constant values
-    return Math.tan(constants.getMountingAngle() + Math.toRadians(getFilteredYOffset())) / (constants.getDistanceGroundToTarget() - constants.getDistanceToGround());
+    return (constants.getDistanceGroundToTarget() - constants.getDistanceToGround()) / Math.tan(constants.getMountingAngle() + Math.toRadians(getFilteredYOffset()));
   }
 }
