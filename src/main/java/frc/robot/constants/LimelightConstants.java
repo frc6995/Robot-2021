@@ -14,7 +14,7 @@ public interface LimelightConstants {
     double getTimePeriod();
     /**Get the distance between the limelight and the ground */
     double getDistanceToGround();
-    /**Get the distance between the ground and the target */
+    /**Get the distance between the ground and the target, in inches */
     double getDistanceGroundToTarget();
     /**Get the mounting angle of the limelight, in radians */
     double getMountingAngle();

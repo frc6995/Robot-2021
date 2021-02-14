@@ -27,7 +27,7 @@ public class LimelightConstants2021 implements LimelightConstants{
 
     @Override
     public double getDistanceGroundToTarget() {
-        return 20;
+        return 98.25; // 8' 2.25"
     }
 
     @Override
