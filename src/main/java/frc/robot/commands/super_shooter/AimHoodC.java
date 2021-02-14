@@ -30,10 +30,7 @@ public class AimHoodC extends CommandBase {
   @Override
   public void initialize() {
     addRequirements(superShooter);
-    double distance = 5;
-    // TODO - Calculate distance here
-  
-    superShooter.moveHoodToDesiredAngle(distance);
+    superShooter.moveHoodToDesiredAngle(limelight.getDistanceToTarget());
   }
   
   // Called every time the scheduler runs while the command is scheduled.

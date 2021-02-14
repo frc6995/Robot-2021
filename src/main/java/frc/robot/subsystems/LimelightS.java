@@ -34,16 +34,19 @@ public class LimelightS extends SubsystemBase {
   private int numberOfConsumersRegistered;
 
   private ArrayList<String> registryKeys;
+
+  private LimelightConstants constants;
   
   /** Creates a new LimelightS.
    * 
    * @param Limelight The {@link Limelight} wrapper
    */
-  public LimelightS(Limelight limelight) {
+  public LimelightS(Limelight limelight, LimelightConstants constants) {
     this.limelight = limelight;
+    this.constants = constants;
 
-    xOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);
-    yOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);    
+    xOffsetFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());
+    yOffsetFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());    
 
     numberOfConsumersRegistered = 0;
     registryKeys = new ArrayList<String>();
@@ -166,7 +169,20 @@ public class LimelightS extends SubsystemBase {
     limelight.setLedMode(state);
   }
 
+  /**
+   * Has the Limelight found a target?
+   * @return <b>true</b> if a target is found, otherwise <b>false</b>
+   */
   public boolean isTargetFound(){
     return limelight.hasTarget();
+  }
+
+  /**
+   * Get the distance between the Limelight and the target.
+   * @return The distance between limelight and the target
+   */
+  public double getDistanceToTarget(){
+    //TODO - Find the actual constant values
+    return Math.tan(constants.getMountingAngle() + Math.toRadians(getFilteredYOffset())) / (constants.getDistanceGroundToTarget() - constants.getDistanceToGround());
   }
 }

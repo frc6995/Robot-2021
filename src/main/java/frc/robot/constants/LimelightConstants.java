@@ -4,10 +4,18 @@
 
 package frc.robot.constants;
 
-import frc.robot.Constants;
-
-/** Add your docs here. */
-public class LimelightConstants extends Constants {
-    public static double timeConstant = 0.1;
-    public static double timePeriod = 0.02;
+/** The {@link LimelightS} constants.
+ * @author JoeyFabel
+ */
+public interface LimelightConstants {
+    /**Get the time constant for the Linear Filter */
+    double getTimeConstant();
+    /**Get the time period for the Linear Filter */
+    double getTimePeriod();
+    /**Get the distance between the limelight and the ground */
+    double getDistanceToGround();
+    /**Get the distance between the ground and the target */
+    double getDistanceGroundToTarget();
+    /**Get the mounting angle of the limelight, in radians */
+    double getMountingAngle();
 }
