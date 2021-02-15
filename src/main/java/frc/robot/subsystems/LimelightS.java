@@ -181,22 +181,8 @@ public class LimelightS extends SubsystemBase {
    * Get the distance between the Limelight and the target.
    * @return The distance between limelight and the target
    */
-  public double getDistanceToTarget(){
-    //TODO - Find the actual constant values
-    double px = limelight.get3dPosition().x; // pixel x-coordinate
-    double py = limelight.get3dPosition().y; // pixel y-coordinate
-    double nx = (1/60) * (px - 159.5); // normalized pixel x-coordinate
-    double ny = (1/120) * (119.5 - py); // normalized pixel y-coordinate
-    double horizontalFov = Math.toRadians(54); // 54 degrees
-    double verticalFov = Math.toRadians(41); // 41 degrees
-    double vpw = 2.0 * Math.tan(horizontalFov / 2); // View plane width - Note: View plane at distance of 1.0
-    double vph = 2.0 * Math.tan(verticalFov / 2); // View plane height
-    double x = vpw / 2 * nx; // Convert from normalized pixel coordinate and view plane coordinate
-    double y = vph / 2 * ny; 
-
-    double a2 = Math.atan2(1, x); // Angle = arc tangent of 1 (view point distance) and x
-    
-    // (h2 - h1) / tan(a1 + a2)
-    return (constants.getTargetHeight() - constants.getLimelightHeight()) / Math.tan(constants.getMountingAngle() + a2);
+  public double getDistanceToTarget(){    
+    // (h2 - h1) / tan(a1 + a2): h2 = target height, h1 = limelight height, a1 = limelight mounting angle, a2 = angle from limelight to target
+    return (constants.getTargetHeight() - constants.getLimelightHeight()) / Math.tan(constants.getMountingAngle() + getYOffset());
   }
 }
