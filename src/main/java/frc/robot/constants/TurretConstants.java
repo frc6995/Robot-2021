@@ -1,4 +1,4 @@
-package frc.lib.constants;
+package frc.robot.constants;
 
 /** An interface containing constants for the Turret
  * 
@@ -26,6 +26,10 @@ public interface TurretConstants {
      * The PID Feed Forward constant
      */
     double getKFF();
+    /**
+     * The PID IZone constant
+     */
+    double getIZone();
     /**
      * The number of encoder ticks per degree traveled on the Turret
      */

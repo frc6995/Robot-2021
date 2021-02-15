@@ -1,7 +1,5 @@
 package frc.robot.constants;
 
-import frc.lib.constants.TurretConstants;
-
 /** {@link TurretConstants} that have been set specifically for KRen
  * 
  * @author JoeyFabel
@@ -30,6 +28,10 @@ public class TurretConstantsKRen implements TurretConstants {
 
     @Override
     public double getKFF() {
+        return 1;
+    }
+
+    public double getIZone() {
         return 1;
     }
 
