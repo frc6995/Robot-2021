@@ -3,7 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.constants.ColumnConstants;
+import frc.robot.constants.ColumnConstants;
+import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 
@@ -12,13 +13,15 @@ public class ColumnS extends SubsystemBase {
   private NomadVictorSPX back;
   private DoubleSolenoid solenoid; 
   private ColumnConstants constants;
-  
+  private NomadSparkMax acceleratorWheels;
+
   /** Creates a new ColumnS. */
-  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid) {
+  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid, NomadSparkMAx acceleratorWheels) {
     this.constants = constants;
     this.front = front;
     this.back = back;
     this.solenoid = solenoid;
+    this.acceleratorWheels = acceleratorWheels; // id 43
   }
 
   public ColumnConstants getConstants(){
@@ -48,5 +51,17 @@ public class ColumnS extends SubsystemBase {
   
   public void disableStopper(){
     solenoid.set(Value.kReverse);
+  }
+
+  public void spinAcceleratorUpwards(){
+    acceleratorWheels.set(1); // TODO - Make sure that the wheels are not inverted
+  }
+
+  public void spinAcceleratorDownwards(){
+    acceleratorWheels.set(-1);
+  }
+
+  public void stopAccelerator(){
+    acceleratorWheels.set(0);
   }
 }

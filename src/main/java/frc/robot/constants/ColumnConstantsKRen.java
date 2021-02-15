@@ -4,8 +4,6 @@
 
 package frc.robot.constants;
 
-import frc.lib.constants.ColumnConstants;
-
 /** Add your docs here. */
 public class ColumnConstantsKRen implements ColumnConstants {
     @Override
