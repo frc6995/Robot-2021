@@ -30,6 +30,8 @@ public class Hood {
      */
     private HoodConstants constants;
 
+    private double desiredAngle;
+
     /**
      * Create a new Hood with the {@link HoodConstants2021} as the constants.
      * @param leftLinearServo The left {@link Servo}
@@ -49,6 +51,7 @@ public class Hood {
         this.constants = constants;
         this.leftLinearServo = leftLinearServo;
         this.rightLinearServo = rightLinearServo;
+        desiredAngle = 0;
     }
 
     public double getAngleBasedOnDistance(double distance){
@@ -82,5 +85,10 @@ public class Hood {
     public void moveHoodToPosition(double position){
         leftLinearServo.set(position);
         rightLinearServo.set(position);
+        desiredAngle = position;
+    }
+
+    public boolean isAtSetpoint(){
+        return Math.abs(getLinearServoPosition() - desiredAngle) < constants.getAllowableError();
     }
 }

@@ -14,8 +14,8 @@ import frc.robot.subsystems.cannon.CannonS;
  * @author JoeyFabel
  */
 public class AimHoodC extends CommandBase {
-  CannonS cannon;
-  LimelightS limelight;
+  private CannonS cannon;
+  private LimelightS limelight;
   
   /** Creates a new AimHoodC. */
   public AimHoodC(CannonS cannon, LimelightS limelight) {
@@ -23,26 +23,31 @@ public class AimHoodC extends CommandBase {
     this.cannon = cannon;
     this.limelight = limelight;
 
+    addRequirements(cannon);
   }
   
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    addRequirements(cannon);
+    // should the cannon do this in execute, or is once enough?
     cannon.moveHoodToDesiredAngle(limelight.getDistanceToTarget());
+    limelight.register();
   }
   
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
   }
+
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    limelight.deregister();
+  }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {
-    return true;
+  public boolean isFinished() {    
+    return cannon.isHoodAtSetpoint();
   }
 }

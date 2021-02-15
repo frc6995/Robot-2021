@@ -35,4 +35,9 @@ public class HoodConstants2021 implements HoodConstants {
         return closestDataPoint;
     }
 
+    @Override
+    public double getAllowableError(){
+        return 10;
+    }
+
 }

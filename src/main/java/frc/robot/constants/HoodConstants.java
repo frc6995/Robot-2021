@@ -20,5 +20,10 @@ public interface HoodConstants {
      * @param point The current distance from the target
      * @return The data point that is closest to the specified position
      */
-    Point getClosestEndpointUpward(double point);    
+    Point getClosestEndpointUpward(double point);  
+    /**
+     * Get the allowable error, within which the hood counts as being at the setpoint.
+     * @return The allowable error
+     */
+    double getAllowableError();
 }

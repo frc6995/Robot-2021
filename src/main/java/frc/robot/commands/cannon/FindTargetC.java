@@ -12,7 +12,7 @@ import frc.robot.subsystems.LimelightS;
  * @author JoeyFabel
  */
 public class FindTargetC extends CommandBase {
-  LimelightS limelight;
+  private LimelightS limelight;
   
   /** Creates a new FindTargetC. */
   public FindTargetC(LimelightS limelight) {
@@ -32,7 +32,9 @@ public class FindTargetC extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
+  public void end(boolean interrupted) {
+    limelight.deregister();
+  }
 
   // Returns true when the command should end.
   @Override

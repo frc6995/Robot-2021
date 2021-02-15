@@ -74,11 +74,21 @@ public class CannonS extends SubsystemBase {
     return turret.isHomed();
   }
 
+  /**Is the Turret at the setpoint? */
   public boolean isTurretAtSetpoint(){
     return turret.isAtSetpoint();
   }
 
+  /**
+   * Move the hood to the appropriate angle, based on the given distance from the target.
+   * @param distance The distance from the target
+   * @return The desired angle, based on the given distance
+   */
   public void moveHoodToDesiredAngle(double distance){
     hood.moveHoodToPosition(hood.getAngleBasedOnDistance(distance));
+  }
+
+  public boolean isHoodAtSetpoint(){
+    return hood.isAtSetpoint(); 
   }
 }

@@ -16,19 +16,20 @@ import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 public class AimTurretC extends CommandBase {
   private LimelightS limelight;
   private CannonS cannon;
+  
   /** Creates a new AimTurretC. */
-  public AimTurretC(LimelightS limelight, CannonS superShooter) {
+  public AimTurretC(LimelightS limelight, CannonS cannon) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limelight = limelight;
-    this.cannon = superShooter;
+    this.cannon = cannon;
 
-    addRequirements(superShooter);
+    addRequirements(cannon);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-
+    limelight.register();
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -48,6 +49,7 @@ public class AimTurretC extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    // cannon can tell when it is at setpoint, so it has an exit condition and runs in execute.
     return cannon.isTurretAtSetpoint();
   }
 }

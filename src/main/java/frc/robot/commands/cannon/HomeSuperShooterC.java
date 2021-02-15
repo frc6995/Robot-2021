@@ -21,9 +21,10 @@ public class HomeSuperShooterC extends CommandBase {
   /** Creates a new HomeSuperShooterC.   */
   public HomeSuperShooterC(CannonS superShooter, double timeout) {
     this.withTimeout(2.0);  
+    
     // Use addRequirements() here to declare subsystem dependencies.
     addRequirements(superShooter);
-
+    
     this.cannon = superShooter;
   }
 
