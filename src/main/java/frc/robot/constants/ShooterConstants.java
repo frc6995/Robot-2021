@@ -47,4 +47,13 @@ public interface ShooterConstants {
      * @return The allowable RPM error
      */
     double getAllowableRPMError();
+    /**
+     * Get the average voltage of the shooter's motor while it is running.
+     * @return The average voltage
+     */
+    double getAverageVoltage();
+    /**
+     * Get the allowable error when comparing the Shooter's voltage to its average voltage
+     */
+    double getAllowableVoltageError();
 }

@@ -1,9 +1,11 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.commands.cannon.AimHoodC;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.FindTargetC;
+import frc.robot.commands.cannon.SpinDownShooterC;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.subsystems.cannon.LaunchBallC;
 
@@ -18,7 +20,7 @@ public class RobotContainer {
     ParallelCommandGroup aimCannonCG = new FindTargetC(null).andThen(new AimHoodC(null, null)).alongWith(new AimTurretC(null, null).alongWith(new SpinUpShooterC(null)));
 
     // Shoot Cannon: 
-    //ParallelCommandGroup shootCannonCG = new SpinUpShooterC(null).andThen(new LaunchBallC());
+    SequentialCommandGroup shootCannonCG = new SpinUpShooterC(null).andThen(new LaunchBallC(null, null)).andThen(new SpinDownShooterC(null));
   }
 
   private void configureButtonBindings() {}

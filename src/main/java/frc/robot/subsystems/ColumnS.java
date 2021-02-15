@@ -10,16 +10,14 @@ import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 
 public class ColumnS extends SubsystemBase {
   private NomadTalonSRX front;
-  private NomadVictorSPX back;
   private DoubleSolenoid solenoid; 
   private ColumnConstants constants;
   private NomadSparkMax acceleratorWheels;
 
   /** Creates a new ColumnS. */
-  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid, NomadSparkMAx acceleratorWheels) {
+  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid, NomadSparkMax acceleratorWheels) {
     this.constants = constants;
     this.front = front;
-    this.back = back;
     this.solenoid = solenoid;
     this.acceleratorWheels = acceleratorWheels; // id 43
   }
@@ -39,10 +37,6 @@ public class ColumnS extends SubsystemBase {
 
   public void setFrontSpeed(double speed){
     front.set(speed);
-  }
-
-  public void setBackSpeed(double speed){
-    back.set(speed);
   }
 
   public void enableStopper(){

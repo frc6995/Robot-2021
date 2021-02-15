@@ -7,13 +7,13 @@ package frc.robot.constants;
 /** Add your docs here. */
 public class ColumnConstantsKRen implements ColumnConstants {
     @Override
-    public int getFrontMotorID() {
+    public int getTalonID() {
         return 41;
     }
     
     @Override
-    public int getBackMotorID() {
-        return 42;
+    public int getAcceleratorID() {
+        return 43;
     }
     
     @Override

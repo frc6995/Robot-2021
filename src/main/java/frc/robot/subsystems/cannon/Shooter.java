@@ -31,7 +31,7 @@ public class Shooter {
     /**
      * The Shooter's lead Spark Max
      */
-    private NomadSparkMax leadMotor;
+    private NomadSparkMax motor;
     /**
      * The constants for the Shooter
      */
@@ -53,7 +53,7 @@ public class Shooter {
      */
     public Shooter(ShooterConstants shooterConstants, NomadSparkMax leadMotor){
         constants = shooterConstants;
-        this.leadMotor = leadMotor;
+        this.motor = leadMotor;
         encoder = leadMotor.getEncoder();
         shooterState = ShooterStates.OFF;
     }
@@ -74,12 +74,12 @@ public class Shooter {
         speed = NomadMathUtil.clamp(-0.8, 0.8, speed);
         targetSpeed = speed;
         
-        leadMotor.getPIDController().setP(constants.getKP());
-        leadMotor.getPIDController().setI(constants.getKI());
-        leadMotor.getPIDController().setD(constants.getKD());
-        leadMotor.getPIDController().setFF(constants.getKFF());
-        leadMotor.getPIDController().setIZone(constants.getIZone());
-        leadMotor.getPIDController().setReference(speed, ControlType.kVelocity);
+        motor.getPIDController().setP(constants.getKP());
+        motor.getPIDController().setI(constants.getKI());
+        motor.getPIDController().setD(constants.getKD());
+        motor.getPIDController().setFF(constants.getKFF());
+        motor.getPIDController().setIZone(constants.getIZone());
+        motor.getPIDController().setReference(speed, ControlType.kVelocity);
 
         shooterState = ShooterStates.RAMPING_UP;
     }
@@ -106,6 +106,10 @@ public class Shooter {
      */
     protected void periodic(){
         updateState();
+    }
+    
+    public boolean isVoltageNormal(){
+        return Math.abs(motor.getBusVoltage() - constants.getAverageVoltage()) <= constants.getAllowableVoltageError();
     }
     
     /**

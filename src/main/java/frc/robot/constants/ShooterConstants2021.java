@@ -37,4 +37,12 @@ public class ShooterConstants2021 implements ShooterConstants {
     public double getAllowableRPMError(){
         return 10;
     }
+
+    public double getAverageVoltage(){
+        return 10.0;
+    }
+
+    public double getAllowableVoltageError(){
+        return 0.25;
+    }
 }

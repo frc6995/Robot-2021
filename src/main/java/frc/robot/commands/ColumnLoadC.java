@@ -17,7 +17,6 @@ public class ColumnLoadC extends CommandBase {
   public void initialize() {
     column.enableStopper();
     column.setFrontSpeed(column.getConstants().getColumnSpeed());
-    column.setBackSpeed(column.getConstants().getColumnSpeed());
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -28,7 +27,6 @@ public class ColumnLoadC extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     column.setFrontSpeed(0);
-    column.setBackSpeed(0);
   }
 
   // Returns true when the command should end.

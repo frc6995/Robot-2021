@@ -53,6 +53,11 @@ public class CannonS extends SubsystemBase {
     return shooter.getShooterState() == ShooterStates.OFF;
   }
 
+  /**Is the {@link Shooter}'s voltage normal? */
+  public boolean isShooterVoltageNormal(){
+    return shooter.isVoltageNormal();
+  }
+
   /**
    * Run PID on the Spark Max to the specified setpoint.
    */  

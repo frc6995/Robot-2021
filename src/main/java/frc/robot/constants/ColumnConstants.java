@@ -6,13 +6,13 @@ public interface ColumnConstants {
      * the column front motor id
      * @return can id
      */
-    int getFrontMotorID();
+    int getTalonID();
 
     /**
      * the colummn back motor id
      * @return can id
      */
-    int getBackMotorID();
+    int getAcceleratorID();
 
     /**
      * the double solenoid forward port 
