@@ -4,50 +4,41 @@
 
 package frc.robot.commands.cannon;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.cannon.CannonS;
-import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 
-/** A command that homes the SuperShooter.
+/**A command that preps the shooter for launching power cells.
  * 
  * @author JoeyFabel
  */
-public class HomeSuperShooterC extends CommandBase {
+public class SpinUpShooterC extends CommandBase {
   private CannonS cannon;
+  
+  /** Creates a new SpinUpShooterC. */
+  public SpinUpShooterC(CannonS cannon) {
+    this.cannon = cannon;
 
-  /** Creates a new HomeSuperShooterC.   */
-  public HomeSuperShooterC(CannonS superShooter, double timeout) {
-    this.withTimeout(2.0);  
-    
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(superShooter);
-    
-    this.cannon = superShooter;
+    addRequirements(cannon);
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    cannon.requestTurretState(TurretRequestedStates.HOME, 0);
+    cannon.pidShooterToTargetSpeed(0.8);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-  }
+  public void execute() {}
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {
-    if (!cannon.isTurretHomed()) Logger.getAnonymousLogger().log(Level.WARNING, "Turret Home timed-out");
-  }
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return cannon.isTurretHomed();
+    return cannon.isShooterAtSpeed();
   }
 }

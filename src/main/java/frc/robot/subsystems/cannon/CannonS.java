@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.CannonSConstants;
+import frc.robot.subsystems.cannon.Shooter.ShooterStates;
 import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 
 /** The Super Shooter Subsytem, it includes the {@link Shooter}, the {@link Hood}, and the {@link Turret}.
@@ -16,12 +17,8 @@ public class CannonS extends SubsystemBase {
   private Shooter shooter;
   private Turret turret;
 
-  private CannonSConstants constants;
-
   /** Creates a new ShooterS. */
   public CannonS(CannonSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
-    this.constants = constants;
-
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
     shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor);
     turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
@@ -39,6 +36,21 @@ public class CannonS extends SubsystemBase {
    */
   public void pidShooterToTargetSpeed(double speed){
     shooter.pidToTargetSpeed(speed);
+  }
+
+  /**Have the {@link Shooter} PID to a stop. */
+  public void spinDownShooter(){
+    shooter.spinDown();
+  }
+
+  /**Is the {@link Shooter} ready to fire a ball? */
+  public boolean isShooterAtSpeed(){
+    return shooter.getShooterState() == ShooterStates.READY;
+  }
+
+  /**Is the {@link Shooter} currently stopped? */
+  public boolean isShooterOff(){
+    return shooter.getShooterState() == ShooterStates.OFF;
   }
 
   /**

@@ -4,36 +4,36 @@
 
 package frc.robot.commands.cannon;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.LimelightS;
-import frc.robot.subsystems.cannon.CannonS;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-/**
- * A command that aims the hood.
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.cannon.CannonS;
+import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
+
+/** A command that homes the SuperShooter.
  * 
  * @author JoeyFabel
  */
-public class AimHoodC extends CommandBase {
+public class HomeCannonC extends CommandBase {
   private CannonS cannon;
-  private LimelightS limelight;
-  
-  /** Creates a new AimHoodC. */
-  public AimHoodC(LimelightS limelight, CannonS cannon) {
-    // Use addRequirements() here to declare subsystem dependencies.
-    this.cannon = cannon;
-    this.limelight = limelight;
 
-    addRequirements(cannon);
+  /** Creates a new HomeSuperShooterC.   */
+  public HomeCannonC(CannonS superShooter, double timeout) {
+    this.withTimeout(2.0);  
+    
+    // Use addRequirements() here to declare subsystem dependencies.
+    addRequirements(superShooter);
+    
+    this.cannon = superShooter;
   }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    // should the cannon do this in execute, or is once enough?
-    cannon.moveHoodToDesiredAngle(limelight.getDistanceToTarget());
-    limelight.register();
+    cannon.requestTurretState(TurretRequestedStates.HOME, 0);
   }
-  
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
@@ -42,12 +42,12 @@ public class AimHoodC extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    limelight.deregister();
+    if (!cannon.isTurretHomed()) Logger.getAnonymousLogger().log(Level.WARNING, "Turret Home timed-out");
   }
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() {    
-    return cannon.isHoodAtSetpoint();
+  public boolean isFinished() {
+    return cannon.isTurretHomed();
   }
 }

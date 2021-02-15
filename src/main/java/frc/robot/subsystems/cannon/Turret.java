@@ -9,11 +9,7 @@ import frc.robot.constants.TurretConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 
 /**
-<<<<<<< HEAD
- * The Turret on the robot. It controls the horizontal rotation of the {@link SuperShooterS}.
-=======
  * The Turret on the robot. It controls the horizontal rotation of the {@link CannonS}.
->>>>>>> 2e0bb859384ea5a9ae03cbe61a6af95e882c13e3
  * 
  * @author JoeyFabel
  */
@@ -77,8 +73,6 @@ public class Turret {
   private TurretRequestedStates requestedState;
   /** The motor controlling the Turret */
   private NomadSparkMax sparkMax;
-  /** The magnetic limit switch on the Turret, located on its home position */
-  private DigitalInput limitSwitch;
   /** The Throughbore encoder, plugged directly into the Spark Max */
   private CANEncoder encoder;
 
@@ -97,7 +91,6 @@ public class Turret {
     internalState = TurretInternalStates.HOMING;
     requestedState = TurretRequestedStates.HOME;
     this.sparkMax = sparkMax;
-    this.limitSwitch = limitSwitch;
     // Currently, limit switch is counted as pressed if counter is greater than 0. 
     // The Counter can catch it pushing if it is faster than the periodic check, so this can help there.
     homedCounter = new Counter(limitSwitch);
