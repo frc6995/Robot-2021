@@ -21,12 +21,12 @@ public class LimelightConstants2021 implements LimelightConstants{
     }
 
     @Override
-    public double getDistanceToGround() {
+    public double getLimelightHeight() {
         return 10;
     }
 
     @Override
-    public double getDistanceGroundToTarget() {
+    public double getTargetHeight() {
         return 98.25; // 8' 2.25"
     }
 
