@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.cannon;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
@@ -9,7 +9,11 @@ import frc.robot.constants.TurretConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 
 /**
+<<<<<<< HEAD
  * The Turret on the robot. It controls the horizontal rotation of the {@link SuperShooterS}.
+=======
+ * The Turret on the robot. It controls the horizontal rotation of the {@link CannonS}.
+>>>>>>> 2e0bb859384ea5a9ae03cbe61a6af95e882c13e3
  * 
  * @author JoeyFabel
  */

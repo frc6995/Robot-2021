@@ -2,41 +2,34 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.super_shooter;
+package frc.robot.commands.cannon;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.LimelightS;
-import frc.robot.subsystems.shooter.SuperShooterS;
 
-/**
- * A command that aims the hood.
+/** A command that uses the Limelight to find the target.
  * 
  * @author JoeyFabel
  */
-public class AimHoodC extends CommandBase {
-  SuperShooterS superShooter;
+public class FindTargetC extends CommandBase {
   LimelightS limelight;
   
-  /** Creates a new AimHoodC. */
-  public AimHoodC(SuperShooterS superShooter, LimelightS limelight) {
+  /** Creates a new FindTargetC. */
+  public FindTargetC(LimelightS limelight) {
     // Use addRequirements() here to declare subsystem dependencies.
-    this.superShooter = superShooter;
     this.limelight = limelight;
-
   }
-  
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    addRequirements(superShooter);
-    superShooter.moveHoodToDesiredAngle(limelight.getDistanceToTarget());
+    limelight.register();
   }
-  
+
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {
-  }
+  public void execute() {}
+
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {}
@@ -44,6 +37,6 @@ public class AimHoodC extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    return true;
+    return limelight.isTargetFound();
   }
 }

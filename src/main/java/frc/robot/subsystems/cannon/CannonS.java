@@ -1,25 +1,25 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems.cannon;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.robot.constants.SuperShooterSConstants;
-import frc.robot.subsystems.shooter.Turret.TurretRequestedStates;
+import frc.robot.constants.CannonSConstants;
+import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 
 /** The Super Shooter Subsytem, it includes the {@link Shooter}, the {@link Hood}, and the {@link Turret}.
  * 
  * @author JoeyFabel
  */
-public class SuperShooterS extends SubsystemBase {  
+public class CannonS extends SubsystemBase {  
   private Hood hood;
   private Shooter shooter;
   private Turret turret;
 
-  private SuperShooterSConstants constants;
+  private CannonSConstants constants;
 
   /** Creates a new ShooterS. */
-  public SuperShooterS(SuperShooterSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
+  public CannonS(CannonSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     this.constants = constants;
 
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);

@@ -5,12 +5,12 @@
 package frc.robot.constants;
 
 /** Add your docs here. */
-public class SuperShooterSConstants2021 implements SuperShooterSConstants {
+public class CannonSConstants2021 implements CannonSConstants {
 	private ShooterConstants shooterConstants;
 	private HoodConstants hoodConstants;
 	private TurretConstants turretConstants;
 
-    public SuperShooterSConstants2021(ShooterConstants shooterConstants, HoodConstants hoodConstants, TurretConstants turretConstants){
+    public CannonSConstants2021(ShooterConstants shooterConstants, HoodConstants hoodConstants, TurretConstants turretConstants){
 		this.shooterConstants = shooterConstants;
 		this.hoodConstants = hoodConstants;
 		this.turretConstants = turretConstants;

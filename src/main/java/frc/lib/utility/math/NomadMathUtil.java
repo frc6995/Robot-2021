@@ -27,9 +27,10 @@ public final class NomadMathUtil {
     }
     /**
      * Linear interpolation from a percentage to a range.
-     * @param min The lower bound of the output range.
-     * @param max The upper bound of the output range.
-     * @param percent The percentage, where 0 is the lower bound and 1 is the upper bound.
+     * @param <T> The type of Number you want to lerp
+     * @param min The lower bound of the output range
+     * @param max The upper bound of the output range
+     * @param percent The percentage, where 0 is the lower bound and 1 is the upper bound
      * @return The interpolated value.
      */
     public static <T extends Number> double lerp(T min, T max, double percent){
@@ -37,7 +38,7 @@ public final class NomadMathUtil {
     }
 
     /**
-     * Calculates the percentage at which the value lies between <b>a</b> and <b>b</b>. <i>Please</i> make sure <b>value</b> is between <b>a</b> and <b>b</b>.
+     * Calculates the percentage at which the value lies between <b>a</b> and <b>b</b>. <i>Please</i> make sure that <b>a</b> and <b>b</b> are different.
      * @param a The lower bound
      * @param b The upper bound
      * @param value The value between <b>a</b> and <b>b</b> to check
@@ -47,6 +48,14 @@ public final class NomadMathUtil {
         return (value - a) / (b - a);
     }
 
+    /**
+     * Clamps the <b>value</b> between the minimum and maximum values.
+     * 
+     * @param <T> The type of value you want to clamp
+     * @param min The smallest possible value
+     * @param max The largest possible value
+     * @return <b>value</b> if it is within <b>min</b> and <b>max</b>, <b>min</b> if it is below the range, or <b>max</b> if it is above the range
+     */
     public static <T extends Comparable<T>> T clamp(T min, T max, T value){
         if (value.compareTo(max) > 0) value = max;
         else if (value.compareTo(min) < 0) value = min;

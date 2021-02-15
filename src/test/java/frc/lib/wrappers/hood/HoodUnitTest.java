@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import edu.wpi.first.wpilibj.Servo;
-import frc.robot.subsystems.shooter.Hood;
+import frc.robot.subsystems.cannon.Hood;
 /** Add your docs here. */
 public class HoodUnitTest {
     @Test

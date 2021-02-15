@@ -4,8 +4,8 @@
 
 package frc.robot.constants;
 
-/** The Consants for the complete {@link SuperShooterS} subsystem. Includes a {@link ShooterConstants}, a {@link HoodConstants}, and a {@link TurretConstants} */
-public interface SuperShooterSConstants {
+/** The Consants for the complete {@link CannonS} subsystem. Includes a {@link ShooterConstants}, a {@link HoodConstants}, and a {@link TurretConstants} */
+public interface CannonSConstants {
     /**
      * Get the {@link ShooterConstants}.
      * @return The {@link ShooterConstants}
