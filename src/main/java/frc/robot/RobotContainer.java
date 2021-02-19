@@ -26,12 +26,12 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
+import frc.robot.commands.agitator.AgitatorSpinC;
+import frc.robot.commands.column.ColumnFeedC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
-import frc.robot.commands.intakecommands.IntakeToggleC;
-import frc.robot.commands.othercommands.AgitatorSpinC;
-import frc.robot.commands.othercommands.ColumnFeedC;
-import frc.robot.commands.othercommands.ExpellBallsCG;
+import frc.robot.commands.intake.IntakeToggleC;
+import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstantsKRen;
 import frc.robot.constants.AutoConstants2021;
@@ -192,7 +192,7 @@ public class RobotContainer {
     new JoystickButton(controller, 1).whenPressed(intakeToggleC);
     new JoystickButton(controller, 2).whileHeld(agitatorSpinC);
     new JoystickButton(controller, 3).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(controller, 4).whileHeld(new ExpellBallsCG(intakeS, agitatorS, columnS));
+    new JoystickButton(controller, 4).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));
   }
 
   /**

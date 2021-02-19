@@ -1,4 +1,4 @@
-package frc.robot.commands.othercommands;
+package frc.robot.commands.agitator;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.AgitatorS;
