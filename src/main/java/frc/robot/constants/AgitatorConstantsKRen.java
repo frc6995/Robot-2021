@@ -4,7 +4,7 @@
 
 package frc.robot.constants;
 
-import frc.lib.constants.AgitatorConstants;
+import frc.robot.constants.interfaces.AgitatorConstants;
 
 /** Add your docs here. */
 public class AgitatorConstantsKRen implements AgitatorConstants{

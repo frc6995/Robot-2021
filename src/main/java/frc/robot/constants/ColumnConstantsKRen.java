@@ -4,7 +4,7 @@
 
 package frc.robot.constants;
 
-import frc.lib.constants.ColumnConstants;
+import frc.robot.constants.interfaces.ColumnConstants;
 
 /** Add your docs here. */
 public class ColumnConstantsKRen implements ColumnConstants {

@@ -1,8 +1,8 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.constants.AgitatorConstants;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
+import frc.robot.constants.interfaces.AgitatorConstants;
 
 public class AgitatorS extends SubsystemBase {
   private NomadVictorSPX leftMotor;

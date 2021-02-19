@@ -1,4 +1,4 @@
-package frc.lib.constants;
+package frc.robot.constants.interfaces;
 
 /** Constants for the column subsystem*/
 public interface ColumnConstants {

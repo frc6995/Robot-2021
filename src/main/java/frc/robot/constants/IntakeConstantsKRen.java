@@ -1,6 +1,6 @@
 package frc.robot.constants;
 
-import frc.lib.constants.IntakeConstants;
+import frc.robot.constants.interfaces.IntakeConstants;
 
 public class IntakeConstantsKRen implements IntakeConstants {
 

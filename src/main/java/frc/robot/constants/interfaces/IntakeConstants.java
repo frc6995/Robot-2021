@@ -1,4 +1,4 @@
-package frc.lib.constants;
+package frc.robot.constants.interfaces;
 
 /** 
  * An interface containing constants for the Intake
