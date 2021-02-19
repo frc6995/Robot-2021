@@ -7,7 +7,7 @@ import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.FindTargetC;
 import frc.robot.commands.cannon.SpinDownShooterC;
 import frc.robot.commands.cannon.SpinUpShooterC;
-import frc.robot.subsystems.cannon.LaunchBallC;
+import frc.robot.commands.cannon.LaunchBallC;
 
 
 public class RobotContainer {
