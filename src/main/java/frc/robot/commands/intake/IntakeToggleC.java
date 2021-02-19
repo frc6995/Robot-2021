@@ -8,6 +8,7 @@ import frc.robot.subsystems.IntakeS;
 public class IntakeToggleC extends InstantCommand {
   private IntakeS intakeS;
   private AgitatorS agitatorS;
+  
   /** Creates a new IntakeToggleC. */
   public IntakeToggleC(IntakeS intakeS, AgitatorS agitatorS) {
     addRequirements(intakeS);
