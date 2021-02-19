@@ -105,6 +105,9 @@ public class CannonS extends SubsystemBase {
     hood.moveHoodToPosition(hood.getAngleBasedOnDistance(distance));
   }
 
+  /**
+   * Is the Hood at its setpoint?
+   */
   public boolean isHoodAtSetpoint(){
     return hood.isAtSetpoint(); 
   }
