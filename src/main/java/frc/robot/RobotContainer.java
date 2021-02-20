@@ -7,14 +7,18 @@
 
 package frc.robot;
 
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 //#region imports
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -161,6 +165,38 @@ public class RobotContainer {
    * Creates the subsystems.
    */
   private void createSubsystems() {
+    
+    NomadSparkMax drivebaseLeftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(),
+        MotorType.kBrushless, 
+        driveConstants.getLeftDriveLeaderInverted());
+
+    NomadSparkMax drivebaseRightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
+        MotorType.kBrushless,
+        driveConstants.getRightDriveLeaderInverted());
+
+    NomadSparkMax drivebaseLeftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(),
+        MotorType.kBrushless, 
+        driveConstants.getLeftDriveFollowerInverted(), drivebaseLeftLeader);
+
+    NomadSparkMax drivebaseRightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
+        MotorType.kBrushless,
+        driveConstants.getRightDriveFollowerInverted(), drivebaseRightLeader);
+    
+    Encoder drivebaseLeftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
+        driveConstants.getLeftEncoderReversed());
+
+    Encoder drivebaseRightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
+        driveConstants.getRightEncoderReversed());
+
+    AHRS gyro = new AHRS(SPI.Port.kMXP);
+
+    drivebaseS = new DrivebaseS(
+      driveConstants,
+      autoConstants,
+      drivebaseLeftLeader,   drivebaseRightLeader,
+      drivebaseLeftFollower, drivebaseRightFollower,
+      drivebaseLeftEncoder,   drivebaseRightEncoder, gyro);
+
     NomadVictorSPX agitatorLeft = new NomadVictorSPX(agitatorConstants.getLeftMotorID());
     NomadVictorSPX agitatorRight = new NomadVictorSPX(agitatorConstants.getRightMotorID());
     agitatorS = new AgitatorS(agitatorConstants, agitatorLeft, agitatorRight);
@@ -168,8 +204,6 @@ public class RobotContainer {
     NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
     DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
     intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
-    
-    drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
     NomadTalonSRX columnFront = new NomadTalonSRX(columnConstants.getTalonID());
     NomadSparkMax columnAccelerator = new NomadSparkMax(columnConstants.getAcceleratorID(), MotorType.kBrushed);

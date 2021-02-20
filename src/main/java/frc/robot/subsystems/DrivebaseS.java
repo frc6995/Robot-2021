@@ -5,14 +5,17 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
@@ -23,6 +26,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
+import frc.lib.wrappers.gyro.GyroSim;
 import frc.lib.wrappers.motorcontrollers.NomadPWMMotor;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
@@ -43,8 +47,9 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private EncoderSim m_leftEncoderSim;
   private EncoderSim m_rightEncoderSim;
 
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-  private ADXRS450_GyroSim m_gyroSim;
+  private Gyro gyro;
+  //private GyroSim m_gyroSim;
+  private double gyroSimAngle;
 
   // Create the simulation model of our drivetrain.
   private DifferentialDrivetrainSim m_driveSim;
@@ -54,36 +59,22 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private Field2d m_field = new Field2d();
 
   /** Creates a new AutonomousDrivebaseS. */
-  public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
+  public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants, NomadSparkMax leftLeader, NomadSparkMax rightLeader, NomadSparkMax leftFollower, NomadSparkMax rightFollower, Encoder leftEncoder, Encoder rightEncoder, Gyro gyro) {
     super(driveConstants, autoConstants);
+    this.leftLeader = leftLeader;
+    this.rightLeader = rightLeader;
+    this.leftFollower = leftFollower;
+    this.rightFollower = rightFollower;
+    this.m_leftEncoder = leftEncoder;
+    this.m_rightEncoder = rightEncoder;
+    this.gyro = gyro;
 
-    leftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(),
-        MotorType.kBrushless, 
-        driveConstants.getLeftDriveLeaderInverted());
-
-    rightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
-        MotorType.kBrushless,
-        driveConstants.getRightDriveLeaderInverted());
-
-    leftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(),
-        MotorType.kBrushless, 
-        driveConstants.getLeftDriveFollowerInverted(), leftLeader);
-
-    rightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
-        MotorType.kBrushless,
-        driveConstants.getRightDriveFollowerInverted(), rightLeader);
     
 
 
     //m_drive = new DifferentialDrive(leftLeader, rightLeader);
 
     
-
-    m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
-        driveConstants.getLeftEncoderReversed());
-
-    m_rightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
-        driveConstants.getRightEncoderReversed());
 
     m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
     m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
@@ -101,7 +92,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         driveConstants.getSimEncoderStdDev());
 
         
-    m_gyroSim = new ADXRS450_GyroSim(gyro);
+    //m_gyroSim = new GyroSim("NavX", 1);
     
     SmartDashboard.putData("Field", m_field);
 
@@ -137,7 +128,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
 
     
-    m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+   gyroSimAngle = -m_driveSim.getHeading().getDegrees();
 
 
   }
