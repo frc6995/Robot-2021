@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.constants;
+package frc.robot.constants.interfaces;
 
 /** The constants for the {@link Shooter}. */
 public interface ShooterConstants {
@@ -16,6 +16,19 @@ public interface ShooterConstants {
      * @return the port ID
      */
     int getFollowerMotorID();
+
+    /**
+     * Get the inversion of the shooter lead motor
+     * @return inverted
+     */
+    boolean getLeadMotorInverted();
+
+    /**
+     * Get the inversion of the shooter follower motor
+     * @return inverted
+     */
+    boolean getFollowerMotorInverted();
+
     /**
      * Get the PID 'P' constant.
      * @return The P constants

@@ -1,8 +1,8 @@
 package frc.robot.constants;
 
-import frc.lib.constants.IntakeConstants;
+import frc.robot.constants.interfaces.IntakeConstants;
 
-public class IntakeConstantsKRen implements IntakeConstants {
+public class IntakeConstants2021 implements IntakeConstants {
 
     @Override
     public int getIntakeMotorPort() {
@@ -11,17 +11,17 @@ public class IntakeConstantsKRen implements IntakeConstants {
 
     @Override
     public int getSolenoidFwdPort() {
-        return 2;
+        return 6;
     }
 
     @Override
     public int getSolenoidRevPort() {
-        return 3;
+        return 7;
     }
 
     @Override
     public double getIntakeSpeed() {
-        return 0.75;
+        return -1;
     }
 
 }

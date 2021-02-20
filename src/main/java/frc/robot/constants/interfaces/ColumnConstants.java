@@ -1,4 +1,4 @@
-package frc.robot.constants;
+package frc.robot.constants.interfaces;
 
 /** Constants for the column subsystem*/
 public interface ColumnConstants {
@@ -27,8 +27,26 @@ public interface ColumnConstants {
     int getRevPort();
 
     /**
-     * the speed that the column spins at
+     * the speed that the column loads at
      * @return speed
      */
-    double getColumnSpeed();
+    double getColumnLoadSpeed();
+
+    /**
+     * the speed that the column feeds into the accelerator at
+     * @return speed
+     */
+    double getColumnFeedSpeed();
+
+    /**
+     * the RPM that the accelerator wheels spin
+     * @return rpm
+     */
+    double getAcceleratorRPM();
+
+    /**
+     * the current limit for the accerator wheels
+     * @return amps
+     */
+    double getAcceleratorCurrentLimit();
 }

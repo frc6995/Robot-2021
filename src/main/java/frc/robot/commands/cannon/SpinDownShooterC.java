@@ -5,40 +5,31 @@
 package frc.robot.commands.cannon;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.cannon.CannonS;
 
 /** A command that stops the Shooter using PID.
  * 
  * @author JoeyFabel
  */
-public class SpinDownShooterC extends CommandBase {
+public class SpinDownShooterC extends InstantCommand {
   private CannonS cannon;
   
   /** Creates a new SpinDownShooterC. */
-  public SpinDownShooterC(CannonS cannon) {
+  public SpinDownShooterC(CannonS cannon, boolean requireCannon) {
     this.cannon = cannon;
 
+    if(requireCannon){
+      addRequirements(cannon);
+    }
+
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(cannon);
+    
   }
 
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     cannon.spinDownShooter();
-  }
-
-  // Called every time the scheduler runs while the command is scheduled.
-  @Override
-  public void execute() {}
-
-  // Called once the command ends or is interrupted.
-  @Override
-  public void end(boolean interrupted) {}
-
-  // Returns true when the command should end.
-  @Override
-  public boolean isFinished() {
-    return cannon.isShooterOff();
   }
 }

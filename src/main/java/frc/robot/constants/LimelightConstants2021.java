@@ -4,7 +4,10 @@
 
 package frc.robot.constants;
 
-/** The Limelight constants for the 2021 robot.
+import frc.robot.constants.interfaces.LimelightConstants;
+
+/**
+ * The Limelight constants for the 2021 robot.
  * 
  * @author JoeyFabel
  */

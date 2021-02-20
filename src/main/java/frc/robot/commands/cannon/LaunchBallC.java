@@ -14,9 +14,18 @@ public class LaunchBallC extends CommandBase {
   private int numBallsToLaunch;
   private int numBallsLaunched;
   
+    /** Creates a new LaunchBallC that launches 5 balls. */
+    public LaunchBallC(ColumnS column, CannonS cannon, int numBalls) {
+      this(column, cannon, true, numBalls);
+    }
+      /** Creates a new LaunchBallC that launches 5 balls. */
+      public LaunchBallC(ColumnS column, CannonS cannon, boolean requireCannon) {
+        this(column, cannon, requireCannon, 5);
+      }
+  
   /** Creates a new LaunchBallC that launches 5 balls. */
   public LaunchBallC(ColumnS column, CannonS cannon) {
-    this(column, cannon, 5);
+    this(column, cannon, true, 5);
   }
   
   /**
@@ -25,14 +34,18 @@ public class LaunchBallC extends CommandBase {
    * @param cannon The Cannon Subsystem
    * @param numBalls The number of balls to launch
    */
-  public LaunchBallC(ColumnS column, CannonS cannon, int numBalls){
+  public LaunchBallC(ColumnS column, CannonS cannon, boolean requireCannon, int numBalls){
     this.cannon = cannon;
     this.column = column;
     numBallsToLaunch = numBalls;
     numBallsLaunched = 0;
 
     // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(cannon);
+    addRequirements(column);
+    if(requireCannon) {
+      addRequirements(cannon);
+    }
+    
   }
 
   // Called when the command is initially scheduled.

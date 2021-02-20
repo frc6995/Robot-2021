@@ -3,10 +3,10 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.constants.ColumnConstants;
+import frc.robot.constants.interfaces.ColumnConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
-import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
+import frc.robot.constants.interfaces.ColumnConstants;
 
 public class ColumnS extends SubsystemBase {
   private NomadTalonSRX front;
@@ -15,9 +15,10 @@ public class ColumnS extends SubsystemBase {
   private NomadSparkMax acceleratorWheels;
 
   /** Creates a new ColumnS. */
-  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid, NomadSparkMax acceleratorWheels) {
+  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadSparkMax acceleratorWheels, DoubleSolenoid solenoid) {
     this.constants = constants;
     this.front = front;
+
     this.solenoid = solenoid;
     this.acceleratorWheels = acceleratorWheels; // id 43
   }

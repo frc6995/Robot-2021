@@ -19,13 +19,18 @@ public class HomeCannonC extends CommandBase {
   private CannonS cannon;
 
   /** Creates a new HomeSuperShooterC.   */
-  public HomeCannonC(CannonS superShooter, double timeout) {
-    this.withTimeout(2.0);  
+  public HomeCannonC(CannonS cannon, double timeout, boolean requireCannon) {
+    this.withTimeout(timeout);  
     
-    // Use addRequirements() here to declare subsystem dependencies.
-    addRequirements(superShooter);
-    
-    this.cannon = superShooter;
+    this.cannon = cannon;
+
+    if(requireCannon) {
+      addRequirements(cannon);
+    }
+  }
+
+  public HomeCannonC(CannonS cannon, double timeout) {
+    this(cannon, timeout, true);
   }
 
   // Called when the command is initially scheduled.

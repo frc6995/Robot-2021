@@ -1,4 +1,4 @@
-package frc.robot.commands;
+package frc.robot.commands.othercommands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ColumnS;
@@ -16,7 +16,7 @@ public class ColumnLoadC extends CommandBase {
   @Override
   public void initialize() {
     column.enableStopper();
-    column.setFrontSpeed(column.getConstants().getColumnSpeed());
+    column.setFrontSpeed(column.getConstants().getColumnLoadSpeed());
   }
 
   // Called every time the scheduler runs while the command is scheduled.

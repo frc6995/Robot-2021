@@ -18,12 +18,17 @@ public class AimTurretC extends CommandBase {
   private CannonS cannon;
   
   /** Creates a new AimTurretC. */
-  public AimTurretC(LimelightS limelight, CannonS cannon) {
+  public AimTurretC(LimelightS limelight, CannonS cannon, boolean requireCannon) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.limelight = limelight;
     this.cannon = cannon;
+    if(requireCannon) {
+      addRequirements(cannon);
+    }
+  }
 
-    addRequirements(cannon);
+  public AimTurretC(LimelightS limelight, CannonS cannon) {
+    this(limelight, cannon, true);
   }
 
   // Called when the command is initially scheduled.

@@ -18,14 +18,18 @@ public class AimHoodC extends CommandBase {
   private LimelightS limelight;
   
   /** Creates a new AimHoodC. */
-  public AimHoodC(LimelightS limelight, CannonS cannon) {
+  public AimHoodC(LimelightS limelight, CannonS cannon, boolean requireCannon) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.cannon = cannon;
     this.limelight = limelight;
-
-    addRequirements(cannon);
+    if(requireCannon) {
+      addRequirements(cannon);
+    }
   }
   
+  public AimHoodC(LimelightS limelight, CannonS cannon) {
+    this(limelight, cannon, true);
+  }
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {

@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.robot.constants.CannonSConstants;
+import frc.robot.constants.interfaces.CannonConstants;
 import frc.robot.subsystems.cannon.Shooter.ShooterStates;
 import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 
@@ -18,7 +18,7 @@ public class CannonS extends SubsystemBase {
   private Turret turret;
 
   /** Creates a new ShooterS. */
-  public CannonS(CannonSConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
+  public CannonS(CannonConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor, NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
     shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor);
     turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
@@ -104,7 +104,6 @@ public class CannonS extends SubsystemBase {
   public void moveHoodToDesiredAngle(double distance){
     hood.moveHoodToPosition(hood.getAngleBasedOnDistance(distance));
   }
-
   /**
    * Is the Hood at its setpoint?
    */

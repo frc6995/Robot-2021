@@ -3,15 +3,16 @@ package frc.robot.subsystems.cannon;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.robot.constants.ShooterConstants;
+import frc.robot.constants.interfaces.ShooterConstants;
 import frc.robot.constants.ShooterConstants2021;
 
 /** The flywheel that shoots the power cells into the power port. 
  * @author JoeyFabel
 */
-public class Shooter {
+public class Shooter{
     /** The possible states of the Shooter */
     public enum ShooterStates {
         /** The shooter is currently off */

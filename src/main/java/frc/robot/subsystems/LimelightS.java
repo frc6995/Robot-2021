@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.limelight.Limelight.CameraMode;
 import frc.lib.wrappers.limelight.Limelight.LedState;
-import frc.robot.constants.LimelightConstants;
+import frc.robot.constants.interfaces.LimelightConstants;
 
 /**
  * The Limelight Subsystem.

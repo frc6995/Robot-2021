@@ -1,4 +1,4 @@
-package frc.robot.constants;
+package frc.robot.constants.interfaces;
 
 import java.awt.Point;
 
@@ -26,4 +26,17 @@ public interface HoodConstants {
      * @return The allowable error
      */
     double getAllowableError();
+
+    /**
+     * Get the PWM port for the left servo
+     * @return port
+     */
+    int getLeftServoPort();
+
+    /**
+     * Get the PWM port for the right servo
+     * @return port
+     */
+    int getRightServoPort();
+
 }

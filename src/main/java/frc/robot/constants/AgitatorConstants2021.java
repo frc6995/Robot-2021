@@ -4,10 +4,10 @@
 
 package frc.robot.constants;
 
-import frc.lib.constants.AgitatorConstants;
+import frc.robot.constants.interfaces.AgitatorConstants;
 
 /** Add your docs here. */
-public class AgitatorConstantsKRen implements AgitatorConstants{
+public class AgitatorConstants2021 implements AgitatorConstants{
     public int getLeftMotorID(){
         return 31;
     }

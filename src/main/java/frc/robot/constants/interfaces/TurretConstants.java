@@ -1,4 +1,4 @@
-package frc.robot.constants;
+package frc.robot.constants.interfaces;
 
 /** An interface containing constants for the Turret
  * 
@@ -54,4 +54,10 @@ public interface TurretConstants {
      * The minimum number of counts that the Turret must be within the margin of error of the setpoint to count as at the setpoint.
      */
     int getMinCountsAtSetpoint();
+
+    /**
+     * Whether the motor is inverted
+     * 
+     */
+    boolean getLeadMotorInverted();
 }

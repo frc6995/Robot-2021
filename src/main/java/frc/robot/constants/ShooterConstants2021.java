@@ -4,6 +4,8 @@
 
 package frc.robot.constants;
 
+import frc.robot.constants.interfaces.ShooterConstants;
+
 /** The {@link ShooterConstants} for our 2021 robot. */
 public class ShooterConstants2021 implements ShooterConstants {
     public int getLeadMotorID(){
@@ -44,5 +46,17 @@ public class ShooterConstants2021 implements ShooterConstants {
 
     public double getAllowableVoltageError(){
         return 0.25;
+    }
+
+    @Override
+    public boolean getLeadMotorInverted() {
+        // TODO Auto-generated method stub
+        return false;
+    }
+
+    @Override
+    public boolean getFollowerMotorInverted() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

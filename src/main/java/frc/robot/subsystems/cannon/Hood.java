@@ -5,9 +5,11 @@
 package frc.robot.subsystems.cannon;
 
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.utility.math.NomadMathUtil;
-import frc.robot.constants.HoodConstants;
 import frc.robot.constants.HoodConstants2021;
+import frc.robot.constants.interfaces.HoodConstants;
+
 import java.awt.Point;
 
 /**
@@ -91,4 +93,5 @@ public class Hood {
     public boolean isAtSetpoint(){
         return Math.abs(getLinearServoPosition() - desiredAngle) < constants.getAllowableError();
     }
+
 }

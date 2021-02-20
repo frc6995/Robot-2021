@@ -1,10 +1,12 @@
 package frc.robot.constants;
 
+import frc.robot.constants.interfaces.TurretConstants;
+
 /** {@link TurretConstants} that have been set specifically for KRen
  * 
  * @author JoeyFabel
  */
-public class TurretConstantsKRen implements TurretConstants {
+public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getMarginOfError() {
@@ -58,11 +60,17 @@ public class TurretConstantsKRen implements TurretConstants {
 
     @Override
     public int getLimitSwitchChannelID() {
-        return 2;
+        return 9;
     }
 
     @Override
     public int getMinCountsAtSetpoint(){
         return 10;
+    }
+
+    @Override
+    public boolean getLeadMotorInverted() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

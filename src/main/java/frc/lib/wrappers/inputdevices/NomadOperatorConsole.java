@@ -193,4 +193,12 @@ public class NomadOperatorConsole {
     public static int getCombinedID(int controllerPort, int id){
         return 100*controllerPort + id;
     }
+
+    public static NomadButton getButton(int id) {
+        try{
+            return INPUT_ENUM_MAP.get(selectedMap).getButton(id);
+        } catch (NullPointerException e) {
+            return NomadButton.noneButton;
+        }
+    }
 }

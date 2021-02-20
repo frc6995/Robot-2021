@@ -5,7 +5,8 @@ import com.revrobotics.ControlType;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.constants.TurretConstants;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.interfaces.TurretConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 
 /**
@@ -13,7 +14,7 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
  * 
  * @author JoeyFabel
  */
-public class Turret {
+public class Turret{
   
   /**
    * An enum containing the different possible internal states of the Turret
@@ -79,7 +80,7 @@ public class Turret {
   /** Counter that checks if the Turret is homed */
   private Counter homedCounter;
 
-  /** Instance of the {@link TurretConstantsKRen}, allowing access to the constants */
+  /** Instance of the {@link TurretConstants2021}, allowing access to the constants */
   private TurretConstants constants;
 
   /** Creates a new TurretS. */
