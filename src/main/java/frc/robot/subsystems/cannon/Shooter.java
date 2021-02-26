@@ -3,7 +3,6 @@ package frc.robot.subsystems.cannon;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.interfaces.ShooterConstants;
@@ -57,6 +56,13 @@ public class Shooter{
         this.motor = leadMotor;
         encoder = leadMotor.getEncoder();
         shooterState = ShooterStates.OFF;
+        
+        // These should all be 0.
+        motor.getPIDController().setP(constants.getKP());
+        motor.getPIDController().setI(constants.getKI());
+        motor.getPIDController().setD(constants.getKD());
+        motor.getPIDController().setFF(constants.getKFF());
+        motor.getPIDController().setIZone(constants.getIZone());
     }
 
     /**
@@ -75,12 +81,7 @@ public class Shooter{
         speed = NomadMathUtil.clamp(-0.8, 0.8, speed);
         targetSpeed = speed;
         
-        motor.getPIDController().setP(constants.getKP());
-        motor.getPIDController().setI(constants.getKI());
-        motor.getPIDController().setD(constants.getKD());
-        motor.getPIDController().setFF(constants.getKFF());
-        motor.getPIDController().setIZone(constants.getIZone());
-        motor.getPIDController().setReference(speed, ControlType.kVelocity);
+        motor.getPIDController().setReference(speed, ControlType.kVelocity, 0, constants.getKFF());
 
         shooterState = ShooterStates.RAMPING_UP;
     }
