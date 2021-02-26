@@ -27,6 +27,8 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
+import frc.robot.commands.AimCannonCG;
+import frc.robot.commands.ShootCannonCG;
 import frc.robot.commands.agitator.AgitatorSpinC;
 import frc.robot.commands.cannon.AimHoodC;
 import frc.robot.commands.cannon.AimTurretC;
@@ -237,20 +239,15 @@ public class RobotContainer {
     columnFeedC = new ColumnFeedC(columnS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
 
-    shooterWaitUntilReadyC = new WaitUntilCommand(() -> cannonS.isShooterAtSpeed());
     // AimCannon Command Group - Update nulls with hardware once created
     /**
      * A command group that finds the target, aims the hood, aims the turret, and
      * preps the shooter for launch.
      */
-    aimCannonCG = new SequentialCommandGroup(new FindTargetC(limelightS),
-        new ParallelCommandGroup(new AimHoodC(limelightS, cannonS, false), new AimTurretC(limelightS, cannonS, false),
-            new SpinUpShooterC(cannonS, false)));
-    aimCannonCG.addRequirements(cannonS);
+    aimCannonCG = new AimCannonCG(limelightS, cannonS);
+    
     // Shoot Cannon
-    shootCannonCG = new SequentialCommandGroup(new SpinUpShooterC(cannonS, false), shooterWaitUntilReadyC,
-        new LaunchBallC(cannonS, false), new SpinDownShooterC(cannonS, false));
-    shootCannonCG.addRequirements(cannonS);
+    shootCannonCG = new ShootCannonCG(cannonS);
   }
 
   /**
