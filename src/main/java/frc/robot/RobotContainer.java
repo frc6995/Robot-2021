@@ -194,7 +194,6 @@ public class RobotContainer {
       driveConstants,
       autoConstants,
       drivebaseLeftLeader,   drivebaseRightLeader,
-      drivebaseLeftFollower, drivebaseRightFollower,
       drivebaseLeftEncoder,   drivebaseRightEncoder, gyro);
 
     NomadVictorSPX agitatorLeft = new NomadVictorSPX(agitatorConstants.getLeftMotorID());
