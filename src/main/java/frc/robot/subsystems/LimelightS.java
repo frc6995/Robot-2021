@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.limelight.Limelight.CameraMode;
 import frc.lib.wrappers.limelight.Limelight.LedState;
-import frc.robot.constants.LimelightConstants;
+import frc.robot.constants.interfaces.LimelightConstants;
 
 /**
  * The Limelight Subsystem.
@@ -34,16 +34,19 @@ public class LimelightS extends SubsystemBase {
   private int numberOfConsumersRegistered;
 
   private ArrayList<String> registryKeys;
+
+  private LimelightConstants constants;
   
   /** Creates a new LimelightS.
    * 
    * @param Limelight The {@link Limelight} wrapper
    */
-  public LimelightS(Limelight limelight) {
+  public LimelightS(Limelight limelight, LimelightConstants constants) {
     this.limelight = limelight;
+    this.constants = constants;
 
-    xOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);
-    yOffsetFilter = LinearFilter.singlePoleIIR(LimelightConstants.timeConstant, LimelightConstants.timePeriod);    
+    xOffsetFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());
+    yOffsetFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());    
 
     numberOfConsumersRegistered = 0;
     registryKeys = new ArrayList<String>();
@@ -164,5 +167,22 @@ public class LimelightS extends SubsystemBase {
      */
   public void setLEDState(Limelight.LedState state){
     limelight.setLedMode(state);
+  }
+
+  /**
+   * Has the Limelight found a target?
+   * @return <b>true</b> if a target is found, otherwise <b>false</b>
+   */
+  public boolean isTargetFound(){
+    return limelight.hasTarget();
+  }
+
+  /**
+   * Get the distance between the Limelight and the target.
+   * @return The distance between limelight and the target
+   */
+  public double getDistanceToTarget(){    
+    // (h2 - h1) / tan(a1 + a2): h2 = target height, h1 = limelight height, a1 = limelight mounting angle, a2 = angle from limelight to target
+    return (constants.getTargetHeight() - constants.getLimelightHeight()) / Math.tan(constants.getMountingAngle() + getYOffset());
   }
 }

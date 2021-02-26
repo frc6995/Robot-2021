@@ -6,13 +6,13 @@ public interface ColumnConstants {
      * the column front motor id
      * @return can id
      */
-    int getFrontMotorID();
+    int getTalonID();
 
     /**
      * the colummn back motor id
      * @return can id
      */
-    int getBackMotorID();
+    int getAcceleratorID();
 
     /**
      * the double solenoid forward port 
@@ -27,8 +27,26 @@ public interface ColumnConstants {
     int getRevPort();
 
     /**
-     * the speed that the column spins at
+     * the speed that the column loads at
      * @return speed
      */
-    double getColumnSpeed();
+    double getColumnLoadSpeed();
+
+    /**
+     * the speed that the column feeds into the accelerator at
+     * @return speed
+     */
+    double getColumnFeedSpeed();
+
+    /**
+     * the RPM that the accelerator wheels spin
+     * @return rpm
+     */
+    double getAcceleratorRPM();
+
+    /**
+     * the current limit for the accerator wheels
+     * @return amps
+     */
+    double getAcceleratorCurrentLimit();
 }

@@ -15,8 +15,7 @@ public class ColumnFeedC extends CommandBase {
   @Override
   public void initialize() {
     column.disableStopper();
-    column.setFrontSpeed(column.getConstants().getColumnSpeed()+0.5);
-    column.setBackSpeed(0.75);
+    column.setFrontSpeed(column.getConstants().getColumnLoadSpeed());
   }
 
   @Override
@@ -25,7 +24,6 @@ public class ColumnFeedC extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     column.setFrontSpeed(0);
-    column.setBackSpeed(0);
     column.enableStopper();
   }
 

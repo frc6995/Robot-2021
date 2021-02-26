@@ -13,6 +13,7 @@ public class IntakeToggleC extends InstantCommand {
   public IntakeToggleC(IntakeS intakeS, AgitatorS agitatorS) {
     addRequirements(intakeS);
     this.intakeS = intakeS;
+    this.agitatorS = agitatorS;
   }
 
   @Override

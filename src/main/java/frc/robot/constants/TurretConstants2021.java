@@ -6,7 +6,7 @@ import frc.robot.constants.interfaces.TurretConstants;
  * 
  * @author JoeyFabel
  */
-public class TurretConstantsKRen implements TurretConstants {
+public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getMarginOfError() {
@@ -33,6 +33,10 @@ public class TurretConstantsKRen implements TurretConstants {
         return 1;
     }
 
+    public double getIZone() {
+        return 1;
+    }
+
     @Override
     public double getEncoderTicksPerDegree() {
         return 42.0 * 5 * 150 / 18 / 360;
@@ -56,11 +60,17 @@ public class TurretConstantsKRen implements TurretConstants {
 
     @Override
     public int getLimitSwitchChannelID() {
-        return 2;
+        return 9;
     }
 
     @Override
     public int getMinCountsAtSetpoint(){
         return 10;
+    }
+
+    @Override
+    public boolean getLeadMotorInverted() {
+        // TODO Auto-generated method stub
+        return false;
     }
 }

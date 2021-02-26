@@ -2,7 +2,7 @@ package frc.robot.constants;
 
 import frc.robot.constants.interfaces.IntakeConstants;
 
-public class IntakeConstantsKRen implements IntakeConstants {
+public class IntakeConstants2021 implements IntakeConstants {
 
     @Override
     public int getIntakeMotorPort() {

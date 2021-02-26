@@ -27,6 +27,10 @@ public interface TurretConstants {
      */
     double getKFF();
     /**
+     * The PID IZone constant
+     */
+    double getIZone();
+    /**
      * The number of encoder ticks per degree traveled on the Turret
      */
     double getEncoderTicksPerDegree();
@@ -50,4 +54,10 @@ public interface TurretConstants {
      * The minimum number of counts that the Turret must be within the margin of error of the setpoint to count as at the setpoint.
      */
     int getMinCountsAtSetpoint();
+
+    /**
+     * Whether the motor is inverted
+     * 
+     */
+    boolean getLeadMotorInverted();
 }

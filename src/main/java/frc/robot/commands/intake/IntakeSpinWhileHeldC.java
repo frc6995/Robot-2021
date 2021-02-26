@@ -3,11 +3,11 @@ package frc.robot.commands.intake;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.IntakeS;
 
-public class IntakeSpinWhileHeld extends CommandBase {
+public class IntakeSpinWhileHeldC extends CommandBase {
   private IntakeS intake;
 
   /** Creates a new IntakeSpinWhileHeld. */
-  public IntakeSpinWhileHeld(IntakeS intake) {
+  public IntakeSpinWhileHeldC(IntakeS intake) {
     this.intake = intake;
     addRequirements(intake);
   }
