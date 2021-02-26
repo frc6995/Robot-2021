@@ -1,12 +1,13 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.interfaces.ColumnConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
-import frc.robot.constants.interfaces.ColumnConstants;
 
 public class ColumnS extends SubsystemBase {
   private NomadTalonSRX front;
@@ -48,12 +49,12 @@ public class ColumnS extends SubsystemBase {
     solenoid.set(Value.kReverse);
   }
 
-  public void spinAcceleratorUpwards(){
-    acceleratorWheels.set(1); // TODO - Make sure that the wheels are not inverted
+  public void spinAcceleratorUpwards(double speed){
+    acceleratorWheels.getPIDController().setReference(speed, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(speed));
   }
 
-  public void spinAcceleratorDownwards(){
-    acceleratorWheels.set(-1);
+  public void spinAcceleratorDownwards(double speed){    
+    acceleratorWheels.getPIDController().setReference(-speed, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(-speed));
   }
 
   public void stopAccelerator(){

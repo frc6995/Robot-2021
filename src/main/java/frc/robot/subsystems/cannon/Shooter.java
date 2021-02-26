@@ -81,7 +81,7 @@ public class Shooter{
         speed = NomadMathUtil.clamp(-0.8, 0.8, speed);
         targetSpeed = speed;
         
-        motor.getPIDController().setReference(speed, ControlType.kVelocity, 0, constants.getKFF());
+        motor.getPIDController().setReference(speed, ControlType.kVelocity, 0, constants.getArbitraryFeedforward().calculate(speed));
 
         shooterState = ShooterStates.RAMPING_UP;
     }
