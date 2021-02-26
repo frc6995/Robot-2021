@@ -12,7 +12,7 @@ public class IntakeS extends SubsystemBase {
   private IntakeConstants constants;
 
   /**
-   * Creates a new IntakeS.
+   * Creates a new IntakeS. System for picking up power cells from the ground
    */
   public IntakeS(IntakeConstants constants, NomadSparkMax intakeMotor, DoubleSolenoid solenoid) {
     this.constants = constants;
@@ -20,27 +20,48 @@ public class IntakeS extends SubsystemBase {
     this.intakeSolenoid = solenoid;
   }
 
-  public IntakeConstants getConstants(){
+  /**
+   * Get the intake constants
+   * 
+   * @return intake constants
+   */
+  public IntakeConstants getConstants() {
     return constants;
   }
 
+  /**
+   * set the speed of the intake motor as a percent
+   * 
+   * @param speed of the intake motor
+   */
   public void setSpeed(double speed) {
     intakeMotor.set(speed);
   }
 
-  @Override
-  public void periodic() {
-  }
-
+  /**
+   * Extends the intake
+   */
   public void extend() {
     intakeSolenoid.set(Value.kForward);
   }
 
+  /**
+   * Retracts the intake
+   */
   public void retract() {
     intakeSolenoid.set(Value.kReverse);
   }
 
+  /**
+   * Get whether the solenoid is extended or retracted
+   * 
+   * @return solenoid position
+   */
   public Value getSolenoidPosition() {
     return intakeSolenoid.get();
+  }
+
+  @Override
+  public void periodic() {
   }
 }
