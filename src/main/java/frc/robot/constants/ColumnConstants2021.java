@@ -42,14 +42,18 @@ public class ColumnConstants2021 implements ColumnConstants {
 
     @Override
     public double getAcceleratorRPM() {
-        // TODO Auto-generated method stub
         return 5000; //free speed for BAG is 13000 RPM
     }
 
     @Override
     public double getAcceleratorCurrentLimit() {
-        // TODO Auto-generated method stub
         return 5;
+    }
+
+    @Override
+    public double[] getFeedForwardConstants() {
+        double[] constants = {0.0, 0.0, 0.0};
+        return constants;
     }
 
 }

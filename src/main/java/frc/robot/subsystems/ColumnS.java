@@ -1,7 +1,12 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.CANPIDController;
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.constants.interfaces.ColumnConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
@@ -13,6 +18,8 @@ public class ColumnS extends SubsystemBase {
   private DoubleSolenoid solenoid; 
   private ColumnConstants constants;
   private NomadSparkMax acceleratorWheels;
+  private CANPIDController acceleratorPid;
+  private SimpleMotorFeedforward accelFeedforward;
 
   /** Creates a new ColumnS. */
   public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadSparkMax acceleratorWheels, DoubleSolenoid solenoid) {
@@ -21,6 +28,9 @@ public class ColumnS extends SubsystemBase {
 
     this.solenoid = solenoid;
     this.acceleratorWheels = acceleratorWheels; // id 43
+    this.acceleratorPid = acceleratorWheels.getPIDController();
+    double[] FFConstants = constants.getFeedForwardConstants();
+    this.accelFeedforward = new SimpleMotorFeedforward(FFConstants[0], FFConstants[1], FFConstants[2]);
   }
 
   public ColumnConstants getConstants(){
@@ -58,5 +68,10 @@ public class ColumnS extends SubsystemBase {
 
   public void stopAccelerator(){
     acceleratorWheels.set(0);
+  }
+
+  public void runVelocityPID(double rpm) {
+    SmartDashboard.putNumber("Accel Target RPM", rpm);
+    acceleratorPid.setReference(rpm, ControlType.kVelocity, 0, accelFeedforward.calculate(rpm));
   }
 }

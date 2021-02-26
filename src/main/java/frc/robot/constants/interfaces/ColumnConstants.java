@@ -49,4 +49,11 @@ public interface ColumnConstants {
      * @return amps
      */
     double getAcceleratorCurrentLimit();
+
+    /**
+     * Get the Simple Motor Feed Forward Constants for the accelerator wheels.
+     * The format is [kS, kV, kA]
+     * @return The Simple Motor Feed Forward Constants
+     */
+    double[] getFeedForwardConstants();
 }
