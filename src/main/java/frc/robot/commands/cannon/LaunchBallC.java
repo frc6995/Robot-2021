@@ -13,19 +13,20 @@ public class LaunchBallC extends CommandBase {
   private ColumnS column;
   private int numBallsToLaunch;
   private int numBallsLaunched;
+  private double speed;
   
     /** Creates a new LaunchBallC that launches 5 balls. */
-    public LaunchBallC(ColumnS column, CannonS cannon, int numBalls) {
-      this(column, cannon, true, numBalls);
+    public LaunchBallC(ColumnS column, CannonS cannon, int numBalls, double speed) {
+      this(column, cannon, true, numBalls, speed);
     }
       /** Creates a new LaunchBallC that launches 5 balls. */
       public LaunchBallC(ColumnS column, CannonS cannon, boolean requireCannon) {
-        this(column, cannon, requireCannon, 5);
+        this(column, cannon, requireCannon, 5, 1);
       }
   
   /** Creates a new LaunchBallC that launches 5 balls. */
   public LaunchBallC(ColumnS column, CannonS cannon) {
-    this(column, cannon, true, 5);
+    this(column, cannon, true, 5, 1);
   }
   
   /**
@@ -34,9 +35,10 @@ public class LaunchBallC extends CommandBase {
    * @param cannon The Cannon Subsystem
    * @param numBalls The number of balls to launch
    */
-  public LaunchBallC(ColumnS column, CannonS cannon, boolean requireCannon, int numBalls){
+  public LaunchBallC(ColumnS column, CannonS cannon, boolean requireCannon, int numBalls, double speed){
     this.cannon = cannon;
     this.column = column;
+    this.speed = speed;
     numBallsToLaunch = numBalls;
     numBallsLaunched = 0;
 
@@ -51,7 +53,7 @@ public class LaunchBallC extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    column.spinAcceleratorUpwards();
+    column.spinAcceleratorUpwards(speed);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

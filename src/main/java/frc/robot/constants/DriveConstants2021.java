@@ -47,7 +47,6 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public boolean getLeftEncoderReversed() {
-        // TODO Auto-generated method stub
         return false;
     }
 
@@ -63,13 +62,11 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public boolean getRightEncoderReversed() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public int[] getRightEncoderPorts() {
-        // TODO Auto-generated method stub
         int[] ports = { 2, 3 };
         return ports;
     }

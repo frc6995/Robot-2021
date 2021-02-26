@@ -7,11 +7,9 @@ package frc.lib.wrappers.gyro;
 import edu.wpi.first.hal.SimDouble;
 import edu.wpi.first.wpilibj.simulation.SimDeviceSim;
 
-/** Class to control a simulated ADXRS450 gyroscope. */
-@SuppressWarnings({"TypeName", "AbbreviationAsWordInName"})
 public class GyroSim {
-  private final SimDouble m_simAngle;
-  private final SimDouble m_simRate;
+  private final SimDouble SIM_ANGLE;
+  private final SimDouble SIM_RATE;
 
   /**
    * Constructs from an Gyro object.
@@ -20,8 +18,8 @@ public class GyroSim {
    */
   public GyroSim(String name, int channel) {
     SimDeviceSim wrappedSimDevice = new SimDeviceSim("Gyro:SimulatedGyro" + "[" + channel + "]");
-    m_simAngle = wrappedSimDevice.getDouble("angle_x");
-    m_simRate = wrappedSimDevice.getDouble("rate_x");
+    SIM_ANGLE = wrappedSimDevice.getDouble("angle_x");
+    SIM_RATE = wrappedSimDevice.getDouble("rate_x");
   }
 
   /**
@@ -30,7 +28,7 @@ public class GyroSim {
    * @param angleDegrees The angle.
    */
   public void setAngle(double angleDegrees) {
-    m_simAngle.set(angleDegrees);
+    SIM_ANGLE.set(angleDegrees);
   }
 
   /**
@@ -39,6 +37,6 @@ public class GyroSim {
    * @param rateDegreesPerSecond The angular rate.
    */
   public void setRate(double rateDegreesPerSecond) {
-    m_simRate.set(rateDegreesPerSecond);
+    SIM_RATE.set(rateDegreesPerSecond);
   }
 }
