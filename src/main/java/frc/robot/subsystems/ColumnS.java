@@ -60,14 +60,9 @@ public class ColumnS extends SubsystemBase {
     solenoid.set(Value.kReverse);
   }
 
-  public void spinAcceleratorUpwards(){
-    acceleratorWheels.set(1); // TODO - Make sure that the wheels are not inverted
-  }
-
-  public void spinAcceleratorDownwards(){
-    acceleratorWheels.set(-1);
-  }
-
+  /**
+   * Stops the accelerator
+   */
   public void stopAccelerator(){
     acceleratorWheels.set(0);
   }

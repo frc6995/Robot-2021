@@ -1,16 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems.cannon;
 
+import java.awt.Point;
+
 import edu.wpi.first.wpilibj.Servo;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.robot.constants.HoodConstants2021;
 import frc.robot.constants.interfaces.HoodConstants;
-
-import java.awt.Point;
 
 /**
  * An adjustible hood that controls the angle at which the power cell is
@@ -36,27 +31,29 @@ public class Hood {
 
     /**
      * Create a new Hood with the {@link HoodConstants2021} as the constants.
-     * @param leftLinearServo The left {@link Servo}
+     * 
+     * @param leftLinearServo  The left {@link Servo}
      * @param rightLinearServo The right {@link Servo}
      */
-    public Hood(Servo leftLinearServo, Servo rightLinearServo){
+    public Hood(Servo leftLinearServo, Servo rightLinearServo) {
         this(new HoodConstants2021(), leftLinearServo, rightLinearServo);
     }
 
     /**
      * Create a new Hood with the specified constants.
-     * @param constants The constants to use in this Hood
-     * @param leftLinearServo The left {@link Servo}
+     * 
+     * @param constants        The constants to use in this Hood
+     * @param leftLinearServo  The left {@link Servo}
      * @param rightLinearServo The right {@link Servo}
      */
-    public Hood(HoodConstants constants, Servo leftLinearServo, Servo rightLinearServo){
+    public Hood(HoodConstants constants, Servo leftLinearServo, Servo rightLinearServo) {
         this.constants = constants;
         this.leftLinearServo = leftLinearServo;
         this.rightLinearServo = rightLinearServo;
         desiredAngle = 0;
     }
 
-    public double getAngleBasedOnDistance(double distance){
+    public double getAngleBasedOnDistance(double distance) {
         Point leftEndPoint = constants.getClosestEndpointDownard(distance);
         Point rightEndPoint = constants.getClosestEndpointUpward(distance);
 
@@ -69,28 +66,41 @@ public class Hood {
 
     /**
      * Get the position of the linear servos, by averaging the two.
+     * 
      * @return The position of the linear servo
      */
-    public double getLinearServoPosition(){
+    public double getLinearServoPosition() {
         return (leftLinearServo.get() + rightLinearServo.get()) / 2;
     }
 
     /**
      * Get the position of the linear servos, choosing whether or not to average.
-     * @param averageOfTwo If true, averages the linear servo positions. If false, just get the left servo's position
+     * 
+     * @param averageOfTwo If true, averages the linear servo positions. If false,
+     *                     just get the left servo's position
      * @return The position of the linear servo
      */
-    public double getLinearServoPosition(boolean averageOfTwo){
+    public double getLinearServoPosition(boolean averageOfTwo) {
         return averageOfTwo ? getLinearServoPosition() : leftLinearServo.get();
     }
 
-    public void moveHoodToPosition(double position){
+    /**
+     * Move the hood to the specified position
+     * 
+     * @param position hood position
+     */
+    public void moveHoodToPosition(double position) {
         leftLinearServo.set(position);
         rightLinearServo.set(position);
         desiredAngle = position;
     }
 
-    public boolean isAtSetpoint(){
+    /**
+     * Check if the servos are at the proper position
+     * 
+     * @return whether it is at position
+     */
+    public boolean isAtSetpoint() {
         return Math.abs(getLinearServoPosition() - desiredAngle) < constants.getAllowableError();
     }
 

@@ -249,7 +249,7 @@ public class RobotContainer {
     aimCannonCG.addRequirements(cannonS);
     // Shoot Cannon
     shootCannonCG = new SequentialCommandGroup(new SpinUpShooterC(cannonS, false), shooterWaitUntilReadyC,
-        new LaunchBallC(columnS, cannonS, false), new SpinDownShooterC(cannonS, false));
+        new LaunchBallC(cannonS, false), new SpinDownShooterC(cannonS, false));
     shootCannonCG.addRequirements(cannonS);
   }
 
