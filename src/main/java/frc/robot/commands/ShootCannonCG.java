@@ -10,7 +10,7 @@ public class ShootCannonCG extends SequentialCommandGroup {
   /** Creates a new ShootCannonCG. */
   public ShootCannonCG(CannonS cannonS) {
     addCommands(new SequentialCommandGroup(new SpinUpShooterC(cannonS, false),
-      new LaunchBallC(cannonS, false), new SpinDownShooterC(cannonS, false));
+      new LaunchBallC(cannonS, false), new SpinDownShooterC(cannonS, false)));
     addRequirements(cannonS);
   }
 }
