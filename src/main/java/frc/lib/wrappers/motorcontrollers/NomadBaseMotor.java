@@ -21,13 +21,13 @@ public interface NomadBaseMotor extends SpeedController{
      * 
      * @return Whether the motor controller is lazy
      */
-    public boolean isLazy();
+    boolean isLazy();
     /**
      * Set the lazy mode
      * 
      * @param isLazy A boolean for the lazy mode, where true is lazy on
      */
-    public void setLazy(boolean isLazy);
+    void setLazy(boolean isLazy);
 
     /**
      * Attempts to set follower mode, following the given NomadBaseMotor.
@@ -36,18 +36,18 @@ public interface NomadBaseMotor extends SpeedController{
      * @throws IllegalArgumentException if the given motor is an incompatible type.
      */
 
-    public NomadBaseMotor setLeader(NomadBaseMotor leader) throws IllegalArgumentException;
+    NomadBaseMotor setLeader(NomadBaseMotor leader) throws IllegalArgumentException;
     /**
      * Set whether the motor is inverted.
      * @param inverted Inverted is true.
      */
-    public void setInverted(boolean inverted);
+    void setInverted(boolean inverted);
     /**
      * @return The actual percent output applied to the motor. 
      */
-    public double getActualOutputPercent();
+    double getActualOutputPercent();
 
-    public void setOutputVoltage(double voltage);
+    void setOutputVoltage(double voltage);
 
 
 

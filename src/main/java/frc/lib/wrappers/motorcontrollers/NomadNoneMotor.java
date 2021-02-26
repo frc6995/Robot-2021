@@ -16,73 +16,54 @@ public class NomadNoneMotor implements NomadBaseMotor{
 
     @Override
     public boolean isLazy() {
-        
         return false;
     }
 
     @Override
     public void setLazy(boolean isLazy) {
-        
-
     }
 
     @Override
     public NomadBaseMotor setLeader(NomadBaseMotor leader) {
         return this;
-
     }
 
     @Override
-    public void setInverted(boolean inverted) {
-        
-
+    public void setInverted(boolean inverted) {        
     }
 
     @Override
     public void set(double speed) {
-        
-
     }
 
     @Override
     public double get() {
-        
         return 0;
     }
 
     @Override
     public boolean getInverted() {
-        
         return false;
     }
 
     @Override
     public void disable() {
-        
-
     }
 
     @Override
     public void stopMotor() {
-        
-
     }
 
     @Override
-    public void pidWrite(double output) {
-        
-
+    public void pidWrite(double output) {    
     }
 
     @Override
-    public double getActualOutputPercent() {
-        
+    public double getActualOutputPercent() {        
         return 0;
     }
 
     @Override
     public void setOutputVoltage(double voltage) {
-        // TODO Auto-generated method stub
-
     }
 }
