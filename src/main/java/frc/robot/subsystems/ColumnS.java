@@ -41,22 +41,31 @@ public class ColumnS extends SubsystemBase {
     front.set(speed);
   }
 
+  /**
+   * Enables the stopper
+   */
   public void enableStopper(){
     solenoid.set(Value.kForward);
   }
   
+  /**
+   * Disables the stopper
+   */
   public void disableStopper(){
     solenoid.set(Value.kReverse);
   }
 
-  public void spinAcceleratorUpwards(double speed){
-    acceleratorWheels.getPIDController().setReference(speed, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(speed));
+  /**
+   * Spins accelerator wheels to a specificate rpm
+   * @param rpm target speed
+   */
+  public void spinToRPM(double rpm){
+    acceleratorWheels.getPIDController().setReference(rpm, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(rpm));
   }
 
-  public void spinAcceleratorDownwards(double speed){    
-    acceleratorWheels.getPIDController().setReference(-speed, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(-speed));
-  }
-
+  /**
+   * Stops the accelerator wheels
+   */
   public void stopAccelerator(){
     acceleratorWheels.set(0);
   }
