@@ -1,9 +1,11 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
@@ -22,6 +24,7 @@ public class ColumnS extends SubsystemBase {
 
     this.solenoid = solenoid;
     this.acceleratorWheels = acceleratorWheels; // id 43
+    this.acceleratorWheels.setIdleMode(IdleMode.kCoast);
   }
 
   /**
@@ -70,6 +73,10 @@ public class ColumnS extends SubsystemBase {
     acceleratorWheels.getPIDController().setReference(rpm, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(rpm));
   }
 
+  public void spinAccel(double speed) {
+    acceleratorWheels.set(speed);
+  }
+
   /**
    * Stops the accelerator wheels
    */
@@ -79,6 +86,7 @@ public class ColumnS extends SubsystemBase {
  
   @Override
   public void periodic() {
-    // This method will be called once per scheduler run
+    SmartDashboard.putNumber("AcceleratorSpeed", acceleratorWheels.getEncoder().getVelocity());
+    SmartDashboard.putNumber("AcceleratorPos", acceleratorWheels.getEncoder().getPosition());
   }
 }

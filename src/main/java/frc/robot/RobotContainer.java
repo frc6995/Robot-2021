@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -39,6 +40,7 @@ import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.column.ColumnFeedC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
+import frc.robot.commands.intake.IntakeSpinC;
 import frc.robot.commands.intake.IntakeToggleC;
 import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
@@ -180,8 +182,8 @@ public class RobotContainer {
       drivebaseLeftLeader,   drivebaseRightLeader,
       drivebaseLeftEncoder,   drivebaseRightEncoder, gyro);
 
-    NomadVictorSPX agitatorLeft = new NomadVictorSPX(agitatorConstants.getLeftMotorID());
-    NomadVictorSPX agitatorRight = new NomadVictorSPX(agitatorConstants.getRightMotorID());
+    NomadTalonSRX agitatorLeft = new NomadTalonSRX(agitatorConstants.getLeftMotorID());
+    NomadTalonSRX agitatorRight = new NomadTalonSRX(agitatorConstants.getRightMotorID());
     agitatorS = new AgitatorS(agitatorConstants, agitatorLeft, agitatorRight);
 
     NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
@@ -197,7 +199,7 @@ public class RobotContainer {
     Limelight limelight = new Limelight("limelight");
 
     limelightS = new LimelightS(limelight, limelightConstants);
-
+    /**
     HoodConstants hoodConstants = cannonConstants.getHoodConstants();
     ShooterConstants shooterConstants = cannonConstants.getShooterConstants();
     TurretConstants turretConstants = cannonConstants.getTurretConstants();
@@ -216,6 +218,7 @@ public class RobotContainer {
 
     cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor,
         turretLimitSwitch);
+    */
 
   }
 
@@ -237,9 +240,13 @@ public class RobotContainer {
           drivebaseS.tankDriveVolts(0, 0);
         }, drivebaseS));
 
+    SmartDashboard.putData(new IntakeSpinC(intakeS));
     agitatorSpinC = new AgitatorSpinC(agitatorS);
+    SmartDashboard.putData(agitatorSpinC);
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
+    SmartDashboard.putData(intakeToggleC);
     columnFeedC = new ColumnFeedC(columnS);
+    SmartDashboard.putData(columnFeedC);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
 
     // AimCannon Command Group - Update nulls with hardware once created
@@ -247,10 +254,10 @@ public class RobotContainer {
      * A command group that finds the target, aims the hood, aims the turret, and
      * preps the shooter for launch.
      */
-    aimCannonCG = new AimCannonCG(limelightS, cannonS);
+    //aimCannonCG = new AimCannonCG(limelightS, cannonS);
     
     // Shoot Cannon
-    shootCannonCG = new ShootCannonCG(cannonS);
+    //shootCannonCG = new ShootCannonCG(cannonS);
   }
 
   /**

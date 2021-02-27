@@ -24,7 +24,7 @@ public class SpinUpShooterC extends CommandBase {
 
   @Override
   public void initialize() {
-    cannon.pidShooterToTargetSpeed(0.8);
+    cannon.pidShooterToTargetSpeed(4500);
   }
 
   @Override

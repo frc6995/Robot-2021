@@ -15,7 +15,9 @@ public class ColumnFeedC extends CommandBase {
   @Override
   public void initialize() {
     column.disableStopper();
-    column.setColumnBeltsSpeed(column.getConstants().getColumnLoadSpeed());
+    column.setColumnBeltsSpeed(column.getConstants().getColumnFeedSpeed());
+    column.spinAccel(0.8);
+    //column.spinToRPM(3000);
   }
 
   @Override
@@ -25,6 +27,7 @@ public class ColumnFeedC extends CommandBase {
   @Override
   public void end(boolean interrupted) {
     column.setColumnBeltsSpeed(0);
+    column.stopAccelerator();
     column.enableStopper();
   }
 

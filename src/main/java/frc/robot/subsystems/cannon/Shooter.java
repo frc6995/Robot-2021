@@ -2,6 +2,7 @@ package frc.robot.subsystems.cannon;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.IdleMode;
 
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
@@ -67,6 +68,8 @@ public class Shooter {
         motor.getPIDController().setD(constants.getKD());
         motor.getPIDController().setFF(constants.getKFF());
         motor.getPIDController().setIZone(constants.getIZone());
+        motor.setIdleMode(IdleMode.kCoast);
+        motor.burnFlash();
     }
 
     /**
@@ -84,7 +87,7 @@ public class Shooter {
      * @param speed The desired motor speed
      */
     public void pidToTargetSpeed(double speed) {
-        speed = NomadMathUtil.clamp(-0.8, 0.8, speed);
+        //speed = NomadMathUtil.clamp(-0.8, 0.8, speed);
         targetSpeed = speed;
         
         motor.getPIDController().setReference(speed, ControlType.kVelocity, 0, constants.getArbitraryFeedforward().calculate(speed));

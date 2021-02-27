@@ -2,6 +2,7 @@ package frc.robot.subsystems.cannon;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -104,6 +105,10 @@ public class Turret {
     homedCounter = new Counter(limitSwitch);
     homedCounter.reset();
     encoder = sparkMax.getEncoder();
+    this.sparkMax.enableSoftLimit(SoftLimitDirection.kForward, true);
+    this.sparkMax.setSoftLimit(SoftLimitDirection.kForward, (float) constants.getSoftLimit());
+    this.sparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    this.sparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float) constants.getSoftLimit());
   }
 
   // Don't want anyone to be able to run this, but it will make it easier for the
@@ -177,7 +182,7 @@ public class Turret {
     sparkMax.getPIDController().setFF(constants.getKFF());
 
     // TODO - set velocity/acceleration limits
-    // sparkMax.getPIDController().setSmartMotionMaxAccel(maxAccel, slotID);
+    //sparkMax.getPIDController().setSmartMotionMaxAccel(maxAccel, slotID);
     // sparkMax.getPIDController().setSmartMotionMaxVelocity(maxVel, slotID);
     // sparkMax.getPIDController().setSmartMotionMinOutputVelocity(minVel, slotID);
     // sparkMax.getPIDController().setSmartMotionAccelStrategy(accelStrategy,
@@ -212,6 +217,11 @@ public class Turret {
       return;
 
     requestedState = desiredState;
+    if (setpoint < -constants.getSoftLimit()) {
+      setpoint = -constants.getSoftLimit();
+    } else if (setpoint > constants.getSoftLimit()) {
+      setpoint = constants.getSoftLimit();
+    }
     this.setpoint = setpoint;
 
     if (requestedState == TurretRequestedStates.HOME)

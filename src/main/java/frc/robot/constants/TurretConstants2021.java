@@ -55,7 +55,7 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public int getSparkMaxPortID() {
-        return 1;
+        return 61;
     }
 
     @Override
@@ -70,7 +70,6 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public boolean getLeadMotorInverted() {
-        // TODO Auto-generated method stub
         return false;
     }
 }
