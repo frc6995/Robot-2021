@@ -174,8 +174,11 @@ public class RobotContainer {
 
     AHRS gyro = new AHRS(SPI.Port.kMXP);
 
-    drivebaseS = new DrivebaseS(driveConstants, autoConstants, drivebaseLeftLeader, drivebaseRightLeader,
-        drivebaseLeftFollower, drivebaseRightFollower, drivebaseLeftEncoder, drivebaseRightEncoder, gyro);
+    drivebaseS = new DrivebaseS(
+      driveConstants,
+      autoConstants,
+      drivebaseLeftLeader,   drivebaseRightLeader,
+      drivebaseLeftEncoder,   drivebaseRightEncoder, gyro);
 
     NomadVictorSPX agitatorLeft = new NomadVictorSPX(agitatorConstants.getLeftMotorID());
     NomadVictorSPX agitatorRight = new NomadVictorSPX(agitatorConstants.getRightMotorID());

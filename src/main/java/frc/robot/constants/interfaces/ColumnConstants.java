@@ -1,5 +1,7 @@
 package frc.robot.constants.interfaces;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+
 /** Constants for the column subsystem*/
 public interface ColumnConstants {
     /**
@@ -49,4 +51,19 @@ public interface ColumnConstants {
      * @return amps
      */
     double getAcceleratorCurrentLimit();
+
+    /**Get the accelerator's P PID constant */
+    double getAccelaratorP();
+
+    /**Get the accelerator's I PID constant */
+    double getAcceleratorI();
+
+    /**Get the accelerator's D PID constant */
+    double getAcceleratorD();
+
+    /**Get the accelerator's FF PID constant */
+    double getAcceleratorFF();
+
+    /**Get the accelerator's arbitrary FF PID constant*/
+    SimpleMotorFeedforward getAcceleratorArbitraryFF();
 }

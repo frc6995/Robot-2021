@@ -121,7 +121,6 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
         }
     }
     
-    @SuppressWarnings("unchecked")
     public NomadBaseMotor setLeader( NomadBaseMotor leader){
         manualFollowing = false;
         this.leader = leader;
@@ -133,6 +132,7 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
         }
         return this;
     }
+
     @Override
     public double getActualOutputPercent() {
         
@@ -145,13 +145,11 @@ public class NomadTalonSRX extends WPI_TalonSRX implements NomadBaseMotor {
 
     @Override
     public void initSendable(SendableBuilder builder) {
-        // TODO Auto-generated method stub
         super.initSendable(builder);
     }
 
     @Override
     public void setOutputVoltage(double outputVolts) {
-        // TODO Auto-generated method stub
         super.setVoltage(outputVolts);
     }
 }

@@ -1,20 +1,12 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANSparkMaxLowLevel.MotorType;
-
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
-import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -22,18 +14,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
-import frc.lib.wrappers.gyro.GyroSim;
-import frc.lib.wrappers.motorcontrollers.NomadPWMMotor;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
 
 public class DrivebaseS extends DifferentialDrivebaseS {
   private NomadSparkMax leftLeader;
   private NomadSparkMax rightLeader;
-  private NomadSparkMax leftFollower;
-  private NomadSparkMax rightFollower;
   
   //private DifferentialDrive m_drive;
 
@@ -55,22 +42,15 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private Field2d m_field = new Field2d();
 
   /** Creates a new AutonomousDrivebaseS. */
-  public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants, NomadSparkMax leftLeader, NomadSparkMax rightLeader, NomadSparkMax leftFollower, NomadSparkMax rightFollower, Encoder leftEncoder, Encoder rightEncoder, Gyro gyro) {
+  public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants, NomadSparkMax leftLeader, NomadSparkMax rightLeader, Encoder leftEncoder, Encoder rightEncoder, Gyro gyro) {
     super(driveConstants, autoConstants);
     this.leftLeader = leftLeader;
     this.rightLeader = rightLeader;
-    this.leftFollower = leftFollower;
-    this.rightFollower = rightFollower;
     this.m_leftEncoder = leftEncoder;
     this.m_rightEncoder = rightEncoder;
     this.gyro = gyro;
 
-    
-
-
-    //m_drive = new DifferentialDrive(leftLeader, rightLeader);
-
-    
+    //m_drive = new DifferentialDrive(leftLeader, rightLeader);    
 
     m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
     m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
@@ -86,8 +66,6 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         driveConstants.getkTrackWidthMeters(),
         driveConstants.getkWheelDiameter()/2.0,
         driveConstants.getSimEncoderStdDev());
-
-        
     //m_gyroSim = new GyroSim("NavX", 1);
     
     SmartDashboard.putData("Field", m_field);
@@ -107,8 +85,11 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     // Set the inputs to the system. Note that we need to convert
     // the [-1, 1] PWM signal to voltage by multiplying it by the
     // robot controller voltage.
-    m_driveSim.setInputs(leftLeader.get() * RobotController.getInputVoltage(),
-    (driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightLeader.get() * RobotController.getInputVoltage());
+    double rightValueWithInversion = driveConstants.getDrivebaseRightSideInverted() ? -rightLeader.get() : rightLeader.get(); 
+    double param1 = leftLeader.get() * RobotController.getInputVoltage();
+    double param2 = rightValueWithInversion * RobotController.getInputVoltage();
+    
+    m_driveSim.setInputs(param1, param2);
 
     // Advance the model by 20 ms. Note that if you are running this
     // subsystem in a separate thread or have changed the nominal timestep
@@ -121,12 +102,8 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
     m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
     m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
-
-
     
    gyroSimAngle = -m_driveSim.getHeading().getDegrees();
-
-
   }
 
   @Override
@@ -216,13 +193,11 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public double getLeftSetSpeed() {
-    // TODO Auto-generated method stub
     return leftLeader.getActualOutputPercent();
   }
 
   @Override
   public double getRightSetSpeed() {
-    // TODO Auto-generated method stub
     return rightLeader.getActualOutputPercent();
   }
 

@@ -19,10 +19,8 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     protected ControlType lastMode = null;
 
     @Override
-    public double get() {
-        // TODO Auto-generated method stub
-        
-        return (RobotBase.isReal() ? super.get() : lastPower);
+    public double get() {        
+        return RobotBase.isReal() ? super.get() : lastPower;
     }
     /**
      * Constructs a brushless {@link CANSparkMax} with the given port.
@@ -99,7 +97,6 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
 
     @Override
     public void set(double speed) {
-        // TODO Auto-generated method stub
         set(speed, ControlType.kDutyCycle);
     }
 
@@ -107,14 +104,18 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
         SmartDashboard.putNumber("SPARK MAX " + getDeviceId(), setpoint);
         if(!RobotBase.isReal()){
             lastPower = setpoint;
-        } else
-        if (lazy) {
-            if (setpoint != lastPower || type != lastMode) {
-                lastPower = setpoint;
-                lastMode = type;
-                super.getPIDController().setReference(setpoint, type);
-            }
-        } else {
+            return;
+        }
+        else if (!lazy) {
+            return;
+        }
+        
+        if (setpoint != lastPower || type != lastMode) {
+            lastPower = setpoint;
+            lastMode = type;
+            super.getPIDController().setReference(setpoint, type);
+        }
+        else {
             lastPower = setpoint;
             super.getPIDController().setReference(setpoint, type);
         }
@@ -123,7 +124,6 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
 
     @Override
     public double getActualOutputPercent() {
-        
         if(RobotBase.isReal()) {
             return getAppliedOutput();
         } else {
@@ -132,7 +132,6 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
 
     public void setOutputVoltage(double outputVolts) {
-        // TODO Auto-generated method stub
         if (RobotBase.isReal()) {
             super.setVoltage(outputVolts);
         } else{

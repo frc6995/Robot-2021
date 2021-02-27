@@ -2,6 +2,8 @@
 
 package frc.robot.constants.interfaces;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
+
 /** The constants for the {@link Shooter}. */
 public interface ShooterConstants {
     /**
@@ -67,4 +69,6 @@ public interface ShooterConstants {
      * Get the allowable error when comparing the Shooter's voltage to its average voltage
      */
     double getAllowableVoltageError();
+    /**Get the Shooter's arbitrary feed forward */
+    SimpleMotorFeedforward getArbitraryFeedforward();
 }

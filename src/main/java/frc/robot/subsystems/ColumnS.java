@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import com.revrobotics.ControlType;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -61,7 +63,15 @@ public class ColumnS extends SubsystemBase {
   }
 
   /**
-   * Stops the accelerator
+   * Spins accelerator wheels to a specificate rpm
+   * @param rpm target speed
+   */
+  public void spinToRPM(double rpm){
+    acceleratorWheels.getPIDController().setReference(rpm, ControlType.kVelocity, 0, constants.getAcceleratorArbitraryFF().calculate(rpm));
+  }
+
+  /**
+   * Stops the accelerator wheels
    */
   public void stopAccelerator(){
     acceleratorWheels.set(0);

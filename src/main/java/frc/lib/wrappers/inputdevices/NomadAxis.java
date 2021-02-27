@@ -2,10 +2,6 @@ package frc.lib.wrappers.inputdevices;
 
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.hal.HAL;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
-import edu.wpi.first.wpiutil.math.MathUtil;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 
@@ -70,19 +66,20 @@ public class NomadAxis {
      * @return the value of the axis, or 0.0 if the map is not correct.
      */
   public final double get() {
-      if (map.equals(NomadOperatorConsole.getSelectedMap())) {
-        double output = customBehavior.getAsDouble();
-        if(output >= 0) {
-            output = NomadMathUtil.lerp(output, positiveDeadzone, 1, 0, 1); //Deadzone adjustment;
-            output = MathUtil.clamp(output, 0, 1);
-        } else {
-            output = NomadMathUtil.lerp(output, -1, negativeDeadzone, -1, 0); //Deadzone adjustment;
-            output = MathUtil.clamp(output, -1, 0);
-        }
-        output *= scaleFactor;
-        return output;
-      }
-      return 0.0;
+    if (!map.equals(NomadOperatorConsole.getSelectedMap())) return 0.0;
+
+    double output = customBehavior.getAsDouble();
+    
+    if (output >= 0) {
+        output = NomadMathUtil.lerp(output, positiveDeadzone, 1, 0, 1); //Deadzone adjustment;
+        output = NomadMathUtil.clamp(output, 0.0, 1.0);
+    } 
+    else {
+        output = NomadMathUtil.lerp(output, -1, negativeDeadzone, -1, 0); //Deadzone adjustment;
+        output = NomadMathUtil.clamp(output, -1.0, 0.0);
+    }
+    
+    return output * scaleFactor;
 
   }
   /**

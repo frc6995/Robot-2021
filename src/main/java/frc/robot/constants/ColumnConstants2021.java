@@ -2,6 +2,7 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
 import frc.robot.constants.interfaces.ColumnConstants;
 
@@ -34,20 +35,42 @@ public class ColumnConstants2021 implements ColumnConstants {
 
     @Override
     public double getColumnFeedSpeed() {
-        // TODO Auto-generated method stub
         return 0.75;
     }
 
     @Override
     public double getAcceleratorRPM() {
-        // TODO Auto-generated method stub
         return 5000; //free speed for BAG is 13000 RPM
     }
 
     @Override
     public double getAcceleratorCurrentLimit() {
-        // TODO Auto-generated method stub
         return 5;
+    }
+
+    @Override
+    public double getAccelaratorP() {
+        return 0;
+    }
+
+    @Override
+    public double getAcceleratorI() {
+        return 0;
+    }
+
+    @Override
+    public double getAcceleratorD() {
+        return 0;
+    }
+
+    @Override
+    public double getAcceleratorFF() {
+        return 0;
+    }
+
+    @Override
+    public SimpleMotorFeedforward getAcceleratorArbitraryFF() {        
+        return new SimpleMotorFeedforward(0.846, 0.0478, 0.000244);
     }
 
 }
