@@ -9,7 +9,7 @@ public class AgitatorS extends SubsystemBase {
   private NomadVictorSPX rightMotor;
   private AgitatorConstants constants;
   
-  /** Creates a new AgitatorS.*/
+  /** Creates a new AgitatorS. Spins the powers cells into the column from the intake*/
   public AgitatorS(AgitatorConstants constants, NomadVictorSPX leftMotor, NomadVictorSPX rightMotor) {
     this.constants = constants;
 
@@ -17,15 +17,14 @@ public class AgitatorS extends SubsystemBase {
     this.rightMotor = rightMotor;
   }
 
+  /**
+   * Gets the agitator constants
+   * @return agitator constants
+   */
   public AgitatorConstants getConstants() {
     return constants;
   }
   
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
-
   /**
    * Sets the speed of the left motor to a given value
    */
@@ -53,5 +52,10 @@ public class AgitatorS extends SubsystemBase {
    */
   public void stopRightMotor(){
     rightMotor.stopMotor();
+  }
+
+  @Override
+  public void periodic() {
+    // This method will be called once per scheduler run
   }
 }

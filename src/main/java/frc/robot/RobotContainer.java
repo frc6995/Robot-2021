@@ -1,25 +1,15 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-//#region imports
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
@@ -31,13 +21,14 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
+import frc.robot.commands.AimCannonCG;
+import frc.robot.commands.ShootCannonCG;
 import frc.robot.commands.agitator.AgitatorSpinC;
 import frc.robot.commands.cannon.AimHoodC;
 import frc.robot.commands.cannon.AimTurretC;
@@ -77,8 +68,6 @@ import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.IntakeS;
 import frc.robot.subsystems.LimelightS;
 import frc.robot.subsystems.cannon.CannonS;
-//#endregion imports
-
 
 /**
  * This class is where the bulk of the robot should be declared. Since
@@ -101,16 +90,14 @@ public class RobotContainer {
   private HoodConstants hoodConstants;
   private TurretConstants turretConstants;
   private CannonConstants cannonConstants;
-  //
-  //#region subsystems
+
   private AgitatorS agitatorS;
   private IntakeS intakeS;
   private ColumnS columnS;
   private DrivebaseS drivebaseS;
   private LimelightS limelightS;
   private CannonS cannonS;
-  //#endregion subsystems
-  //#region commands
+
   private AgitatorSpinC agitatorSpinC;
   private IntakeToggleC intakeToggleC;
   private StoreBallsCG storeBallsCG;
@@ -122,18 +109,18 @@ public class RobotContainer {
   private SequentialCommandGroup aimCannonCG;
   private SequentialCommandGroup shootCannonCG;
   private WaitUntilCommand shooterWaitUntilReadyC;
-  //#endregion commands
+
   private XboxController controller;
 
   private boolean init = false;
 
   /**
-   * The container for the robot. Contains constant files, controllers, subsystems, trajectories, commands,
-   * and default command bindings, to be created in that order.
+   * The container for the robot. Contains constant files, controllers,
+   * subsystems, trajectories, commands, and default command bindings, to be
+   * created in that order.
    */
   public RobotContainer() {
     createConstantsFiles();
-    //createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
     createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createSubsystems();
@@ -149,7 +136,7 @@ public class RobotContainer {
   private void createConstantsFiles() {
     agitatorConstants = new AgitatorConstants2021();
     intakeConstants = new IntakeConstants2021();
-    
+
     driveConstants = new DriveConstants2021();
     autoConstants = new AutoConstants2021(driveConstants);
     driverStationConstants = new DriverStationConstants2021();
@@ -158,35 +145,32 @@ public class RobotContainer {
 
     columnConstants = new ColumnConstants2021();
 
-    cannonConstants = new CannonConstants2021(new ShooterConstants2021(), new HoodConstants2021(), new TurretConstants2021());
+    cannonConstants = new CannonConstants2021(new ShooterConstants2021(), new HoodConstants2021(),
+        new TurretConstants2021());
   }
 
   /**
    * Creates the subsystems.
    */
   private void createSubsystems() {
-    
+
     NomadSparkMax drivebaseLeftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(),
-        MotorType.kBrushless, 
-        driveConstants.getLeftDriveLeaderInverted());
+        MotorType.kBrushless, driveConstants.getLeftDriveLeaderInverted());
 
     NomadSparkMax drivebaseRightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
-        MotorType.kBrushless,
-        driveConstants.getRightDriveLeaderInverted());
+        MotorType.kBrushless, driveConstants.getRightDriveLeaderInverted());
 
     NomadSparkMax drivebaseLeftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(),
-        MotorType.kBrushless, 
-        driveConstants.getLeftDriveFollowerInverted(), drivebaseLeftLeader);
+        MotorType.kBrushless, driveConstants.getLeftDriveFollowerInverted(), drivebaseLeftLeader);
 
     NomadSparkMax drivebaseRightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
-        MotorType.kBrushless,
-        driveConstants.getRightDriveFollowerInverted(), drivebaseRightLeader);
-    
-    Encoder drivebaseLeftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
-        driveConstants.getLeftEncoderReversed());
+        MotorType.kBrushless, driveConstants.getRightDriveFollowerInverted(), drivebaseRightLeader);
 
-    Encoder drivebaseRightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
-        driveConstants.getRightEncoderReversed());
+    Encoder drivebaseLeftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0],
+        driveConstants.getLeftEncoderPorts()[1], driveConstants.getLeftEncoderReversed());
+
+    Encoder drivebaseRightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0],
+        driveConstants.getRightEncoderPorts()[1], driveConstants.getRightEncoderReversed());
 
     AHRS gyro = new AHRS(SPI.Port.kMXP);
 
@@ -201,7 +185,8 @@ public class RobotContainer {
     agitatorS = new AgitatorS(agitatorConstants, agitatorLeft, agitatorRight);
 
     NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
-    DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
+    DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(),
+        intakeConstants.getSolenoidRevPort());
     intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
 
     NomadTalonSRX columnFront = new NomadTalonSRX(columnConstants.getTalonID());
@@ -220,16 +205,17 @@ public class RobotContainer {
     Servo hoodLeftServo = new Servo(hoodConstants.getLeftServoPort());
     Servo hoodRightServo = new Servo(hoodConstants.getRightServoPort());
 
-    NomadSparkMax shooterLeadMotor = new NomadSparkMax(shooterConstants.getLeadMotorID(), MotorType.kBrushless, shooterConstants.getLeadMotorInverted());
-    NomadSparkMax shooterFollowerMotor = new NomadSparkMax(shooterConstants.getFollowerMotorID(),
-            MotorType.kBrushless,
-            shooterConstants.getFollowerMotorInverted(),
-            shooterLeadMotor);
+    NomadSparkMax shooterLeadMotor = new NomadSparkMax(shooterConstants.getLeadMotorID(), MotorType.kBrushless,
+        shooterConstants.getLeadMotorInverted());
+    NomadSparkMax shooterFollowerMotor = new NomadSparkMax(shooterConstants.getFollowerMotorID(), MotorType.kBrushless,
+        shooterConstants.getFollowerMotorInverted(), shooterLeadMotor);
 
-    NomadSparkMax turretMotor = new NomadSparkMax(turretConstants.getSparkMaxPortID(), MotorType.kBrushless, turretConstants.getLeadMotorInverted());
+    NomadSparkMax turretMotor = new NomadSparkMax(turretConstants.getSparkMaxPortID(), MotorType.kBrushless,
+        turretConstants.getLeadMotorInverted());
     DigitalInput turretLimitSwitch = new DigitalInput(turretConstants.getLimitSwitchChannelID());
-  
-    cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor, turretLimitSwitch);
+
+    cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor,
+        turretLimitSwitch);
 
   }
 
@@ -241,42 +227,30 @@ public class RobotContainer {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory,
-    drivebaseS, driveConstants, autoConstants);
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory, drivebaseS,
+        driveConstants, autoConstants);
 
     ramseteCommandGroup = new SequentialCommandGroup(
-      new InstantCommand(() -> 
-        drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS),
-      new WaitCommand(0.2),
-      ramseteCommand,
-      new InstantCommand(() -> 
-        {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS)
-    );
+        new InstantCommand(() -> drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS),
+        new WaitCommand(0.2), ramseteCommand, new InstantCommand(() -> {
+          System.out.println("Stopping trajectory");
+          drivebaseS.tankDriveVolts(0, 0);
+        }, drivebaseS));
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
     columnFeedC = new ColumnFeedC(columnS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
 
-    shooterWaitUntilReadyC = new WaitUntilCommand(() -> cannonS.isShooterAtSpeed());
     // AimCannon Command Group - Update nulls with hardware once created
-    /**A command group that finds the target, aims the hood, aims the turret, and preps the shooter for launch. */
-    aimCannonCG = new SequentialCommandGroup(
-      new FindTargetC(limelightS),
-      new ParallelCommandGroup(
-        new AimHoodC(limelightS, cannonS, false),
-        new AimTurretC(limelightS, cannonS, false),
-        new SpinUpShooterC(cannonS, false)
-      )
-    );
-    aimCannonCG.addRequirements(cannonS);
+    /**
+     * A command group that finds the target, aims the hood, aims the turret, and
+     * preps the shooter for launch.
+     */
+    aimCannonCG = new AimCannonCG(limelightS, cannonS);
+    
     // Shoot Cannon
-    shootCannonCG = new SequentialCommandGroup(
-      new SpinUpShooterC(cannonS, false),
-      shooterWaitUntilReadyC,
-      new LaunchBallC(columnS, cannonS, false),
-      new SpinDownShooterC(cannonS, false));
-    shootCannonCG.addRequirements(cannonS);
+    shootCannonCG = new ShootCannonCG(cannonS);
   }
 
   /**
@@ -287,13 +261,14 @@ public class RobotContainer {
   }
 
   /**
-   * Creates the operator console. In actual use, this method would have more constants files for other subsystems.
+   * Creates the operator console. In actual use, this method would have more
+   * constants files for other subsystems.
+   * 
    * @param driveConstants Drivebase constants to use in the input map creation.
-   * @param map The map from NomadInputMaps to select.
+   * @param map            The map from NomadInputMaps to select.
    */
-  private void createControllers(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadMappingEnum map) {
-    //Robot2021NomadInputMaps.createMaps(driveConstants, driverStationConstants);
-    //NomadOperatorConsole.setMap(map);
+  private void createControllers(DriveConstants driveConstants, DriverStationConstants driverStationConstants,
+      NomadMappingEnum map) {
     controller = new XboxController(0);
   }
 
@@ -317,19 +292,15 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Reset odometry to starting pose of trajectory.
-
     // Run path following command, then stop at the end.
     return ramseteCommandGroup;
   }
+
   /**
-   * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
+   * Update the telemetry. This method in RobotContainer is mostly provided for
+   * quick testing. Most telemetry should be in subsystems.
    */
   public void updateTelemetry() {
-    if (init) {
-      SmartDashboard.putNumber("driveFwdBack",
-          NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
-      SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
-    }
   }
 
 }
