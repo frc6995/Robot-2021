@@ -1,7 +1,3 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import java.util.function.DoubleSupplier;
@@ -16,7 +12,7 @@ import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
 import frc.robot.constants.interfaces.DriverStationConstants;
 
-/** Add your docs here. */
+/** The collection of input maps for the 2021 robot.*/
 public class Robot2021NomadInputMaps extends NomadInputMaps {
 
 

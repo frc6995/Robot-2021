@@ -9,17 +9,20 @@ import edu.wpi.first.wpilibj.Spark;
 
 /** Add your docs here. */
 public class NomadPWMMotor extends Spark implements NomadBaseMotor {
+    private boolean laziness = false;
+
     public NomadPWMMotor(int channel) {
         super(channel);
     }
 
     @Override
     public boolean isLazy() {
-        return false;
+        return laziness;
     }
 
     @Override
     public void setLazy(boolean isLazy) {
+        laziness = isLazy;
     }
 
     @Override
