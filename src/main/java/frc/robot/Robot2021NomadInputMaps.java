@@ -64,20 +64,14 @@ public class Robot2021NomadInputMaps extends NomadInputMaps {
         return map;
     }
 
-    public static NomadInputMap createTriggerDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
-        createDriveControllerMap(driveConstants, driverStationConstants, map, name); //Add the default left stick drive behavior
-        map.withAxis( //
-            map.getAxis(driveConstants.getDriveControllerFwdBackAxis()) //Change the axis behavior for fwd/back 
-            .withCustomBehavior(
-                (DoubleSupplier) () -> {
-                    return NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftTrigger.value) 
-                    - NomadOperatorConsole.getRawAxis(XboxController.Axis.kRightTrigger.value);
-                }
-            )
-        )
-        .withType(NomadMappingEnum.TRIGGER_DRIVE)
-        ;
-        return map;
+    public static NomadInputMap createTriggerDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {        
+        createDriveControllerMap(driveConstants, driverStationConstants, map, name);
+
+        DoubleSupplier customBehavior = () -> NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftTrigger.value) - NomadOperatorConsole.getRawAxis(XboxController.Axis.kRightTrigger.value);
+
+        NomadAxis axis = map.getAxis(driveConstants.getDriveControllerFwdBackAxis()).withCustomBehavior(customBehavior);
+
+        return map.withAxis(axis).withType(NomadMappingEnum.TRIGGER_DRIVE);
     }
     
     public static NomadInputMap createOGXboxTriggerDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
