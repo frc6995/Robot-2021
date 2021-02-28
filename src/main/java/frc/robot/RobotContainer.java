@@ -159,8 +159,9 @@ public class RobotContainer {
     NomadSparkMax drivebaseLeftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(),
         MotorType.kBrushless, driveConstants.getLeftDriveLeaderInverted());
 
-    NomadSparkMax drivebaseRightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
-        MotorType.kBrushless, driveConstants.getRightDriveLeaderInverted());
+//    NomadSparkMax drivebaseRightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
+        //MotorType.kBrushless, driveConstants.getRightDriveLeaderInverted());
+    NomadSparkMax drivebaseRightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(), MotorType.kBrushless);
 
     NomadSparkMax drivebaseLeftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(),
         MotorType.kBrushless, driveConstants.getLeftDriveFollowerInverted(), drivebaseLeftLeader);
@@ -199,6 +200,7 @@ public class RobotContainer {
     Limelight limelight = new Limelight("limelight");
 
     limelightS = new LimelightS(limelight, limelightConstants);
+    
     /**
     HoodConstants hoodConstants = cannonConstants.getHoodConstants();
     ShooterConstants shooterConstants = cannonConstants.getShooterConstants();
@@ -212,7 +214,7 @@ public class RobotContainer {
     NomadSparkMax shooterFollowerMotor = new NomadSparkMax(shooterConstants.getFollowerMotorID(), MotorType.kBrushless,
         shooterConstants.getFollowerMotorInverted(), shooterLeadMotor);
 
-    NomadSparkMax turretMotor = new NomadSparkMax(turretConstants.getSparkMaxPortID(), MotorType.kBrushless,
+    NomadSparkMax turretMotor = new NomadSparkMax(turretConstants.getSparkMaxPortID(), MotorType.kBrushed,
         turretConstants.getLeadMotorInverted());
     DigitalInput turretLimitSwitch = new DigitalInput(turretConstants.getLimitSwitchChannelID());
 

@@ -45,19 +45,22 @@ public class Robot2021NomadInputMaps extends NomadInputMaps {
      * @return
      */
     public static NomadInputMap createDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
-        createControllerMap(map, name);
-        map.withAxis(
-            //new NomadAxis(id, axisName, customAxisBehavior)
-            new NomadAxis(driveConstants.getDriveControllerFwdBackAxis(), "FWD/BACK", (DoubleSupplier) () -> {
-                return driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(driverStationConstants.getDriveControllerUsbPort(), XboxController.Axis.kLeftY.value));
-            }).withNegativeDeadzone(-0.1).withPositiveDeadzone(0.1))
-        .withAxis(
-            new NomadAxis(driveConstants.getDriveControllerLeftRightAxis(), "LEFT/RIGHT", (DoubleSupplier) () -> {
-                return driveConstants.getDriveControllerLeftRightAxisMultiplier() * NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftX.value);
-            })
-            .withNegativeDeadzone(-0.1)
-            .withPositiveDeadzone(0.1)
-            .withScaleFactor(0.5));
+        final double deadzone = 0.1;
+        final double scaleFactor = 0.5;
+
+        DoubleSupplier leftRightAxisSupplier = () -> driveConstants.getDriveControllerLeftRightAxisMultiplier() * NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftX.value);
+        DoubleSupplier fwdBackAxisSupplier = () -> driveConstants.getDriveControllerFwdBackAxisMultiplier() * NomadOperatorConsole.getRawAxis(NomadOperatorConsole.getCombinedID(driverStationConstants.getDriveControllerUsbPort(), XboxController.Axis.kLeftY.value));
+
+        NomadAxis axisOne = new NomadAxis(driveConstants.getDriveControllerFwdBackAxis(), "FWD/BACK", fwdBackAxisSupplier)
+            .withNegativeDeadzone(-deadzone)
+            .withPositiveDeadzone(deadzone);
+        
+        NomadAxis axisTwo = new NomadAxis(driveConstants.getDriveControllerLeftRightAxis(), "Left/Right", leftRightAxisSupplier)
+            .withNegativeDeadzone(-deadzone)
+            .withPositiveDeadzone(deadzone);
+
+        map.withAxis(axisOne).withAxis(axisTwo);
+
         return map;
     }
 

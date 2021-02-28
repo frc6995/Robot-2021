@@ -82,6 +82,4 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
   public abstract double getLeftSetSpeed();
 
   public abstract double getRightSetSpeed();
-
-  
 }
