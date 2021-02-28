@@ -14,9 +14,6 @@ import frc.robot.constants.interfaces.DriverStationConstants;
 
 /** The collection of input maps for the 2021 robot.*/
 public class Robot2021NomadInputMaps extends NomadInputMaps {
-
-
-    //public static final EnumMap<NomadMappingEnum, NomadInputMap> inputEnumMap = new EnumMap<NomadMappingEnum, NomadInputMap>(NomadMappingEnum.class);
     /**
      * All NomadAxes and Buttons are by default part of this map. 
      */
