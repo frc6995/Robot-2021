@@ -76,18 +76,16 @@ public class Robot2021NomadInputMaps extends NomadInputMaps {
     
     public static NomadInputMap createOGXboxTriggerDriveControllerMap(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadInputMap map, String name) {
         createDriveControllerMap(driveConstants, driverStationConstants, map, name);
-        map.withAxis(
-            map.getAxis(driveConstants.getDriveControllerFwdBackAxis())
-            .withCustomBehavior(
-                (DoubleSupplier) () -> {
-                    return 
-                    NomadMathUtil.lerp(NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftTrigger.value), -1.0, 1.0, 0.0, 1.0) 
-                        - NomadMathUtil.lerp(NomadOperatorConsole.getRawAxis(XboxController.Axis.kRightTrigger.value), -1.0, 1.0, 0.0, 1.0);
-                }
-            )
-        )
-        .withType(NomadMappingEnum.OG_TRIGGER_DRIVE)
-        ;
-        return map;
+
+        DoubleSupplier customBehavior = () -> {
+            final double leftTrigger = NomadOperatorConsole.getRawAxis(XboxController.Axis.kLeftTrigger.value);
+            final double rightTrigger = NomadOperatorConsole.getRawAxis(XboxController.Axis.kRightTrigger.value);
+
+            return NomadMathUtil.lerp(leftTrigger, -1.0, 1.0, 0.0, 1.0) - NomadMathUtil.lerp(rightTrigger, -1.0, 1.0, 0.0, 1.0);
+        };
+
+        NomadAxis axis = map.getAxis(driveConstants.getDriveControllerFwdBackAxis()).withCustomBehavior(customBehavior);
+
+        return map.withAxis(axis).withType(NomadMappingEnum.OG_TRIGGER_DRIVE);
     }
 }
