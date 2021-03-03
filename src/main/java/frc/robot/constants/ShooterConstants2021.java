@@ -1,19 +1,18 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+
 
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import frc.robot.constants.interfaces.ShooterConstants;
 
 /** The {@link ShooterConstants} for our 2021 robot. */
 public class ShooterConstants2021 implements ShooterConstants {
     public int getLeadMotorID(){
-        return 3;
+        return 49;
     }
 
     public int getFollowerMotorID(){
-        return 4;
+        return 57;
     }
 
     public double getKP() {
@@ -50,13 +49,15 @@ public class ShooterConstants2021 implements ShooterConstants {
 
     @Override
     public boolean getLeadMotorInverted() {
-        // TODO Auto-generated method stub
         return false;
     }
 
     @Override
     public boolean getFollowerMotorInverted() {
-        // TODO Auto-generated method stub
         return false;
+    }
+
+    public SimpleMotorFeedforward getArbitraryFeedforward(){
+        return new SimpleMotorFeedforward(0.161, 0.189/90, 0.0434/90);
     }
 }

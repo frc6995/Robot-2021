@@ -1,8 +1,8 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
+
 
 package frc.robot.constants.interfaces;
+
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 
 /** The constants for the {@link Shooter}. */
 public interface ShooterConstants {
@@ -69,4 +69,6 @@ public interface ShooterConstants {
      * Get the allowable error when comparing the Shooter's voltage to its average voltage
      */
     double getAllowableVoltageError();
+    /**Get the Shooter's arbitrary feed forward */
+    SimpleMotorFeedforward getArbitraryFeedforward();
 }

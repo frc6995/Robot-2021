@@ -195,7 +195,10 @@ public class NomadOperatorConsole {
     }
 
     public static NomadButton getButton(int id) {
-        NomadInputMap tempButton = INPUT_ENUM_MAP.get(selectedMap);
-        return tempButton == null ? NomadButton.noneButton : tempButton.getButton(id);
+        try{
+            return INPUT_ENUM_MAP.get(selectedMap).getButton(id);
+        } catch (NullPointerException e) {
+            return NomadButton.noneButton;
+        }
     }
 }

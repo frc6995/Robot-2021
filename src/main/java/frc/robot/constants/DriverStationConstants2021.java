@@ -4,8 +4,8 @@
 
 package frc.robot.constants;
 
+import frc.lib.constants.DriverStationConstants;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
-import frc.robot.constants.interfaces.DriverStationConstants;
 
 /** Add your docs here. */
 public class DriverStationConstants2021 implements DriverStationConstants {

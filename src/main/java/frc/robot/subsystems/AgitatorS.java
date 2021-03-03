@@ -1,16 +1,17 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.constants.AgitatorConstants;
+import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
-import frc.robot.constants.interfaces.AgitatorConstants;
 
 public class AgitatorS extends SubsystemBase {
-  private NomadVictorSPX leftMotor;
-  private NomadVictorSPX rightMotor;
+  private NomadTalonSRX leftMotor;
+  private NomadTalonSRX rightMotor;
   private AgitatorConstants constants;
   
   /** Creates a new AgitatorS.*/
-  public AgitatorS(AgitatorConstants constants, NomadVictorSPX leftMotor, NomadVictorSPX rightMotor) {
+  public AgitatorS(AgitatorConstants constants, NomadTalonSRX leftMotor, NomadTalonSRX rightMotor) {
     this.constants = constants;
 
     this.leftMotor = leftMotor;
@@ -23,6 +24,7 @@ public class AgitatorS extends SubsystemBase {
   
   @Override
   public void periodic() {
+    // This method will be called once per scheduler run
   }
 
   /**

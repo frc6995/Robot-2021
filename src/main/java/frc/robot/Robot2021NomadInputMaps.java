@@ -4,17 +4,19 @@
 
 package frc.robot;
 
+import java.util.EnumMap;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj.XboxController;
 import frc.lib.constants.DriveConstants;
+import frc.lib.constants.DriverStationConstants;
 import frc.lib.utility.inputs.NomadInputMap;
 import frc.lib.utility.inputs.NomadInputMaps;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.inputdevices.NomadAxis;
+import frc.lib.wrappers.inputdevices.NomadButton;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
-import frc.robot.constants.interfaces.DriverStationConstants;
 
 /** Add your docs here. */
 public class Robot2021NomadInputMaps extends NomadInputMaps {
