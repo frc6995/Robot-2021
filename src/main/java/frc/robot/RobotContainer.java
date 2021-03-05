@@ -17,8 +17,10 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -35,8 +37,10 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
+import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.TurretMotionTester;
+import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intakecommands.IntakeToggleC;
@@ -91,6 +95,10 @@ public class RobotContainer {
   private StoreBallsCG storeBallsCG;
   private ColumnFeedC columnFeedC;
   private DrivebaseArcadeDriveStickControllerC controllerDrive;
+  private DriveAutoC driveAutoC;
+  private ParallelRaceGroup driveAutoTimeoutCG;
+
+  private AutonomousAwardWinnerCG awardWinnerCG;
 
   // private NomadMappedGenericHID driverController;
   private XboxController controller;
@@ -103,6 +111,7 @@ public class RobotContainer {
   private RamseteCommand ramseteCommand;
 
   private SequentialCommandGroup ramseteCommandGroup;
+
 
   // private NomadMappedGenericHID driverController;
 
@@ -191,6 +200,7 @@ public class RobotContainer {
     ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory,
     drivebaseS, driveConstants, autoConstants);
 
+    
     ramseteCommandGroup = new InstantCommand(() -> 
     drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS)
     .andThen(new WaitCommand(0.2))
@@ -201,6 +211,10 @@ public class RobotContainer {
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
     columnFeedC = new ColumnFeedC(columnS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
+
+    driveAutoC = new DriveAutoC(drivebaseS, 1, true);
+    driveAutoTimeoutCG = driveAutoC.withTimeout(1);
+    awardWinnerCG = new AutonomousAwardWinnerCG(drivebaseS, cannonS, agitatorS, columnS, intakeS);
 
     SmartDashboard.putData(new TurretMotionTester(cannonS));
     SmartDashboard.putData(new SpinUpShooterC(cannonS, false));
@@ -246,7 +260,8 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    return ramseteCommandGroup;
+    //return ramseteCommandGroup;
+    return awardWinnerCG;
   }
   /**
    * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
@@ -258,5 +273,9 @@ public class RobotContainer {
       SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
     }
   }
+
+public void disabledInit() {
+  columnS.enableStopper();
+}
 
 }

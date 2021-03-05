@@ -59,6 +59,6 @@ public class LaunchBallC extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return numBallsLaunched == numBallsToLaunch;
+    return false;//return numBallsLaunched == numBallsToLaunch;
   }
 }

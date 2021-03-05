@@ -131,9 +131,7 @@ public class Turret {
   protected void periodic() {
     // This method will be called once per scheduler run
     stateMachineLoop();
-    SmartDashboard.putNumber("Encoder Position", this.sparkMax.getEncoder().getPosition());
-    SmartDashboard.putNumber("Encoder Speed", this.sparkMax.getEncoder().getVelocity());
-    SmartDashboard.putNumber("Setpoint", this.setpoint);
+
 
     // Increase counter if at setpoint, or reset if it is not
     if (internalState == TurretInternalStates.AT_SETPOINT)

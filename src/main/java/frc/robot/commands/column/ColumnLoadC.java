@@ -16,7 +16,7 @@ public class ColumnLoadC extends CommandBase {
   @Override
   public void initialize() {
     column.enableStopper();
-    column.setFrontSpeed(column.getConstants().getColumnLoadSpeed());
+    column.setAcceleratorSpeed(column.getConstants().getColumnSpeed());
   }
 
   @Override
@@ -24,7 +24,7 @@ public class ColumnLoadC extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
-    column.setFrontSpeed(0);
+    column.setAcceleratorSpeed(0);
   }
 
   @Override

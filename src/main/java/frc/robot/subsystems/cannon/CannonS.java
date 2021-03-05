@@ -2,6 +2,7 @@ package frc.robot.subsystems.cannon;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.interfaces.CannonConstants;
@@ -121,5 +122,6 @@ public class CannonS extends SubsystemBase {
   public void periodic() {
     turret.periodic();
     shooter.periodic();
+    SmartDashboard.putBoolean("Shooter at speed", isShooterAtSpeed());
   }
 }

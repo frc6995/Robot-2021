@@ -36,7 +36,7 @@ public class ShooterConstants2021 implements ShooterConstants {
     }
 
     public double getAllowableRPMError(){
-        return 10;
+        return 100;
     }
 
     public double getAverageVoltage(){
@@ -44,17 +44,17 @@ public class ShooterConstants2021 implements ShooterConstants {
     }
 
     public double getAllowableVoltageError(){
-        return 0.25;
+        return 0.5;
     }
 
     @Override
     public boolean getLeadMotorInverted() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean getFollowerMotorInverted() {
-        return false;
+        return true;
     }
 
     public SimpleMotorFeedforward getArbitraryFeedforward(){

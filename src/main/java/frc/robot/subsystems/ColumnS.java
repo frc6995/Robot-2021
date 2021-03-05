@@ -41,11 +41,11 @@ public class ColumnS extends SubsystemBase {
     return solenoid.get();
   }
 
-  public void setFrontSpeed(double speed){
+  public void setAcceleratorSpeed(double speed){
     front.set(speed);
   }
 
-  public void setBackSpeed(double speed){
+  public void setColumnSpeed(double speed){
     back.set(speed);
   }
 

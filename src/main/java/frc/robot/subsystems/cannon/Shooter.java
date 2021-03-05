@@ -4,6 +4,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.interfaces.ShooterConstants;
@@ -79,7 +80,7 @@ public class Shooter {
      * @return The shooter's speed
      */
     public double getEncoderSpeed() {
-        return encoder.getPosition();
+        return encoder.getVelocity();
     }
 
     /**
@@ -119,6 +120,9 @@ public class Shooter {
      */
     protected void periodic() {
         updateState();
+        SmartDashboard.putNumber("Encoder Position", 69.95);
+        SmartDashboard.putNumber("Encoder Speed", getEncoderSpeed());
+        SmartDashboard.putString("Shooter State", shooterState.toString());
     }
 
     public boolean isVoltageNormal() {

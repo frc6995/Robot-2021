@@ -11,6 +11,7 @@ import frc.robot.subsystems.cannon.CannonS;
  */
 public class SpinUpShooterC extends CommandBase {
   private CannonS cannon;
+  private double rpm = 4500;
 
   /** Creates a new SpinUpShooterC. */
   public SpinUpShooterC(CannonS cannon, boolean requireCannon) {
@@ -24,7 +25,18 @@ public class SpinUpShooterC extends CommandBase {
 
   @Override
   public void initialize() {
-    cannon.pidShooterToTargetSpeed(4500);
+    cannon.pidShooterToTargetSpeed(rpm);
+  }
+  
+  @Override
+  public void execute() {
+    cannon.pidShooterToTargetSpeed(rpm);
+  }
+
+  @Override
+  public void end(boolean interrupted) {
+    // TODO Auto-generated method stub
+    super.end(interrupted);
   }
 
   @Override

@@ -33,4 +33,16 @@ public class ColumnConstantsKRen implements ColumnConstants {
         return 0.25;
     }
 
+    @Override
+    public double getColumnFeedSpeed() {
+        // TODO Auto-generated method stub
+        return 0.75;
+    }
+
+    @Override
+    public double getColumnLoadSpeed() {
+        // TODO Auto-generated method stub
+        return 0.25;
+    }
+
 }

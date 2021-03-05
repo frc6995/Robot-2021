@@ -9,6 +9,7 @@ import frc.robot.commands.intakecommands.IntakeSpinRetractedC;
 import frc.robot.subsystems.AgitatorS;
 import frc.robot.subsystems.ColumnS;
 import frc.robot.subsystems.IntakeS;
+import frc.robot.commands.column.ColumnFeedC;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

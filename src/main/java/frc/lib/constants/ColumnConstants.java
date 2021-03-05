@@ -31,4 +31,8 @@ public interface ColumnConstants {
      * @return speed
      */
     double getColumnSpeed();
+
+    double getColumnFeedSpeed();
+
+    double getColumnLoadSpeed();
 }

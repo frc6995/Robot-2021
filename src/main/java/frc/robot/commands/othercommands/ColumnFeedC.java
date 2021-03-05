@@ -20,8 +20,8 @@ public class ColumnFeedC extends CommandBase {
   @Override
   public void initialize() {
     column.disableStopper();
-    column.setFrontSpeed(column.getConstants().getColumnSpeed()+0.25);
-    column.setBackSpeed(0.25);
+    column.setAcceleratorSpeed(column.getConstants().getColumnSpeed()+0.25);
+    column.setColumnSpeed(0.25);
   }
 
   // Called every time the scheduler runs while the command is scheduled.
@@ -31,8 +31,8 @@ public class ColumnFeedC extends CommandBase {
   // Called once the command ends or is interrupted.
   @Override
   public void end(boolean interrupted) {
-    column.setFrontSpeed(0);
-    column.setBackSpeed(0);
+    column.setAcceleratorSpeed(0);
+    column.setColumnSpeed(0);
     column.enableStopper();
   }
 
