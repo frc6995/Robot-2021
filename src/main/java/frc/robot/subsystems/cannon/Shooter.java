@@ -120,13 +120,19 @@ public class Shooter {
      */
     protected void periodic() {
         updateState();
-        SmartDashboard.putNumber("Encoder Position", 69.95);
-        SmartDashboard.putNumber("Encoder Speed", getEncoderSpeed());
+        SmartDashboard.putNumber("Shooter Position", 69.95);
+        SmartDashboard.putNumber("Shooter Speed", getEncoderSpeed());
         SmartDashboard.putString("Shooter State", shooterState.toString());
+        SmartDashboard.putBoolean("Shooter at speed", shooterState == ShooterStates.READY);
+        SmartDashboard.putNumber("Shooter Current", motor.getOutputCurrent());
     }
 
     public boolean isVoltageNormal() {
-        return Math.abs(motor.getBusVoltage() - constants.getAverageVoltage()) <= constants.getAllowableVoltageError();
+        return motor.getOutputCurrent() < constants.getAverageCurrent();
+    }
+
+    public void stopShooter(){
+        motor.stopMotor();
     }
 
     /**

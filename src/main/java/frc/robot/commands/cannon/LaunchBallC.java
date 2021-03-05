@@ -49,8 +49,10 @@ public class LaunchBallC extends CommandBase {
   public void execute() {
     // If this doesn't work, the command could be run for a set time or indefinitely
     // until the command is manually ended
-    if (!cannon.isShooterVoltageNormal())
+    if (!cannon.isShooterVoltageNormal() && cannon.isShooterAtSpeed()){
+      System.out.println("Ball " + numBallsLaunched + " shot");
       numBallsLaunched++;
+    }
   }
 
   @Override
@@ -59,6 +61,6 @@ public class LaunchBallC extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return false;//return numBallsLaunched == numBallsToLaunch;
+    return numBallsLaunched >= numBallsToLaunch;
   }
 }

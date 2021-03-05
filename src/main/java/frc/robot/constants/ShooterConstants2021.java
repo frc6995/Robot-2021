@@ -39,8 +39,8 @@ public class ShooterConstants2021 implements ShooterConstants {
         return 100;
     }
 
-    public double getAverageVoltage(){
-        return 10.0;
+    public double getAverageCurrent(){
+        return 10;
     }
 
     public double getAllowableVoltageError(){

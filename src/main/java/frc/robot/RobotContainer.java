@@ -217,7 +217,10 @@ public class RobotContainer {
     awardWinnerCG = new AutonomousAwardWinnerCG(drivebaseS, cannonS, agitatorS, columnS, intakeS);
 
     SmartDashboard.putData(new TurretMotionTester(cannonS));
-    SmartDashboard.putData(new SpinUpShooterC(cannonS, false));
+    SmartDashboard.putData(awardWinnerCG);
+    SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
+    SmartDashboard.putData(spinShooterC);
+    SmartDashboard.putBoolean("Shooter Ready", cannonS.isShooterAtSpeed());
   }
 
   /**
@@ -276,6 +279,7 @@ public class RobotContainer {
 
 public void disabledInit() {
   columnS.enableStopper();
+  cannonS.stopShooter();
 }
 
 }

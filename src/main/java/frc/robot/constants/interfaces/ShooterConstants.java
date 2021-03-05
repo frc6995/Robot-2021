@@ -64,7 +64,7 @@ public interface ShooterConstants {
      * Get the average voltage of the shooter's motor while it is running.
      * @return The average voltage
      */
-    double getAverageVoltage();
+    double getAverageCurrent();
     /**
      * Get the allowable error when comparing the Shooter's voltage to its average voltage
      */

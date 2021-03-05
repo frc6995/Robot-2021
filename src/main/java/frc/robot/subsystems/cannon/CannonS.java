@@ -19,7 +19,7 @@ public class CannonS extends SubsystemBase {
   private Hood hood;
   private Shooter shooter;
   private Turret turret;
-
+private int numBalls = 0;
   /** Creates a new ShooterS. */
   public CannonS(CannonConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor,
       NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
@@ -123,5 +123,13 @@ public class CannonS extends SubsystemBase {
     turret.periodic();
     shooter.periodic();
     SmartDashboard.putBoolean("Shooter at speed", isShooterAtSpeed());
+    SmartDashboard.putBoolean("Is Shooter Current Normal", isShooterVoltageNormal());
+
+    if (!isShooterVoltageNormal() && isShooterAtSpeed()) numBalls++;
+      SmartDashboard.putNumber("num balls launched", numBalls);
+  }
+
+  public void stopShooter(){
+    shooter.stopShooter();
   }
 }

@@ -30,12 +30,11 @@ public class SpinUpShooterC extends CommandBase {
   
   @Override
   public void execute() {
-    cannon.pidShooterToTargetSpeed(rpm);
+    //cannon.pidShooterToTargetSpeed(rpm);
   }
 
   @Override
   public void end(boolean interrupted) {
-    // TODO Auto-generated method stub
     super.end(interrupted);
   }
 

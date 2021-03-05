@@ -9,11 +9,11 @@ import frc.robot.constants.interfaces.AgitatorConstants;
 /** Add your docs here. */
 public class AgitatorConstants2021 implements AgitatorConstants{
     public int getLeftMotorID(){
-        return 31;
+        return 22;
     }
 
     public int getRightMotorID(){
-        return 32;
+        return 23;
     }
 
     @Override
