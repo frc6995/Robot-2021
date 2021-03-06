@@ -25,7 +25,7 @@ private int numBalls = 0;
       NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
     shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor);
-    turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
+   // turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
   }
 
   /**
@@ -120,7 +120,7 @@ private int numBalls = 0;
 
   @Override
   public void periodic() {
-    turret.periodic();
+    //turret.periodic();
     shooter.periodic();
     SmartDashboard.putBoolean("Shooter at speed", isShooterAtSpeed());
     SmartDashboard.putBoolean("Is Shooter Current Normal", isShooterVoltageNormal());

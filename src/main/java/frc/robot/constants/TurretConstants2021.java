@@ -10,12 +10,12 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getMarginOfError() {
-        return 50;
+        return 1;
     }
 
     @Override
     public double getKP() {
-        return 0.01;
+        return .005;
     }
 
     @Override
