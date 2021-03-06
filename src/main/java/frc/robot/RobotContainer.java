@@ -124,12 +124,12 @@ public class RobotContainer {
   public RobotContainer() {
     createConstantsFiles();
     //createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
-    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
-    Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
+    //createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
+    //Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createSubsystems();
-    createCommands();
-    configureDefaultCommands();
-    configureButtonBindings();
+    //createCommands();
+    //configureDefaultCommands();
+    //configureButtonBindings();
     init = true;
   }
 
@@ -154,39 +154,40 @@ public class RobotContainer {
    * Creates the subsystems.
    */
   private void createSubsystems() {
-    NomadTalonSRX left = new NomadTalonSRX(agitatorConstants.getLeftMotorID());
-    NomadTalonSRX right = new NomadTalonSRX(agitatorConstants.getRightMotorID(), true);
-    agitatorS = new AgitatorS(agitatorConstants, left, right);
+    // NomadTalonSRX left = new NomadTalonSRX(agitatorConstants.getLeftMotorID());
+    // NomadTalonSRX right = new NomadTalonSRX(agitatorConstants.getRightMotorID(), true);
+    // agitatorS = new AgitatorS(agitatorConstants, left, right);
 
-    NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
-    DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
-    intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
+    // NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
+    // DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
+    // intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
     
-    drivebaseS = new DrivebaseS(driveConstants, autoConstants);
+    // drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
-    NomadSparkMax front = new NomadSparkMax(columnConstants.getFrontMotorID(), MotorType.kBrushed, true);
-    NomadTalonSRX back = new NomadTalonSRX(columnConstants.getBackMotorID(), true);
-    DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
-    columnS = new ColumnS(columnConstants, front, back, solenoid);
+    // NomadSparkMax front = new NomadSparkMax(columnConstants.getFrontMotorID(), MotorType.kBrushed, true);
+    // NomadTalonSRX back = new NomadTalonSRX(columnConstants.getBackMotorID(), true);
+    // DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
+    // columnS = new ColumnS(columnConstants, front, back, solenoid);
 
-    HoodConstants hoodConstants = cannonConstants.getHoodConstants();
-    ShooterConstants shooterConstants = cannonConstants.getShooterConstants();
+    // HoodConstants hoodConstants = cannonConstants.getHoodConstants();
+    // ShooterConstants shooterConstants = cannonConstants.getShooterConstants();
     TurretConstants turretConstants = cannonConstants.getTurretConstants();
-
-    Servo hoodLeftServo = new Servo(hoodConstants.getLeftServoPort());
-    Servo hoodRightServo = new Servo(hoodConstants.getRightServoPort());
-
-    NomadSparkMax shooterLeadMotor = new NomadSparkMax(shooterConstants.getLeadMotorID(), MotorType.kBrushless,
-        shooterConstants.getLeadMotorInverted());
-    NomadSparkMax shooterFollowerMotor = new NomadSparkMax(shooterConstants.getFollowerMotorID(), MotorType.kBrushless,
-        shooterConstants.getFollowerMotorInverted(), shooterLeadMotor);
-
+    
+    // Servo hoodLeftServo = new Servo(hoodConstants.getLeftServoPort());
+    // Servo hoodRightServo = new Servo(hoodConstants.getRightServoPort());
+    
+    // NomadSparkMax shooterLeadMotor = new NomadSparkMax(shooterConstants.getLeadMotorID(), MotorType.kBrushless,
+    // shooterConstants.getLeadMotorInverted());
+    // NomadSparkMax shooterFollowerMotor = new NomadSparkMax(shooterConstants.getFollowerMotorID(), MotorType.kBrushless,
+    // shooterConstants.getFollowerMotorInverted(), shooterLeadMotor);
+    
     NomadSparkMax turretMotor = new NomadSparkMax(turretConstants.getSparkMaxPortID(), MotorType.kBrushless,
-        turretConstants.getLeadMotorInverted());
+    turretConstants.getLeadMotorInverted());
     DigitalInput turretLimitSwitch = new DigitalInput(turretConstants.getLimitSwitchChannelID());
-
-    cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor,
-        turretLimitSwitch);
+    
+    SmartDashboard.putData(new TurretMotionTester(turretMotor, 360));
+    
+    //cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor, turretLimitSwitch);
   }
 
   /**
@@ -216,7 +217,6 @@ public class RobotContainer {
     driveAutoTimeoutCG = driveAutoC.withTimeout(1);
     awardWinnerCG = new AutonomousAwardWinnerCG(drivebaseS, cannonS, agitatorS, columnS, intakeS);
 
-    SmartDashboard.putData(new TurretMotionTester(cannonS));
     SmartDashboard.putData(awardWinnerCG);
     SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
     SmartDashboard.putData(spinShooterC);
@@ -270,16 +270,16 @@ public class RobotContainer {
    * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
    */
   public void updateTelemetry() {
-    if (init) {
-      SmartDashboard.putNumber("driveFwdBack",
-          NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
-      SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
-    }
+    //if (init) {
+     // SmartDashboard.putNumber("driveFwdBack",
+        //  NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
+      //SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
+    //}
   }
 
 public void disabledInit() {
-  columnS.enableStopper();
-  cannonS.stopShooter();
+  //columnS.enableStopper();
+//  cannonS.stopShooter();
 }
 
 }

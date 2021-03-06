@@ -2,6 +2,7 @@ package frc.robot.subsystems.cannon;
 
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
+import com.revrobotics.EncoderType;
 import com.revrobotics.CANPIDController.AccelStrategy;
 import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
@@ -106,24 +107,29 @@ public class Turret {
     // this can help there.
     homedCounter = new Counter(limitSwitch);
     homedCounter.reset();
-    encoder = sparkMax.getEncoder();
+    encoder = sparkMax.getEncoder(EncoderType.kHallSensor, 42);
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kForward, true);
     this.sparkMax.setSoftLimit(SoftLimitDirection.kForward, (float) constants.getSoftLimit());
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
     this.sparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float) constants.getSoftLimit());
 
-    /*this.sparkMax.getPIDController().setSmartMotionMaxAccel(100, 0);
+    this.sparkMax.getPIDController().setSmartMotionMaxAccel(1000, 0);
     this.sparkMax.getPIDController().setSmartMotionMaxVelocity(2000, 0);
-    this.sparkMax.getPIDController().setSmartMotionMinOutputVelocity(0, 0);
+    this.sparkMax.getPIDController().setSmartMotionMinOutputVelocity(/*500*/0, 0);
     this.sparkMax.getPIDController().setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
-    this.sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(1,0);*/
-    this.sparkMax.setClosedLoopRampRate(5);
-    this.sparkMax.getPIDController().setOutputRange(-1, 1);
+    this.sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(1,0);
+    
+    this.sparkMax.getPIDController().setOutputRange(-.25, .25);
 
     this.sparkMax.getPIDController().setP(constants.getKP(), 0);
     this.sparkMax.getPIDController().setI(constants.getKI(), 0);
     this.sparkMax.getPIDController().setD(constants.getKD(), 0);
     this.sparkMax.getPIDController().setFF(constants.getKFF(), 0);
+
+    encoder.setPositionConversionFactor(360 / 49.03125);
+    encoder.setVelocityConversionFactor(360 / 49.03125);
+    encoder.setPosition(0);
+    // rotations -> degrees
   }
 
   // Don't want anyone to be able to run this, but it will make it easier for the
@@ -132,12 +138,16 @@ public class Turret {
     // This method will be called once per scheduler run
     stateMachineLoop();
 
-
+    
     // Increase counter if at setpoint, or reset if it is not
     if (internalState == TurretInternalStates.AT_SETPOINT)
-      withinSetpointCounter++;
+    withinSetpointCounter++;
     else
-      withinSetpointCounter = 0;
+    withinSetpointCounter = 0;
+    
+    SmartDashboard.putNumber("Turret Position", getTurretEncoderPosition());
+    SmartDashboard.putNumber("Turret Velocity", encoder.getVelocity());
+    SmartDashboard.putNumber("Turret encoder counts per rev", encoder.getCountsPerRevolution());
   }
 
   /**
@@ -206,7 +216,7 @@ public class Turret {
    * @return <b>true</b> if is at the setpoint, <b>false</b> otherwise
    */
   public boolean isAtSetpoint() {
-    return withinSetpointCounter > constants.getMinCountsAtSetpoint();
+    return Math.abs(getTurretEncoderPosition() - setpoint) < constants.getMarginOfError();//withinSetpointCounter > constants.getMinCountsAtSetpoint();
   }
 
   /**
@@ -223,11 +233,6 @@ public class Turret {
       return;
 
     requestedState = desiredState;
-    if (setpoint < -constants.getSoftLimit()) {
-      setpoint = -constants.getSoftLimit();
-    } else if (setpoint > constants.getSoftLimit()) {
-      setpoint = constants.getSoftLimit();
-    }
     this.setpoint = setpoint;
 
     if (requestedState == TurretRequestedStates.HOME)
@@ -266,7 +271,7 @@ public class Turret {
         break;
       case MOVING_TO_SETPOINT:
         //runPID();
-        checkForSoftLimit();
+        //checkForSoftLimit();
         if (isAtSetpoint())
           internalState = TurretInternalStates.AT_SETPOINT;
         break;
