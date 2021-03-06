@@ -14,13 +14,13 @@ public class Robot extends TimedRobot {
   @Override
   public void robotInit() {
     robotContainer = new RobotContainer();
-    /*LiveWindow.disableAllTelemetry();
-    LiveWindow.enableTelemetry(CommandScheduler);*/
+    LiveWindow.disableAllTelemetry();
+    //LiveWindow.enableTelemetry(CommandScheduler);
   }
 
   @Override
   public void robotPeriodic() {
-    robotContainer.updateTelemetry();
+    //robotContainer.updateTelemetry();
     CommandScheduler.getInstance().run();
   }
 
