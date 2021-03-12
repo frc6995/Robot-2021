@@ -54,10 +54,10 @@ public class ShooterConstants2021 implements ShooterConstants {
 
     @Override
     public boolean getFollowerMotorInverted() {
-        return true;
+        return false;
     }
 
     public SimpleMotorFeedforward getArbitraryFeedforward(){
-        return new SimpleMotorFeedforward(0.161, 0.189/90, 0.0434/90);
+        return new SimpleMotorFeedforward(0.446, 0.216, 0.032);
     }
 }
