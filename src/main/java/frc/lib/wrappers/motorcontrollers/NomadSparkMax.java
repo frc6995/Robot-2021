@@ -20,7 +20,6 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
 
     @Override
     public double get() {
-        // TODO Auto-generated method stub
         
         return (RobotBase.isReal() ? super.get() : lastPower);
     }
@@ -66,7 +65,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
      */
     public NomadSparkMax(int port, MotorType type, boolean inverted, NomadBaseMotor leader) {
         this(port, type, inverted);
-        setLeader(leader);
+        setLeader(leader, inverted);
     }
     
     /**
@@ -88,9 +87,14 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
     
     public NomadBaseMotor setLeader( NomadBaseMotor leader){
+        setLeader(leader, false);
+        return this;
+    }
+
+    public NomadBaseMotor setLeader(NomadBaseMotor leader, boolean inverted){
         this.leader = leader;
         if (leader instanceof NomadSparkMax) {
-            follow((NomadSparkMax) leader);
+            follow((NomadSparkMax) leader, inverted);
         } else {
             throw new IllegalArgumentException(getClass().toString() + getDeviceId() + " tried to follow an incompatible controller");
         }

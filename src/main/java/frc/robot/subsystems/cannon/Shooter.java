@@ -44,6 +44,8 @@ public class Shooter {
     private ShooterStates shooterState;
     /** The target speed */
     private double targetSpeed;
+    /**The number of frames at the setpoint */
+    private int counter;
 
     /**
      * Create a new Shooter with 2021 constants.
@@ -62,6 +64,8 @@ public class Shooter {
         this.motor = leadMotor;
         encoder = leadMotor.getEncoder();
         shooterState = ShooterStates.OFF;
+
+        counter = 0;
 
         // These should all be 0.
         motor.getPIDController().setP(constants.getKP());
@@ -125,6 +129,7 @@ public class Shooter {
         SmartDashboard.putString("Shooter State", shooterState.toString());
         SmartDashboard.putBoolean("Shooter at speed", shooterState == ShooterStates.READY);
         SmartDashboard.putNumber("Shooter Current", motor.getOutputCurrent());
+        SmartDashboard.putNumber("Shooter Setppoint Counter", counter);
     }
 
     public boolean isVoltageNormal() {
@@ -141,8 +146,10 @@ public class Shooter {
     private void updateState() {
         if (shooterState == ShooterStates.RAMPING_UP
                 && Math.abs(getEncoderSpeed() - targetSpeed) < constants.getAllowableRPMError())
-            shooterState = ShooterStates.READY;
+            counter++;
         else if (shooterState == ShooterStates.SLOWING_DOWN && getEncoderSpeed() < constants.getAllowableRPMError())
             shooterState = ShooterStates.OFF;
+
+        if (counter >= 50) shooterState = ShooterStates.READY;
     }
 }

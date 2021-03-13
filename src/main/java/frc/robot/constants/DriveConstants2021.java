@@ -95,7 +95,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public boolean getRightDriveFollowerInverted() {
-        return true;
+        return false;
     }
 
     @Override

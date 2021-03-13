@@ -7,6 +7,8 @@
 
 package frc.robot;
 
+import javax.management.InstanceNotFoundException;
+
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -40,6 +42,7 @@ import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.TurretMotionTester;
+import frc.robot.commands.column.ColumnFeedCG;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
@@ -113,7 +116,7 @@ public class RobotContainer {
   private SequentialCommandGroup ramseteCommandGroup;
 
 
-  // private NomadMappedGenericHID driverController;
+  //private NomadMappedGenericHID driverController;
 
   private boolean init = false;
 
@@ -123,13 +126,13 @@ public class RobotContainer {
    */
   public RobotContainer() {
     createConstantsFiles();
-    //createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
-    //createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
-    //Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
+    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
+    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
+    Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createSubsystems();
-    //createCommands();
-    //configureDefaultCommands();
-    //configureButtonBindings();
+    createCommands();
+    configureDefaultCommands();
+    configureButtonBindings();
     init = true;
   }
 
@@ -158,16 +161,16 @@ public class RobotContainer {
     NomadTalonSRX right = new NomadTalonSRX(agitatorConstants.getRightMotorID(), true);
     agitatorS = new AgitatorS(agitatorConstants, left, right);
 
-    // NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
-    // DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
-    // intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
+     NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
+     DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(), intakeConstants.getSolenoidRevPort());
+     intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
     
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
-    // NomadSparkMax front = new NomadSparkMax(columnConstants.getFrontMotorID(), MotorType.kBrushed, true);
-    // NomadTalonSRX back = new NomadTalonSRX(columnConstants.getBackMotorID(), true);
-    // DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
-    //columnS = new ColumnS(columnConstants, front, back, solenoid);
+     NomadSparkMax front = new NomadSparkMax(columnConstants.getFrontMotorID(), MotorType.kBrushed, true);
+     NomadTalonSRX back = new NomadTalonSRX(columnConstants.getBackMotorID(), true);
+     DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
+    columnS = new ColumnS(columnConstants, front, back, solenoid);
 
     HoodConstants hoodConstants = cannonConstants.getHoodConstants();
     ShooterConstants shooterConstants = cannonConstants.getShooterConstants();
@@ -220,7 +223,7 @@ public class RobotContainer {
     SmartDashboard.putData(awardWinnerCG);
     SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
     SmartDashboard.putData(spinShooterC);
-    SmartDashboard.putBoolean("Shooter Ready", cannonS.isShooterAtSpeed());
+    
   }
 
   /**
@@ -248,10 +251,12 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(controller, 1).whenPressed(intakeToggleC);
-    new JoystickButton(controller, 2).whileHeld(agitatorSpinC);
-    new JoystickButton(controller, 3).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(controller, 4).whileHeld(new ExpellBallsCG(intakeS, agitatorS, columnS));
+    //new JoystickButton(controller, 1).whenPressed(intakeToggleC);
+    //new JoystickButton(controller, 2).whileHeld(agitatorSpinC);
+    //new JoystickButton(controller, 3).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(controller, 2).whenPressed(new RunCommand(() -> cannonS.stopShooter(), cannonS));
+    new JoystickButton(controller, 3).whenPressed(new SpinUpShooterC(cannonS, false));
+    new JoystickButton(controller, 4).whileHeld(new ColumnFeedC(columnS));//new ColumnFeedCG(columnS));
   }
 
   /**
@@ -278,8 +283,8 @@ public class RobotContainer {
   }
 
 public void disabledInit() {
-  //columnS.enableStopper();
-//  cannonS.stopShooter();
+  columnS.enableStopper();
+  cannonS.stopShooter();
 }
 
 }

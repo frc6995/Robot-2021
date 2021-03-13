@@ -34,7 +34,7 @@ public class AutonomousAwardWinnerCG extends SequentialCommandGroup {
       new InstantCommand(()->column.disableStopper(), column),
       new WaitCommand(.5),
       //new ExpellBallsCG(intake, agitator, column).withTimeout(2),,
-      new ColumnFeedC(column).deadlineWith(new LaunchBallC(cannon, false, 3)),
+      new ColumnFeedC(column).withTimeout(2),
       new WaitCommand(.5), // spin shooter and launch 3  balls.
       new DriveAutoC(drivebase, 1, true).withTimeout(1.5).alongWith( //drive back, 
       new StoreBallsCG(intake, agitator, column).withTimeout(5)), // and load them into the column.
