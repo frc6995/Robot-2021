@@ -45,7 +45,7 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.drivePercentages(
-      drivebaseS.arcadeDriveController(driveSpeed*0.4, turnSpeed*-0.25).clamp()
+      drivebaseS.arcadeDriveController(driveSpeed*0.75, turnSpeed*-0.25).clamp()
     );
   }
 

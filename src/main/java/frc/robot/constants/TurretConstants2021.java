@@ -50,7 +50,7 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getSoftLimit() {
-        return 270;
+        return 80;
     }
 
     @Override

@@ -35,12 +35,14 @@ import frc.lib.constants.DriverStationConstants;
 import frc.lib.constants.IntakeConstants;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.SpinUpShooterC;
+import frc.robot.commands.cannon.TurretAimTester;
 import frc.robot.commands.cannon.TurretMotionTester;
 import frc.robot.commands.column.ColumnFeedCG;
 import frc.robot.commands.drivebase.DriveAutoC;
@@ -59,16 +61,19 @@ import frc.robot.constants.DriveConstants2021;
 import frc.robot.constants.DriverStationConstants2021;
 import frc.robot.constants.HoodConstants2021;
 import frc.robot.constants.IntakeConstantsKRen;
+import frc.robot.constants.LimelightConstants2021;
 import frc.robot.constants.ShooterConstants2021;
 import frc.robot.constants.TurretConstants2021;
 import frc.robot.constants.interfaces.CannonConstants;
 import frc.robot.constants.interfaces.HoodConstants;
+import frc.robot.constants.interfaces.LimelightConstants;
 import frc.robot.constants.interfaces.ShooterConstants;
 import frc.robot.constants.interfaces.TurretConstants;
 import frc.robot.subsystems.AgitatorS;
 import frc.robot.subsystems.ColumnS;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.IntakeS;
+import frc.robot.subsystems.LimelightS;
 import frc.robot.subsystems.cannon.CannonS;
 
 /**
@@ -87,11 +92,13 @@ public class RobotContainer {
   private AgitatorConstants agitatorConstants;
   private ColumnConstants columnConstants;
   private CannonConstants cannonConstants;
+  private LimelightConstants limelightConstants;
   // Subsystems
   private AgitatorS agitatorS;
   private IntakeS intakeS;
   private ColumnS columnS;
   private CannonS cannonS;
+  private LimelightS limelightS;
   // Commands
   private AgitatorSpinC agitatorSpinC;
   private IntakeToggleC intakeToggleC;
@@ -105,6 +112,7 @@ public class RobotContainer {
 
   // private NomadMappedGenericHID driverController;
   private XboxController controller;
+  private XboxController operator;
 
   // Subsystems
   private DrivebaseS drivebaseS;
@@ -140,6 +148,8 @@ public class RobotContainer {
    * Creates the constants files for each subsystem.
    */
   private void createConstantsFiles() {
+    limelightConstants = new LimelightConstants2021();
+
     agitatorConstants = new AgitatorConstantsKRen();
     intakeConstants = new IntakeConstantsKRen();
     
@@ -157,6 +167,8 @@ public class RobotContainer {
    * Creates the subsystems.
    */
   private void createSubsystems() {
+    limelightS = new LimelightS(new Limelight("limelight"), limelightConstants);
+
     NomadTalonSRX left = new NomadTalonSRX(agitatorConstants.getLeftMotorID());
     NomadTalonSRX right = new NomadTalonSRX(agitatorConstants.getRightMotorID(), true);
     agitatorS = new AgitatorS(agitatorConstants, left, right);
@@ -189,6 +201,7 @@ public class RobotContainer {
     DigitalInput turretLimitSwitch = new DigitalInput(turretConstants.getLimitSwitchChannelID());
     
     SmartDashboard.putData(new TurretMotionTester(turretMotor, 90.25));
+    SmartDashboard.putData(new TurretAimTester(turretMotor, limelightS));
     
     cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor, turretLimitSwitch);
   }
@@ -242,6 +255,7 @@ public class RobotContainer {
     //Robot2021NomadInputMaps.createMaps(driveConstants, driverStationConstants);
     //NomadOperatorConsole.setMap(map);
     controller = new XboxController(0);
+    operator = new XboxController(1);
   }
 
   /**
@@ -251,12 +265,12 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    //new JoystickButton(controller, 1).whenPressed(intakeToggleC);
-    //new JoystickButton(controller, 2).whileHeld(agitatorSpinC);
-    //new JoystickButton(controller, 3).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(controller, 2).whenPressed(new RunCommand(() -> cannonS.stopShooter(), cannonS));
-    new JoystickButton(controller, 3).whenPressed(new SpinUpShooterC(cannonS, false));
-    new JoystickButton(controller, 4).whileHeld(new ColumnFeedC(columnS));//new ColumnFeedCG(columnS));
+    new JoystickButton(operator, 1).whenPressed(intakeToggleC);
+    new JoystickButton(operator, 2).whileHeld(agitatorSpinC);
+    new JoystickButton(operator, 3).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(operator, 5).whenPressed(new InstantCommand(() -> cannonS.stopShooter(), cannonS));
+    new JoystickButton(operator, 6).whenPressed(new SpinUpShooterC(cannonS, true));
+    new JoystickButton(operator, 4).whileHeld(new ExpellBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
   }
 
   /**

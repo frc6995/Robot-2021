@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
@@ -73,7 +74,12 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         MotorType.kBrushless,
         driveConstants.getRightDriveFollowerInverted(), rightLeader);
     
-
+    //leftLeader.setIdleMode(IdleMode.kCoast);
+    //leftFollower.setIdleMode(IdleMode.kCoast);
+    //rightLeader.setIdleMode(IdleMode.kCoast);
+    //rightFollower.setIdleMode(IdleMode.kCoast);
+    leftLeader.setOpenLoopRampRate(1.25);
+    rightLeader.setOpenLoopRampRate(1.25);
 
     //m_drive = new DifferentialDrive(leftLeader, rightLeader);
 
