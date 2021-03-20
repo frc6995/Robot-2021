@@ -4,6 +4,7 @@ import javax.sound.sampled.Line;
 
 import org.ejml.LinearSolverToSparse;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
@@ -120,5 +121,7 @@ public interface DriveConstants {
      * 
      */
     boolean getDrivebaseRightSideInverted();
+
+    public SimpleMotorFeedforward getArbitraryFeedforward();
     
 }   

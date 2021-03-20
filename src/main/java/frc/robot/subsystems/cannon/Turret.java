@@ -108,28 +108,30 @@ public class Turret {
     homedCounter = new Counter(limitSwitch);
     homedCounter.reset();
     encoder = sparkMax.getEncoder(EncoderType.kHallSensor, 42);
+
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kForward, true);
     this.sparkMax.setSoftLimit(SoftLimitDirection.kForward, (float) constants.getSoftLimit());
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
     this.sparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float) constants.getSoftLimit());
 
-    this.sparkMax.getPIDController().setSmartMotionMaxAccel(1000, 0);
-    this.sparkMax.getPIDController().setSmartMotionMaxVelocity(2000, 0);
+    this.sparkMax.getPIDController().setSmartMotionMaxAccel(35000, 0);
+    this.sparkMax.getPIDController().setSmartMotionMaxVelocity(36000, 0);
     this.sparkMax.getPIDController().setSmartMotionMinOutputVelocity(/*500*/0, 0);
     this.sparkMax.getPIDController().setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
-    this.sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(1,0);
+    this.sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(0.1, 0);
     
-    this.sparkMax.getPIDController().setOutputRange(-.25, .25);
+    this.sparkMax.getPIDController().setOutputRange(-1, 1);
 
     this.sparkMax.getPIDController().setP(constants.getKP(), 0);
     this.sparkMax.getPIDController().setI(constants.getKI(), 0);
     this.sparkMax.getPIDController().setD(constants.getKD(), 0);
     this.sparkMax.getPIDController().setFF(constants.getKFF(), 0);
 
-    encoder.setPositionConversionFactor(360 / 49.03125);
-    encoder.setVelocityConversionFactor(360 / 49.03125);
+    encoder.setPositionConversionFactor(constants.getConversionFactor());
+    encoder.setVelocityConversionFactor(constants.getConversionFactor());
     encoder.setPosition(0);
-    // rotations -> degrees
+    
+    this.sparkMax.enableVoltageCompensation(12);
   }
 
   // Don't want anyone to be able to run this, but it will make it easier for the
@@ -229,27 +231,15 @@ public class Turret {
    * @param setpoint     The desired position for the turret
    */
   public void requestState(TurretRequestedStates desiredState, double setpoint) {
-    if (setpoint < -constants.getSoftLimit() || setpoint > constants.getSoftLimit())
-      return;
+    if (setpoint < -constants.getSoftLimit() || setpoint > constants.getSoftLimit()) return;
 
     requestedState = desiredState;
     this.setpoint = setpoint;
 
-    if (requestedState == TurretRequestedStates.HOME)
-      internalState = TurretInternalStates.HOMING;
-    else if (requestedState == TurretRequestedStates.MOVE_TO_SETPOINT)
-      internalState = TurretInternalStates.MOVING_TO_SETPOINT;
-    else if (requestedState == TurretRequestedStates.STOP)
-      internalState = TurretInternalStates.STOPPED;
+    if (requestedState == TurretRequestedStates.HOME) internalState = TurretInternalStates.HOMING;
+    else if (requestedState == TurretRequestedStates.MOVE_TO_SETPOINT) internalState = TurretInternalStates.MOVING_TO_SETPOINT;
+    else if (requestedState == TurretRequestedStates.STOP) internalState = TurretInternalStates.STOPPED;
     // If requestedState is None, do not update the internal state
-  }
-
-  private void checkForSoftLimit() {
-    if (convertEncoderTicksToAngle(getTurretEncoderPosition()) < -constants.getSoftLimit()) {
-      requestState(TurretRequestedStates.MOVE_TO_SETPOINT, setpoint + 10);
-    } else if (convertEncoderTicksToAngle(getTurretEncoderPosition()) > constants.getSoftLimit()) {
-      requestState(TurretRequestedStates.MOVE_TO_SETPOINT, setpoint - 10);
-    }
   }
 
   /**

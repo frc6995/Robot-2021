@@ -60,4 +60,7 @@ public interface TurretConstants {
      * 
      */
     boolean getLeadMotorInverted();
+
+    /**Get the converion factor for the encoder */
+    double getConversionFactor();
 }

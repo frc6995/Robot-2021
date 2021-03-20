@@ -72,4 +72,8 @@ public class TurretConstants2021 implements TurretConstants {
     public boolean getLeadMotorInverted() {
         return false;
     }
+
+    public double getConversionFactor() {
+        return 360 / 49.03125;
+    }
 }
