@@ -231,27 +231,15 @@ public class Turret {
    * @param setpoint     The desired position for the turret
    */
   public void requestState(TurretRequestedStates desiredState, double setpoint) {
-    if (setpoint < -constants.getSoftLimit() || setpoint > constants.getSoftLimit())
-      return;
+    if (setpoint < -constants.getSoftLimit() || setpoint > constants.getSoftLimit()) return;
 
     requestedState = desiredState;
     this.setpoint = setpoint;
 
-    if (requestedState == TurretRequestedStates.HOME)
-      internalState = TurretInternalStates.HOMING;
-    else if (requestedState == TurretRequestedStates.MOVE_TO_SETPOINT)
-      internalState = TurretInternalStates.MOVING_TO_SETPOINT;
-    else if (requestedState == TurretRequestedStates.STOP)
-      internalState = TurretInternalStates.STOPPED;
+    if (requestedState == TurretRequestedStates.HOME) internalState = TurretInternalStates.HOMING;
+    else if (requestedState == TurretRequestedStates.MOVE_TO_SETPOINT) internalState = TurretInternalStates.MOVING_TO_SETPOINT;
+    else if (requestedState == TurretRequestedStates.STOP) internalState = TurretInternalStates.STOPPED;
     // If requestedState is None, do not update the internal state
-  }
-
-  private void checkForSoftLimit() {
-    if (convertEncoderTicksToAngle(getTurretEncoderPosition()) < -constants.getSoftLimit()) {
-      requestState(TurretRequestedStates.MOVE_TO_SETPOINT, setpoint + 10);
-    } else if (convertEncoderTicksToAngle(getTurretEncoderPosition()) > constants.getSoftLimit()) {
-      requestState(TurretRequestedStates.MOVE_TO_SETPOINT, setpoint - 10);
-    }
   }
 
   /**

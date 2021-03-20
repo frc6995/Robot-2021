@@ -38,9 +38,6 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   
   //private DifferentialDrive m_drive;
 
-  private Encoder m_leftEncoder;
-  private Encoder m_rightEncoder;
-
   private EncoderSim m_leftEncoderSim;
   private EncoderSim m_rightEncoderSim;
 
@@ -73,30 +70,18 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     rightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
         MotorType.kBrushless,
         driveConstants.getRightDriveFollowerInverted(), rightLeader);
+
+    leftLeader.getEncoder().setPositionConversionFactor(42);
+    rightLeader.getEncoder().setPositionConversionFactor(42);
     
-    //leftLeader.setIdleMode(IdleMode.kCoast);
-    //leftFollower.setIdleMode(IdleMode.kCoast);
-    //rightLeader.setIdleMode(IdleMode.kCoast);
-    //rightFollower.setIdleMode(IdleMode.kCoast);
+    leftLeader.setIdleMode(IdleMode.kCoast);
+    leftFollower.setIdleMode(IdleMode.kCoast);
+    rightLeader.setIdleMode(IdleMode.kCoast);
+    rightFollower.setIdleMode(IdleMode.kCoast);
     leftLeader.setOpenLoopRampRate(1.25);
     rightLeader.setOpenLoopRampRate(1.25);
 
     //m_drive = new DifferentialDrive(leftLeader, rightLeader);
-
-    
-
-    m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
-        driveConstants.getLeftEncoderReversed());
-
-    m_rightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
-        driveConstants.getRightEncoderReversed());
-
-    m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
-    m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
-
-
-    m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-    m_rightEncoderSim = new EncoderSim(m_rightEncoder);
     
     m_driveSim = new DifferentialDrivetrainSim(
         driveConstants.getDrivetrainPlant(),
@@ -116,9 +101,12 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public void periodic() {
-    m_odometry.update(gyro.getRotation2d(), m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
+    m_odometry.update(gyro.getRotation2d(), leftLeader.getEncoder().getPosition() * driveConstants.getEncoderDistancePerPulse(), rightLeader.getEncoder().getPosition() *driveConstants.getEncoderDistancePerPulse()/*m_leftEncoder.getDistance(), m_rightEncoder.getDistance()*/);
     SmartDashboard.putNumber("PoseX", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("PoseY", m_odometry.getPoseMeters().getY());
+    SmartDashboard.putNumber("DriveLeftCounts", leftLeader.getEncoder().getPosition());
+
+    SmartDashboard.putNumber("DriveRightCounts", rightLeader.getEncoder().getPosition());
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
@@ -155,7 +143,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public DifferentialDriveWheelSpeeds getWheelSpeeds() {
-    return new DifferentialDriveWheelSpeeds(m_leftEncoder.getRate(), m_rightEncoder.getRate());
+    return new DifferentialDriveWheelSpeeds(getLeftVelocity(), getRightVelocity());
   }
 
   public Pose2d getPose() {
@@ -164,12 +152,12 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public double getLeftVelocity() {
-    return m_leftEncoder.getRate();
+    return leftLeader.getEncoder().getVelocity();
   }
 
   @Override
   public double getRightVelocity() {
-    return m_rightEncoder.getRate();
+    return rightLeader.getEncoder().getVelocity();
   }
 
   @Override
@@ -192,8 +180,8 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   }
 
   public void resetEncoders() {
-    m_leftEncoder.reset();
-    m_rightEncoder.reset();
+    leftLeader.getEncoder().setPosition(0);
+    rightLeader.getEncoder().setPosition(0);
   }
 
   public void resetOdometry(Pose2d pose) {

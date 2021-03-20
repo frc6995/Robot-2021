@@ -4,6 +4,7 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
@@ -105,7 +106,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getEncoderCountsPerEncoderRevolution() {
-        return 256; //Greyhill
+        return 42 * 4; //Greyhill
     }
 
     @Override
@@ -116,12 +117,13 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getEncoderRevolutionsPerWheelRevolution() {
-        return 7.29;
+        return 7.66667;
     }
 
     @Override
     public double getEncoderDistancePerPulse() {
-        return (getkWheelDiameter() * Math.PI) / (double) getEncoderCountsPerEncoderRevolution();
+        return 1/672.5;
+        //return (getkWheelDiameter() * Math.PI) / (double) getEncoderCountsPerEncoderRevolution();
     }
 
     @Override
@@ -207,5 +209,9 @@ public class DriveConstants2021 implements DriveConstants {
     @Override
     public boolean getDrivebaseRightSideInverted() {
         return false;
+    }
+
+    public SimpleMotorFeedforward getArbitraryFeedforward(){
+        return new SimpleMotorFeedforward(0.303, 2.02, 0.0468);
     }
 }
