@@ -21,9 +21,9 @@ public class ColumnS extends SubsystemBase {
     this.constants = constants;
     this.front = front;
     this.back = back;
-    back.configContinuousCurrentLimit(5);
+    back.configContinuousCurrentLimit(7);
     back.configPeakCurrentDuration(10);
-    back.configPeakCurrentLimit(5);
+    back.configPeakCurrentLimit(7);
     back.enableCurrentLimit(true);
     this.solenoid = solenoid;
   }

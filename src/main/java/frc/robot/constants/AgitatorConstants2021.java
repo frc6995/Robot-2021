@@ -18,11 +18,11 @@ public class AgitatorConstants2021 implements AgitatorConstants{
 
     @Override
     public double getRightSpeed() {
-        return 0.8;
+        return 1;
     }
 
     @Override
     public double getLeftSpeed() {
-        return 0.5;
+        return 0.75;
     }
 }

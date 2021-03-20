@@ -31,7 +31,7 @@ public class ColumnConstants2021 implements ColumnConstants {
 
     @Override
     public double getColumnLoadSpeed() {
-        return 0.25;
+        return 0.75;
     }
 
     @Override

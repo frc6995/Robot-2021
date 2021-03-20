@@ -18,14 +18,14 @@ import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 public class CannonS extends SubsystemBase {
   private Hood hood;
   private Shooter shooter;
-  private Turret turret;
+  public Turret turret;
 private int numBalls = 0;
   /** Creates a new ShooterS. */
   public CannonS(CannonConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor,
       NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
     shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor);
-   // turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
+    //turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
   }
 
   /**

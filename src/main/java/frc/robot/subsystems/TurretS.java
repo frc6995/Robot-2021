@@ -1,11 +1,15 @@
 package frc.robot.subsystems;
 
 import com.revrobotics.CANEncoder;
+import com.revrobotics.CANPIDController;
 import com.revrobotics.ControlType;
+import com.revrobotics.CANPIDController.AccelStrategy;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.TurretConstantsKRen;
 
@@ -15,7 +19,8 @@ import frc.robot.constants.TurretConstantsKRen;
  * @author JoeyFabel
  */
 public class TurretS extends SubsystemBase {
-  
+  // {distance, speed}
+  public final double[][] speeds = {{0, 0}, {5, 1000},  {10, 2000},  {15, 3000}, {20, 4000}}; 
   /**
    * An enum containing the different possible internal states of the Turret
    */
@@ -101,6 +106,8 @@ public class TurretS extends SubsystemBase {
    */
   TurretConstantsKRen constants;
 
+  private CANPIDController controller;
+
   /** Creates a new TurretS. */
   public TurretS() {
     constants = new TurretConstantsKRen();
@@ -116,12 +123,37 @@ public class TurretS extends SubsystemBase {
     homedCounter = new Counter(limitSwitch);
     homedCounter.reset();
     encoder = sparkMax.getEncoder();
+
+    controller = sparkMax.getPIDController();
+    encoder.setPositionConversionFactor(360 / 49.03125);
+    encoder.setVelocityConversionFactor(360 / 49.03125);
+    encoder.setPosition(0);
+    sparkMax.enableVoltageCompensation(12);
+
+    //motor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    sparkMax.setSoftLimit(SoftLimitDirection.kForward, 270f);
+    //motor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    sparkMax.setSoftLimit(SoftLimitDirection.kReverse, -270f);
+
+    controller.setSmartMotionMaxAccel(35000, 0);
+    controller.setSmartMotionMaxVelocity(36000, 0); //3600
+    controller.setSmartMotionMinOutputVelocity(/*500*/0, 0);
+    controller.setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
+    controller.setSmartMotionAllowedClosedLoopError(0.1,0);
+    
+    controller.setOutputRange(-1, 1);
+
+    controller.setP(.000032, 0); 
+    controller.setI(.000002, 0);
+    controller.setIZone(100, 0);
+    controller.setD(0.00001, 0);
+    controller.setFF(0, 0);
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run    
-    stateMachineLoop();
+    //stateMachineLoop();
 
     // Increase counter if at setpoint, or reset if it is not
     if (internalState == TurretInternalStates.AT_SETPOINT) withinSetpointCounter++;
@@ -178,10 +210,10 @@ public class TurretS extends SubsystemBase {
    * Run PID to the setpoint, using motion magic. Currently Incomplete (commented out lines need to be added)
    */
   public void runPIDWithMotionMagic(){
-    sparkMax.getPIDController().setP(constants.getKP());
-    sparkMax.getPIDController().setI(constants.getKI());
-    sparkMax.getPIDController().setD(constants.getKD());
-    sparkMax.getPIDController().setFF(constants.getKFF());
+    //sparkMax.getPIDController().setP(constants.getKP());
+    //sparkMax.getPIDController().setI(constants.getKI());
+    //sparkMax.getPIDController().setD(constants.getKD());
+    //sparkMax.getPIDController().setFF(constants.getKFF());
 
     // TODO - set velocity/acceleration limits
     //sparkMax.getPIDController().setSmartMotionMaxAccel(maxAccel, slotID);
@@ -191,7 +223,7 @@ public class TurretS extends SubsystemBase {
     //sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(allowedErr, slotID);
     //-------------------------------------------------------------------------------------
 
-    sparkMax.getPIDController().setReference(setpoint, ControlType.kSmartMotion);    
+    sparkMax.getPIDController().setReference(setpoint, ControlType.kSmartMotion, 0);    
   }
 
   /**
@@ -257,5 +289,15 @@ public class TurretS extends SubsystemBase {
         homedCounter.reset();
         break;
       }
+  }
+
+  public double speedFromDistance(double distance) {
+    for (int i = 0; i < 4; i++) {
+      if (distance > speeds[i][0] && distance < speeds[i+1][0]) {
+        double speed = NomadMathUtil.lerp(distance, speeds[i][0], speeds[i+1][0], speeds[i][1], speeds[i+1][1]);
+        return speed;
+      }
+    }
+    return 0;
   }
 }

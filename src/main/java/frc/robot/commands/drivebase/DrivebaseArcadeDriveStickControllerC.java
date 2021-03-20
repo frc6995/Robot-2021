@@ -7,20 +7,24 @@
 
 package frc.robot.commands.drivebase;
 
+import java.util.function.BooleanSupplier;
+
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.constants.DriveConstants;
 import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
+import frc.robot.subsystems.DrivebaseS;
 
 public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
-  DifferentialDrivebaseS drivebaseS;
+  DrivebaseS drivebaseS;
   DriveConstants driveConstants;
   GenericHID controller;
   /**
    * Creates a new DrivebaseArcadeDriveStick.
    */
-  public DrivebaseArcadeDriveStickControllerC(DifferentialDrivebaseS drivebase, DriveConstants driveConstants, GenericHID controller) {
+  public DrivebaseArcadeDriveStickControllerC(DrivebaseS drivebase, DriveConstants driveConstants, GenericHID controller) {
     drivebaseS = drivebase;
     addRequirements(drivebaseS);
     this.driveConstants = driveConstants;
@@ -44,9 +48,7 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
     if (turnSpeed > -0.02 && turnSpeed < 0.02) turnSpeed = 0;
 
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
-    drivebaseS.drivePercentages(
-      drivebaseS.arcadeDriveController(driveSpeed*0.75, turnSpeed*-0.25).clamp()
-    );
+    drivebaseS.curvatureDrive(driveSpeed*0.75, turnSpeed*-0.5, controller.getRawButton(XboxController.Button.kB.value));
   }
 
   @Override

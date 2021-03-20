@@ -47,6 +47,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
   private ADXRS450_GyroSim m_gyroSim;
 
+  public DifferentialDrive m_drive;
   // Create the simulation model of our drivetrain.
   private DifferentialDrivetrainSim m_driveSim;
 
@@ -81,7 +82,8 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     leftLeader.setOpenLoopRampRate(1.25);
     rightLeader.setOpenLoopRampRate(1.25);
 
-    //m_drive = new DifferentialDrive(leftLeader, rightLeader);
+    m_drive = new DifferentialDrive(leftLeader, rightLeader);
+    m_drive.setRightSideInverted(false);
 
     
 
@@ -183,6 +185,10 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   public void drivePercentages(DrivebaseWheelPercentages percentages) {
     leftLeader.set(percentages.getLeftPercentage());
     rightLeader.set((driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * percentages.getRightPercentage());
+  }
+
+  public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn){
+    m_drive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
   }
 
   @Override
