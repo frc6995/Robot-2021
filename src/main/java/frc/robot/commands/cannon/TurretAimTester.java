@@ -36,9 +36,7 @@ public class TurretAimTester extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    SmartDashboard.putNumber("Turret Position", encoder.getPosition());
-    SmartDashboard.putNumber("Turret Velocity", encoder.getVelocity());
-    SmartDashboard.putNumber("Limelight Offset", limelight.getFilteredXOffset());
+    
   }
 
   // Called once the command ends or is interrupted.

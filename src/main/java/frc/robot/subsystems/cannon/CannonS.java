@@ -25,7 +25,7 @@ private int numBalls = 0;
       NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {
     hood = new Hood(constants.getHoodConstants(), hoodLeftServo, hoodRightServo);
     shooter = new Shooter(constants.getShooterConstants(), shooterLeadMotor);
-    //turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
+    turret = new Turret(constants.getTurretConstants(), turretMotor, turretLimitSwitch);
   }
 
   /**
