@@ -138,7 +138,7 @@ public class Turret {
   // periodic in the subsystem to call this
   protected void periodic() {
     // This method will be called once per scheduler run
-    stateMachineLoop();
+    //stateMachineLoop();
 
     
     // Increase counter if at setpoint, or reset if it is not
