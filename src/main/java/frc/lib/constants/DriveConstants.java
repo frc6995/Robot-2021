@@ -110,12 +110,12 @@ public interface DriveConstants {
      * 
      * @return The value to multiply the drive controller forward back axis by 
      */
-    int getDriveControllerFwdBackAxisMultiplier();
+    double getDriveControllerFwdBackAxisMultiplier();
     /**
      * 
      * @return The value to multiply the drive controller turning axis by
      */
-    int getDriveControllerLeftRightAxisMultiplier();
+    double getDriveControllerLeftRightAxisMultiplier();
 
     /**
      * 

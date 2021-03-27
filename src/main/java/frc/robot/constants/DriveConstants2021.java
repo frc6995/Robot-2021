@@ -34,7 +34,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public boolean getLeftDriveLeaderInverted() {
-        return true;
+        return false;
     }
 
     @Override
@@ -76,7 +76,7 @@ public class DriveConstants2021 implements DriveConstants {
     }
     @Override
     public boolean getRightDriveLeaderInverted() {
-        return false;
+        return true;
     }
 
     @Override
@@ -158,17 +158,17 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getkPDriveVel() {
-        return 8.5;
+        return 0.000294;
     }
 
     @Override
     public double getkPDriveVelLeft() {
-        return 8.5;
+        return getkPDriveVel();
     }
 
     @Override
     public double getkPDriveVelRight() {
-        return 8.5;
+        return getkPDriveVel();
     }
 
     @Override
@@ -197,13 +197,13 @@ public class DriveConstants2021 implements DriveConstants {
     }
 
     @Override
-    public int getDriveControllerFwdBackAxisMultiplier() {
-        return -1;
+    public double getDriveControllerFwdBackAxisMultiplier() {
+        return 0.75;
     }
 
     @Override
-    public int getDriveControllerLeftRightAxisMultiplier() {
-        return 1;
+    public double getDriveControllerLeftRightAxisMultiplier() {
+        return -0.5;
     }
 
     @Override

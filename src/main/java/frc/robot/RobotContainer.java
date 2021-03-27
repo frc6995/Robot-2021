@@ -9,6 +9,7 @@ package frc.robot;
 
 import javax.management.InstanceNotFoundException;
 
+import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -219,12 +220,12 @@ public class RobotContainer {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.exampleTrajectory,
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.slalomTrajectory,
     drivebaseS, driveConstants, autoConstants);
 
     
     ramseteCommandGroup = new InstantCommand(() -> 
-    drivebaseS.resetOdometry(Trajectories.exampleTrajectory.getInitialPose()), drivebaseS)
+    drivebaseS.resetOdometry(Trajectories.slalomTrajectory.getInitialPose()), drivebaseS)
     .andThen(new WaitCommand(0.2))
     .andThen(ramseteCommand)
     .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
@@ -288,8 +289,8 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    //return ramseteCommandGroup;
-    return awardWinnerCG;
+    return ramseteCommandGroup;
+    //return awardWinnerCG;
   }
   /**
    * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
@@ -305,6 +306,14 @@ public class RobotContainer {
 public void disabledInit() {
   columnS.enableStopper();
   cannonS.stopShooter();
+  drivebaseS.setIdleMode(IdleMode.kCoast);
 }
 
+public void teleopInit() {
+  drivebaseS.setIdleMode(IdleMode.kCoast);
+}
+
+public void autonomousInit() {
+  drivebaseS.setIdleMode(IdleMode.kCoast);
+}
 }

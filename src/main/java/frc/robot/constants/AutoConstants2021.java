@@ -40,16 +40,18 @@ public class AutoConstants2021 implements AutoConstants {
       protected DriveConstants driveConstants;
     public AutoConstants2021(DriveConstants drivebaseConstants) {
         driveConstants = drivebaseConstants;
-        TRAJECTORY_FEED_FORWARD = new SimpleMotorFeedforward(
+        CENTRIPETAL_ACCELERATION_CONSTRAINT = new CentripetalAccelerationConstraint(1);
+
+        TRAJECTORY_FEED_FORWARD = driveConstants.getArbitraryFeedforward();/*new SimpleMotorFeedforward(
             driveConstants.getKsVolts(),
             driveConstants.getKvVoltSecondsPerMeter(),
-            driveConstants.getKaVoltSecondsSquaredPerMeter());
+            driveConstants.getKaVoltSecondsSquaredPerMeter());*/
 
         AUTO_VOLTAGE_CONSTRAINT =
         new DifferentialDriveVoltageConstraint(
             TRAJECTORY_FEED_FORWARD,
             driveConstants.getDifferentialDriveKinematics(),
-            7);
+            6);
 
     // Create config for trajectory
         TRAJECTORY_CONFIG =
@@ -59,7 +61,8 @@ public class AutoConstants2021 implements AutoConstants {
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(driveConstants.getDifferentialDriveKinematics())
             // Apply the voltage constraint
-            .addConstraint(AUTO_VOLTAGE_CONSTRAINT);
+            .addConstraint(AUTO_VOLTAGE_CONSTRAINT)
+            .addConstraint(CENTRIPETAL_ACCELERATION_CONSTRAINT);
 
         RAMSETE_CONTROLLER = new RamseteController(getkRamseteB(), getkRamseteZeta());
 
@@ -70,13 +73,13 @@ public class AutoConstants2021 implements AutoConstants {
     @Override
     public double getkMaxAccelerationMetersPerSecondSquared() {
         
-        return 3;
+        return 1;
     }
 
     @Override
     public double getkMaxSpeedMetersPerSecond() {
         
-        return 3;
+        return 3.5;
     }
 
     @Override

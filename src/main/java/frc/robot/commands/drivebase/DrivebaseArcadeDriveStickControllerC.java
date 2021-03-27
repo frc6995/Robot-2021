@@ -48,7 +48,7 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
     if (turnSpeed > -0.02 && turnSpeed < 0.02) turnSpeed = 0;
 
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
-    drivebaseS.curvatureDrive(driveSpeed*0.75, turnSpeed*-0.5, controller.getRawButton(XboxController.Button.kB.value));
+    drivebaseS.curvatureDrive(driveSpeed*driveConstants.getDriveControllerFwdBackAxisMultiplier(), turnSpeed*driveConstants.getDriveControllerLeftRightAxisMultiplier(), controller.getRawButton(XboxController.Button.kB.value));
   }
 
   @Override

@@ -4,13 +4,17 @@
 
 package frc.robot.subsystems;
 
+import java.util.stream.Collectors;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -27,6 +31,7 @@ import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
 import frc.lib.wrappers.motorcontrollers.NomadPWMMotor;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
+import frc.robot.auto.Trajectories;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
 
@@ -41,8 +46,10 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private EncoderSim m_leftEncoderSim;
   private EncoderSim m_rightEncoderSim;
 
-  private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
+  //private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
   private ADXRS450_GyroSim m_gyroSim;
+
+  private AHRS navx = new AHRS(Port.kMXP);
 
   public DifferentialDrive m_drive;
   // Create the simulation model of our drivetrain.
@@ -74,11 +81,10 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
     leftLeader.getEncoder().setPositionConversionFactor(42);
     rightLeader.getEncoder().setPositionConversionFactor(42);
+    leftLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
+    rightLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
     
-    leftLeader.setIdleMode(IdleMode.kCoast);
-    leftFollower.setIdleMode(IdleMode.kCoast);
-    rightLeader.setIdleMode(IdleMode.kCoast);
-    rightFollower.setIdleMode(IdleMode.kCoast);
+    setIdleMode(IdleMode.kBrake);
     leftLeader.setOpenLoopRampRate(1.25);
     rightLeader.setOpenLoopRampRate(1.25);
 
@@ -109,7 +115,10 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         driveConstants.getSimEncoderStdDev());
 
         
-    m_gyroSim = new ADXRS450_GyroSim(gyro);
+    //m_gyroSim = new ADXRS450_GyroSim(gyro);
+    /*m_field.getObject("trajectory").setPoses(Trajectories.straightTrajectory.getStates().stream()
+      .map(state->state.poseMeters)
+      .collect(Collectors.toList()));*/
     
     SmartDashboard.putData("Field", m_field);
 
@@ -118,12 +127,15 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public void periodic() {
-    m_odometry.update(gyro.getRotation2d(), leftLeader.getEncoder().getPosition() * driveConstants.getEncoderDistancePerPulse(), rightLeader.getEncoder().getPosition() *driveConstants.getEncoderDistancePerPulse()/*m_leftEncoder.getDistance(), m_rightEncoder.getDistance()*/);
+    m_odometry.update(navx.getRotation2d(), leftLeader.getEncoder().getPosition() * driveConstants.getEncoderDistancePerPulse(), rightLeader.getEncoder().getPosition() *driveConstants.getEncoderDistancePerPulse()/*m_leftEncoder.getDistance(), m_rightEncoder.getDistance()*/);
     SmartDashboard.putNumber("PoseX", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("PoseY", m_odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("DriveLeftCounts", leftLeader.getEncoder().getPosition());
-
+    SmartDashboard.putNumber("DriveLeftVel", getLeftVelocity());
+    SmartDashboard.putNumber("DriveRightVel", getRightVelocity());
     SmartDashboard.putNumber("DriveRightCounts", rightLeader.getEncoder().getPosition());
+    SmartDashboard.putNumber("Gyro", navx.getAngle());
+
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
@@ -155,7 +167,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   @Override
   public double getYaw() {
-    return Math.IEEEremainder(gyro.getAngle(), 360) * (driveConstants.getGyroReversed() ? -1.0 : 1.0);
+    return Math.IEEEremainder(navx.getAngle(), 360) * (driveConstants.getGyroReversed() ? -1.0 : 1.0);
   }
 
   @Override
@@ -207,9 +219,9 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   public void resetOdometry(Pose2d pose) {
     resetEncoders();
-    gyro.reset();
+    navx.reset();
     m_driveSim.setPose(pose);
-    m_odometry.resetPosition(pose, Rotation2d.fromDegrees(getYaw()));
+    m_odometry.resetPosition(pose, navx.getRotation2d());
   }
 
   @Override
@@ -252,6 +264,11 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   public double getRightSetSpeed() {
     // TODO Auto-generated method stub
     return rightLeader.getActualOutputPercent();
+  }
+
+  public void setIdleMode(IdleMode mode) {
+    leftLeader.setIdleMode(mode);
+    rightLeader.setIdleMode(mode);
   }
 
 }
