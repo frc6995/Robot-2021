@@ -60,9 +60,6 @@ public class TurretMotionTester extends CommandBase {
   @Override
   public void execute() {
     //cannonS.runTurretPIDWithMotionMagic();
-    //cannonS.runTurretPID();
-    SmartDashboard.putNumber("Turret Position", encoder.getPosition());
-    SmartDashboard.putNumber("Turret Velocity", encoder.getVelocity());
   }
 
   // Called once the command ends or is interrupted.

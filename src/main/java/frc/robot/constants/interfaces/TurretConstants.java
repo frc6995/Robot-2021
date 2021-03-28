@@ -63,4 +63,7 @@ public interface TurretConstants {
 
     /**Get the converion factor for the encoder */
     double getConversionFactor();
+
+    double getReverseSoftLimit();
+    double getForwardSoftLimit();
 }

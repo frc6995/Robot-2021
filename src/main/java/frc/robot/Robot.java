@@ -15,7 +15,7 @@ public class Robot extends TimedRobot {
   public void robotInit() {
     robotContainer = new RobotContainer();
     LiveWindow.disableAllTelemetry();
-    //LiveWindow.enableTelemetry(CommandScheduler);
+    //LiveWindow.enableTelemetry(CommandScheduler.getInstance());
   }
 
   @Override

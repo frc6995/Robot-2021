@@ -108,7 +108,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     }
 
     public void set(double setpoint, ControlType type) {
-        SmartDashboard.putNumber("SPARK MAX " + getDeviceId(), setpoint);
+
         if(!RobotBase.isReal()){
             lastPower = setpoint;
         } else

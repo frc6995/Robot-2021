@@ -54,7 +54,6 @@ public class LimelightS extends SubsystemBase {
   public void periodic() {
     filteredXOffset = xOffsetFilter.calculate(getXOffset());
     filteredYOffset = yOffsetFilter.calculate(getYOffset());
-    SmartDashboard.putNumber("LimelightFilteredAngle", filteredXOffset);
   }
 
   /**

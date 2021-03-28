@@ -122,11 +122,8 @@ private int numBalls = 0;
   public void periodic() {
     //turret.periodic();
     shooter.periodic();
-    SmartDashboard.putBoolean("Shooter at speed", isShooterAtSpeed());
-    SmartDashboard.putBoolean("Is Shooter Current Normal", isShooterVoltageNormal());
 
-    if (!isShooterVoltageNormal() && isShooterAtSpeed()) numBalls++;
-      SmartDashboard.putNumber("num balls launched", numBalls);
+    turret.periodic();
   }
 
   public void stopShooter(){

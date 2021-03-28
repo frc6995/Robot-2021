@@ -68,21 +68,21 @@ public class Trajectories {
         barrelRaceTrajectory =
             TrajectoryGenerator.generateTrajectory(List.of(
                 new Pose2d(1.129, -2.097 + fieldWidth, new Rotation2d(Math.atan2(0, 3.048))),
-                new Pose2d(4.006, -2.388 + fieldWidth, new Rotation2d(Math.atan2(-0.696, 0.824))),
-                new Pose2d(3.832, -3.612 + fieldWidth, new Rotation2d(Math.atan2(0, -1.421))),
-                new Pose2d(3.554, -2.614 + fieldWidth, new Rotation2d(Math.atan2(0.412, 0.621))),
+                new Pose2d(4.145, -2.312 + fieldWidth, new Rotation2d(Math.atan2(-0.696, 0.824))),
+                new Pose2d(3.879, -3.757 + fieldWidth, new Rotation2d(Math.atan2(0, -1.421))),
+                new Pose2d(3.403, -2.596 + fieldWidth, new Rotation2d(Math.atan2(0.412, 0.621))),
                 new Pose2d(4.987, -2.318 + fieldWidth, new Rotation2d(Math.atan2(0.058, 1.741))),
-                new Pose2d(6.565, -1.831 + fieldWidth, new Rotation2d(Math.atan2(0.412, 0.69))),
-                new Pose2d(6.791, -1.187 + fieldWidth, new Rotation2d(Math.atan2(0.487, -0.389))),
-                new Pose2d(6.031, -0.995 + fieldWidth, new Rotation2d(Math.atan2(-0.203, -0.719))),
-                new Pose2d(5.573, -1.628 + fieldWidth, new Rotation2d(Math.atan2(-0.847, 0.191))),
+                new Pose2d(6.663, -1.958 + fieldWidth, new Rotation2d(Math.atan2(0.412, 0.69))),
+                new Pose2d(6.895, -1.134 + fieldWidth, new Rotation2d(Math.atan2(0.487, -0.389))),
+                new Pose2d(6.048, -0.815 + fieldWidth, new Rotation2d(Math.atan2(-0.203, -0.719))),
+                new Pose2d(5.428, -1.546 + fieldWidth, new Rotation2d(Math.atan2(-0.528, 0.133))),
                 new Pose2d(5.938, -2.538 + fieldWidth, new Rotation2d(Math.atan2(-0.992, 0.528))),
-                new Pose2d(7.371, -3.496 + fieldWidth, new Rotation2d(Math.atan2(-0.023, 0.644))),
-                new Pose2d(8.305, -2.892 + fieldWidth, new Rotation2d(Math.atan2(1.201, -0.133))),
-                new Pose2d(7.342, -2.266 + fieldWidth, new Rotation2d(Math.atan2(-0.058, -0.656))),
-                new Pose2d(5.225, -2.115 + fieldWidth, new Rotation2d(Math.atan2(0.238, -1.52))),
-                new Pose2d(3.507, -1.9 + fieldWidth, new Rotation2d(Math.atan2(0.1, -1.314))),
-                new Pose2d(1.279, -1.871 + fieldWidth, new Rotation2d(Math.atan2(-0.046, -1.033)))
+                new Pose2d(7.296, -3.658 + fieldWidth, new Rotation2d(Math.atan2(-0.023, 0.644))),
+                new Pose2d(8.363, -3.037 + fieldWidth, new Rotation2d(Math.atan2(1.201, -0.133))),
+                new Pose2d(7.418, -2.132 + fieldWidth, new Rotation2d(Math.atan2(-0.847, -0.07))),
+                new Pose2d(5.259, -2.179 + fieldWidth, new Rotation2d(Math.atan2(0.099, -1.276))),
+                new Pose2d(3.559, -2.103 + fieldWidth, new Rotation2d(Math.atan2(0.033, -1.303))),
+                new Pose2d(1.349, -2.103 + fieldWidth, new Rotation2d(Math.atan2(-0.046, -1.033)))
             ), config.setEndVelocity(0));
     }
 }

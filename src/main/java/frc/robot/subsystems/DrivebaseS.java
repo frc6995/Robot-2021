@@ -128,14 +128,14 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   @Override
   public void periodic() {
     m_odometry.update(navx.getRotation2d(), leftLeader.getEncoder().getPosition() * driveConstants.getEncoderDistancePerPulse(), rightLeader.getEncoder().getPosition() *driveConstants.getEncoderDistancePerPulse()/*m_leftEncoder.getDistance(), m_rightEncoder.getDistance()*/);
-    SmartDashboard.putNumber("PoseX", m_odometry.getPoseMeters().getX());
+    /* SmartDashboard.putNumber("PoseX", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("PoseY", m_odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("DriveLeftCounts", leftLeader.getEncoder().getPosition());
     SmartDashboard.putNumber("DriveLeftVel", getLeftVelocity());
     SmartDashboard.putNumber("DriveRightVel", getRightVelocity());
     SmartDashboard.putNumber("DriveRightCounts", rightLeader.getEncoder().getPosition());
     SmartDashboard.putNumber("Gyro", navx.getAngle());
-
+ */
     m_field.setRobotPose(m_odometry.getPoseMeters());
   }
 
@@ -150,7 +150,6 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     // subsystem in a separate thread or have changed the nominal timestep
     // of TimedRobot, this value needs to match it.
     m_driveSim.update(0.02);
-    SmartDashboard.putNumber("Left position", m_driveSim.getLeftPositionMeters());
 
     // Update all of our sensors.
     m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
@@ -203,7 +202,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   }
 
   public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn){
-    m_drive.curvatureDrive(xSpeed, zRotation, isQuickTurn);
+    m_drive.curvatureDrive(xSpeed, zRotation * (isQuickTurn ? 0.75 : 1) , isQuickTurn);
   }
 
   @Override
