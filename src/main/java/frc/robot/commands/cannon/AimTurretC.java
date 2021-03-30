@@ -35,9 +35,10 @@ public class AimTurretC extends CommandBase {
 
   @Override
   public void execute() { // if offset > 0, turn left. if offset < 0, turn right
-    cannon.requestTurretState(TurretRequestedStates.MOVE_TO_SETPOINT, 
+    /*cannon.requestTurretState(TurretRequestedStates.MOVE_TO_SETPOINT, 
         cannon.turret.getTurretEncoderPosition() - 
-        limelight.getFilteredXOffset());
+        limelight.getFilteredXOffset());*/
+    cannon.turret.setSetpoint(cannon.turret.getTurretEncoderPosition() - limelight.getFilteredXOffset());
     cannon.runTurretPIDWithMotionMagic();
   }
 

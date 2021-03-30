@@ -16,7 +16,7 @@ import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
  * @author JoeyFabel
  */
 public class CannonS extends SubsystemBase {
-  private Hood hood;
+  public Hood hood;
   private Shooter shooter;
   public Turret turret;
 private int numBalls = 0;
