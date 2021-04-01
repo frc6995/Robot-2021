@@ -128,6 +128,7 @@ public class RobotContainer {
   private RamseteCommand ramseteCommand;
 
   private SequentialCommandGroup ramseteCommandGroup;
+  private SequentialCommandGroup bounceCommandGroup;
 
 
   //private NomadMappedGenericHID driverController;
@@ -220,7 +221,7 @@ public class RobotContainer {
     drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.slalomTrajectory,
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.barrelRaceTrajectory,
     drivebaseS, driveConstants, autoConstants);
 
     
@@ -229,6 +230,26 @@ public class RobotContainer {
     .andThen(new WaitCommand(0.2))
     .andThen(ramseteCommand)
     .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
+
+    var bounce1Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce1Trajectory,
+    drivebaseS, driveConstants, autoConstants);
+    var bounce2Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce2Trajectory,
+    drivebaseS, driveConstants, autoConstants);
+    var bounce3Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce3Trajectory,
+    drivebaseS, driveConstants, autoConstants);
+    var bounce4Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce4Trajectory,
+    drivebaseS, driveConstants, autoConstants);
+
+    bounceCommandGroup = new InstantCommand(() ->
+    drivebaseS.resetOdometry(Trajectories.bounce1Trajectory.getInitialPose()), drivebaseS)
+    .andThen(bounce1Command)
+    .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce2Trajectory.getInitialPose()), drivebaseS)
+    .andThen(bounce2Command)
+    .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce3Trajectory.getInitialPose()), drivebaseS)
+    .andThen(bounce3Command)
+    .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce4Trajectory.getInitialPose()), drivebaseS)
+    .andThen(bounce4Command)
+    .andThen(() -> drivebaseS.tankDriveVolts(0, 0), drivebaseS);
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
