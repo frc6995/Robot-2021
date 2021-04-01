@@ -12,32 +12,35 @@ import javax.management.InstanceNotFoundException;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AgitatorConstants;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.ColumnConstants;
 import frc.lib.constants.DriveConstants;
-import frc.lib.constants.DriverStationConstants;
 import frc.lib.constants.IntakeConstants;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole;
-import frc.lib.wrappers.inputdevices.NomadOperatorConsole.NomadMappingEnum;
+
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
@@ -48,9 +51,9 @@ import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.TurretAimTester;
 import frc.robot.commands.cannon.TurretMotionTester;
+import frc.robot.commands.cannon.TurretNudgeC;
 import frc.robot.commands.column.ColumnFeedCG;
 import frc.robot.commands.drivebase.DriveAutoC;
-import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intakecommands.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
@@ -62,7 +65,6 @@ import frc.robot.constants.AutoConstants2021;
 import frc.robot.constants.CannonConstants2021;
 import frc.robot.constants.ColumnConstantsKRen;
 import frc.robot.constants.DriveConstants2021;
-import frc.robot.constants.DriverStationConstants2021;
 import frc.robot.constants.HoodConstants2021;
 import frc.robot.constants.IntakeConstantsKRen;
 import frc.robot.constants.LimelightConstants2021;
@@ -91,7 +93,6 @@ public class RobotContainer {
   // Constants Files
   private AutoConstants autoConstants;
   private DriveConstants driveConstants;
-  private DriverStationConstants driverStationConstants;
   private IntakeConstants intakeConstants;
   private AgitatorConstants agitatorConstants;
   private ColumnConstants columnConstants;
@@ -109,12 +110,9 @@ public class RobotContainer {
   private AgitatorSpinC agitatorSpinC;
   private IntakeToggleC intakeToggleC;
   private StoreBallsCG storeBallsCG;
-  private ColumnFeedC columnFeedC;
+
   private DrivebaseArcadeDriveStickControllerC controllerDrive;
   private DriveAutoC driveAutoC;
-  private ParallelRaceGroup driveAutoTimeoutCG;
-
-  private AutonomousAwardWinnerCG awardWinnerCG;
 
   // private NomadMappedGenericHID driverController;
   private XboxController controller;
@@ -123,7 +121,7 @@ public class RobotContainer {
   // Subsystems
   private DrivebaseS drivebaseS;
   // Commands
-  private DrivebaseArcadeDriveStickC drivebaseArcadeDriveStickC;
+
 
   private RamseteCommand ramseteCommand;
 
@@ -135,19 +133,25 @@ public class RobotContainer {
 
   private boolean init = false;
 
+  private Spark lights;
+
+  private Trajectory selectedTrajectory = Trajectories.barrelRaceTrajectory;
+
   /**
    * The container for the robot. Contains constant files, controllers, subsystems, trajectories, commands,
    * and default command bindings, to be created in that order.
    */
   public RobotContainer() {
     createConstantsFiles();
-    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.DEFAULT_DRIVE);
-    createControllers(driveConstants, driverStationConstants, NomadMappingEnum.TRIGGER_DRIVE);
+    createControllers(driveConstants);
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
     createSubsystems();
     createCommands();
     configureDefaultCommands();
     configureButtonBindings();
+    //CameraServer.getInstance().startAutomaticCapture();
+    lights = new Spark(0);
+    lights.set(-0.97);
     init = true;
   }
 
@@ -162,7 +166,6 @@ public class RobotContainer {
     
     driveConstants = new DriveConstants2021();
     autoConstants = new AutoConstants2021(driveConstants);
-    driverStationConstants = new DriverStationConstants2021();
 
     columnConstants = new ColumnConstantsKRen();
 
@@ -207,8 +210,6 @@ public class RobotContainer {
     turretConstants.getLeadMotorInverted());
     DigitalInput turretLimitSwitch = new DigitalInput(turretConstants.getLimitSwitchChannelID());
     
-    SmartDashboard.putData(new TurretMotionTester(turretMotor, 90.25));
-    SmartDashboard.putData(new TurretAimTester(turretMotor, limelightS));
     
     cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor, turretLimitSwitch);
   }
@@ -218,7 +219,6 @@ public class RobotContainer {
    * them, we should save on garbage collection.
    */
   private void createCommands() {
-    drivebaseArcadeDriveStickC = new DrivebaseArcadeDriveStickC(drivebaseS, driveConstants);
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
     ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.barrelRaceTrajectory,
@@ -226,8 +226,7 @@ public class RobotContainer {
 
     
     ramseteCommandGroup = new InstantCommand(() -> 
-    drivebaseS.resetOdometry(Trajectories.slalomTrajectory.getInitialPose()), drivebaseS)
-    .andThen(new WaitCommand(0.2))
+    drivebaseS.resetOdometry(Trajectories.barrelRaceTrajectory.getInitialPose()), drivebaseS)
     .andThen(ramseteCommand)
     .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
 
@@ -253,16 +252,12 @@ public class RobotContainer {
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
-    columnFeedC = new ColumnFeedC(columnS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
 
     driveAutoC = new DriveAutoC(drivebaseS, 1, true);
-    driveAutoTimeoutCG = driveAutoC.withTimeout(1);
-    awardWinnerCG = new AutonomousAwardWinnerCG(drivebaseS, cannonS, agitatorS, columnS, intakeS);
 
-    SmartDashboard.putData(awardWinnerCG);
     SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
-    SmartDashboard.putData(spinShooterC);
+
     
   }
 
@@ -278,7 +273,7 @@ public class RobotContainer {
    * @param driveConstants Drivebase constants to use in the input map creation.
    * @param map The map from NomadInputMaps to select.
    */
-  private void createControllers(DriveConstants driveConstants, DriverStationConstants driverStationConstants, NomadMappingEnum map) {
+  private void createControllers(DriveConstants driveConstants) {
     //Robot2021NomadInputMaps.createMaps(driveConstants, driverStationConstants);
     //NomadOperatorConsole.setMap(map);
     controller = new XboxController(0);
@@ -298,7 +293,9 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(new InstantCommand(() -> cannonS.stopShooter(), cannonS));
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS, true));
     new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpellBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
-    new JoystickButton(controller, XboxController.Button.kA.value).whenPressed(new AimTurretC(limelightS, cannonS));
+    new JoystickButton(controller, XboxController.Button.kA.value).whenPressed(new PrintCommand("Aiming turret")/*new AimTurretC(limelightS, cannonS)*/);
+    new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5); cannonS.turret.runPID();}, cannonS)/*new PrintCommand("Turret left")*/;
+    new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5); cannonS.turret.runPID();}, cannonS);
   }
 
   /**
@@ -317,11 +314,6 @@ public class RobotContainer {
    * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
    */
   public void updateTelemetry() {
-    //if (init) {
-     // SmartDashboard.putNumber("driveFwdBack",
-        //  NomadOperatorConsole.getRawAxis(driveConstants.getDriveControllerFwdBackAxis()));
-      //SmartDashboard.putString("Driver Map", NomadOperatorConsole.getSelectedMap().toString());
-    //}
   }
 
 public void disabledInit() {

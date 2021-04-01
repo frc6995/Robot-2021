@@ -9,6 +9,7 @@ import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.TurretConstants2021;
 import frc.robot.constants.interfaces.TurretConstants;
@@ -21,6 +22,7 @@ import frc.robot.constants.interfaces.TurretConstants;
  */
 public class Turret {
 
+  public final double[][] speeds = {{0, 0}, {5, 1000},  {10, 2000},  {15, 3000}, {20, 4000}}; 
   /**
    * An enum containing the different possible internal states of the Turret
    */
@@ -110,9 +112,9 @@ public class Turret {
     encoder = sparkMax.getEncoder(EncoderType.kHallSensor, 42);
 
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kForward, true);
-    this.sparkMax.setSoftLimit(SoftLimitDirection.kForward, (float) constants.getSoftLimit());
+    this.sparkMax.setSoftLimit(SoftLimitDirection.kForward, (float) constants.getForwardSoftLimit());
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
-    this.sparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float) constants.getSoftLimit());
+    this.sparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float) constants.getReverseSoftLimit());
 
     this.sparkMax.getPIDController().setSmartMotionMaxAccel(35000, 0);
     this.sparkMax.getPIDController().setSmartMotionMaxVelocity(36000, 0);
@@ -128,7 +130,7 @@ public class Turret {
     this.sparkMax.getPIDController().setFF(constants.getKFF(), 0);
 
     encoder.setPositionConversionFactor(constants.getConversionFactor());
-    encoder.setVelocityConversionFactor(constants.getConversionFactor());
+    encoder.setVelocityConversionFactor(constants.getConversionFactor() / 60);
     encoder.setPosition(0);
     
     this.sparkMax.enableVoltageCompensation(12);
@@ -147,9 +149,11 @@ public class Turret {
     else
     withinSetpointCounter = 0;
     
-    SmartDashboard.putNumber("Turret Position", getTurretEncoderPosition());
+/*     SmartDashboard.putNumber("Turret Position", getTurretEncoderPosition());
     SmartDashboard.putNumber("Turret Velocity", encoder.getVelocity());
-    SmartDashboard.putNumber("Turret encoder counts per rev", encoder.getCountsPerRevolution());
+    SmartDashboard.putNumber("Turret Setpoint", setpoint);
+    SmartDashboard.putString("Turret State", requestedState.toString());
+    SmartDashboard.putNumber("Turret encoder counts per rev", encoder.getCountsPerRevolution()); */
   }
 
   /**
@@ -231,7 +235,7 @@ public class Turret {
    * @param setpoint     The desired position for the turret
    */
   public void requestState(TurretRequestedStates desiredState, double setpoint) {
-    if (setpoint < -constants.getSoftLimit() || setpoint > constants.getSoftLimit()) return;
+    if (setpoint < constants.getForwardSoftLimit() || setpoint > constants.getReverseSoftLimit()) return;
 
     requestedState = desiredState;
     this.setpoint = setpoint;
@@ -260,10 +264,14 @@ public class Turret {
           internalState = TurretInternalStates.HOMED;
         break;
       case MOVING_TO_SETPOINT:
-        //runPID();
+        runPID();
         //checkForSoftLimit();
-        if (isAtSetpoint())
+        if (isAtSetpoint()) {
           internalState = TurretInternalStates.AT_SETPOINT;
+          System.out.println("Turret at setpoint.");
+        }
+
+          
         break;
       case AT_SETPOINT:
         if (!isAtSetpoint())
@@ -284,5 +292,41 @@ public class Turret {
    */
   public boolean isHomed() {
     return internalState == TurretInternalStates.HOMED;
+  }
+  /**
+   * 
+   */
+  public double distanceToReverseSoftLimit(double angleAdjust) {
+    return constants.getReverseSoftLimit() - (getTurretEncoderPosition() + angleAdjust); 
+  }
+
+  public double distanceToForwardSoftLimit(double angleAdjust) {
+    return constants.getForwardSoftLimit() - (getTurretEncoderPosition() + angleAdjust); 
+  }
+
+  public void nudgeTurret(double angleAdjust) {
+    requestState(TurretRequestedStates.MOVE_TO_SETPOINT, getTurretEncoderPosition() + angleAdjust);
+  }
+
+  public double speedFromDistance(double distance) {
+    for (int i = 0; i < 4; i++) {
+      if (distance > speeds[i][0] && distance < speeds[i+1][0]) {
+        double speed = NomadMathUtil.lerp(distance, speeds[i][0], speeds[i+1][0], speeds[i][1], speeds[i+1][1]);
+        return speed;
+      }
+    }
+    return 0;
+  }
+  
+  public boolean isAtForwardSoftLimit() {
+    return (distanceToForwardSoftLimit(0) < 0); 
+  }
+
+  public boolean isAtReverseSoftLimit() {
+    return (distanceToReverseSoftLimit(0) < 0);
+  }
+
+  public void setSetpoint(double setpoint){
+    this.setpoint = NomadMathUtil.clamp(constants.getReverseSoftLimit(), constants.getForwardSoftLimit(), setpoint);
   }
 }

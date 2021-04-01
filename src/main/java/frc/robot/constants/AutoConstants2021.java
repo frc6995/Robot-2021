@@ -40,7 +40,7 @@ public class AutoConstants2021 implements AutoConstants {
       protected DriveConstants driveConstants;
     public AutoConstants2021(DriveConstants drivebaseConstants) {
         driveConstants = drivebaseConstants;
-        CENTRIPETAL_ACCELERATION_CONSTRAINT = new CentripetalAccelerationConstraint(1);
+        CENTRIPETAL_ACCELERATION_CONSTRAINT = new CentripetalAccelerationConstraint(1.5);
 
         TRAJECTORY_FEED_FORWARD = driveConstants.getArbitraryFeedforward();/*new SimpleMotorFeedforward(
             driveConstants.getKsVolts(),
@@ -73,13 +73,13 @@ public class AutoConstants2021 implements AutoConstants {
     @Override
     public double getkMaxAccelerationMetersPerSecondSquared() {
         
-        return 1;
+        return 2;
     }
 
     @Override
     public double getkMaxSpeedMetersPerSecond() {
         
-        return 3.5;
+        return 4;
     }
 
     @Override

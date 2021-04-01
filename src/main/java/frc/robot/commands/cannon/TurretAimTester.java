@@ -55,7 +55,6 @@ public class TurretAimTester extends CommandBase {
   public void initialize() {
     setpoint = encoder.getPosition() - limelight.getFilteredXOffset();
     motor.getPIDController().setReference(setpoint, ControlType.kSmartMotion, 0);
-    SmartDashboard.putNumber("Turret Setpoint", setpoint);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

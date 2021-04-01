@@ -15,7 +15,7 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getKP() {
-        return .005;
+        return .01;
     }
 
     @Override
@@ -53,6 +53,14 @@ public class TurretConstants2021 implements TurretConstants {
         return 80;
     }
 
+    public double getForwardSoftLimit() {
+        return 80;
+    }
+
+    public double getReverseSoftLimit() {
+        return -80;
+    }
+
     @Override
     public int getSparkMaxPortID() {
         return 53;
@@ -72,7 +80,9 @@ public class TurretConstants2021 implements TurretConstants {
     public boolean getLeadMotorInverted() {
         return false;
     }
-
+    /**
+     * Converts motor rotation to turret degrees
+     */
     public double getConversionFactor() {
         return 360 / 49.03125;
     }
