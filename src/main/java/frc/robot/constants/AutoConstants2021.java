@@ -51,7 +51,7 @@ public class AutoConstants2021 implements AutoConstants {
         new DifferentialDriveVoltageConstraint(
             TRAJECTORY_FEED_FORWARD,
             driveConstants.getDifferentialDriveKinematics(),
-            6);
+            10.5);
 
     // Create config for trajectory
         TRAJECTORY_CONFIG =
@@ -73,7 +73,7 @@ public class AutoConstants2021 implements AutoConstants {
     @Override
     public double getkMaxAccelerationMetersPerSecondSquared() {
         
-        return 2;
+        return 3;
     }
 
     @Override

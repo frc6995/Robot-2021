@@ -307,7 +307,7 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    return ramseteCommandGroup;
+    return bounceCommandGroup;
     //return awardWinnerCG;
   }
   /**
