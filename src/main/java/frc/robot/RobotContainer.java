@@ -49,6 +49,7 @@ import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpShooterC;
+import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.TurretAimTester;
 import frc.robot.commands.cannon.TurretMotionTester;
 import frc.robot.commands.cannon.TurretNudgeC;
@@ -258,7 +259,7 @@ public class RobotContainer {
 
     SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
 
-    
+    SmartDashboard.putData(new SpinUpShooterDistanceC(cannonS, limelightS, true));
   }
 
   /**
