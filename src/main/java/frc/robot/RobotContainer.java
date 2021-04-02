@@ -7,71 +7,55 @@
 
 package frc.robot;
 
-import javax.management.InstanceNotFoundException;
-
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
-import frc.lib.constants.AgitatorConstants;
 import frc.lib.constants.AutoConstants;
-import frc.lib.constants.ColumnConstants;
 import frc.lib.constants.DriveConstants;
-import frc.lib.constants.IntakeConstants;
-
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
-import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 import frc.robot.auto.Trajectories;
-import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpShooterC;
-import frc.robot.commands.cannon.TurretAimTester;
-import frc.robot.commands.cannon.TurretMotionTester;
-import frc.robot.commands.cannon.TurretNudgeC;
-import frc.robot.commands.column.ColumnFeedCG;
+import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
-import frc.robot.commands.intakecommands.IntakeToggleC;
+import frc.robot.commands.intake.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
-import frc.robot.commands.othercommands.ColumnFeedC;
-import frc.robot.commands.othercommands.ExpellBallsCG;
+import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
-import frc.robot.constants.AgitatorConstantsKRen;
+import frc.robot.constants.AgitatorConstants2021;
 import frc.robot.constants.AutoConstants2021;
 import frc.robot.constants.CannonConstants2021;
-import frc.robot.constants.ColumnConstantsKRen;
+import frc.robot.constants.ColumnConstants2021;
 import frc.robot.constants.DriveConstants2021;
 import frc.robot.constants.HoodConstants2021;
-import frc.robot.constants.IntakeConstantsKRen;
+import frc.robot.constants.IntakeConstants2021;
 import frc.robot.constants.LimelightConstants2021;
 import frc.robot.constants.ShooterConstants2021;
 import frc.robot.constants.TurretConstants2021;
+import frc.robot.constants.interfaces.AgitatorConstants;
 import frc.robot.constants.interfaces.CannonConstants;
+import frc.robot.constants.interfaces.ColumnConstants;
 import frc.robot.constants.interfaces.HoodConstants;
+import frc.robot.constants.interfaces.IntakeConstants;
 import frc.robot.constants.interfaces.LimelightConstants;
 import frc.robot.constants.interfaces.ShooterConstants;
 import frc.robot.constants.interfaces.TurretConstants;
@@ -110,6 +94,7 @@ public class RobotContainer {
   private AgitatorSpinC agitatorSpinC;
   private IntakeToggleC intakeToggleC;
   private StoreBallsCG storeBallsCG;
+  private StoreBallsCG searchStoreBallsCG;
 
   private DrivebaseArcadeDriveStickControllerC controllerDrive;
   private DriveAutoC driveAutoC;
@@ -127,6 +112,8 @@ public class RobotContainer {
 
   private SequentialCommandGroup ramseteCommandGroup;
 
+  private ParallelCommandGroup searchCommandGroup;
+
 
   //private NomadMappedGenericHID driverController;
 
@@ -134,7 +121,7 @@ public class RobotContainer {
 
   private Spark lights;
 
-  private Trajectory selectedTrajectory = Trajectories.barrelRaceTrajectory;
+  private Trajectory selectedTrajectory;
 
   /**
    * The container for the robot. Contains constant files, controllers, subsystems, trajectories, commands,
@@ -144,11 +131,11 @@ public class RobotContainer {
     createConstantsFiles();
     createControllers(driveConstants);
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
+    selectedTrajectory = Trajectories.searchTrajectoryA;
     createSubsystems();
     createCommands();
     configureDefaultCommands();
     configureButtonBindings();
-    //CameraServer.getInstance().startAutomaticCapture();
     lights = new Spark(0);
     lights.set(-0.97);
     init = true;
@@ -160,13 +147,13 @@ public class RobotContainer {
   private void createConstantsFiles() {
     limelightConstants = new LimelightConstants2021();
 
-    agitatorConstants = new AgitatorConstantsKRen();
-    intakeConstants = new IntakeConstantsKRen();
+    agitatorConstants = new AgitatorConstants2021();
+    intakeConstants = new IntakeConstants2021();
     
     driveConstants = new DriveConstants2021();
     autoConstants = new AutoConstants2021(driveConstants);
 
-    columnConstants = new ColumnConstantsKRen();
+    columnConstants = new ColumnConstants2021();
 
     cannonConstants = new CannonConstants2021(new ShooterConstants2021(), new HoodConstants2021(),
         new TurretConstants2021());
@@ -188,10 +175,10 @@ public class RobotContainer {
     
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
-     NomadSparkMax front = new NomadSparkMax(columnConstants.getFrontMotorID(), MotorType.kBrushed, true);
-     NomadTalonSRX back = new NomadTalonSRX(columnConstants.getBackMotorID(), true);
+     NomadSparkMax columnMotor = new NomadSparkMax(columnConstants.getTalonID(), MotorType.kBrushed, true);
+     NomadTalonSRX acceleratorMotor = new NomadTalonSRX(columnConstants.getAcceleratorID(), true);
      DoubleSolenoid solenoid = new DoubleSolenoid(1, columnConstants.getFwdPort(), columnConstants.getRevPort());
-    columnS = new ColumnS(columnConstants, front, back, solenoid);
+    columnS = new ColumnS(columnConstants, columnMotor, acceleratorMotor, solenoid);
 
     HoodConstants hoodConstants = cannonConstants.getHoodConstants();
     ShooterConstants shooterConstants = cannonConstants.getShooterConstants();
@@ -220,24 +207,23 @@ public class RobotContainer {
   private void createCommands() {
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.barrelRaceTrajectory,
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(selectedTrajectory,
     drivebaseS, driveConstants, autoConstants);
 
     
-    ramseteCommandGroup = new InstantCommand(() -> 
-    drivebaseS.resetOdometry(Trajectories.barrelRaceTrajectory.getInitialPose()), drivebaseS)
-    .andThen(ramseteCommand)
-    .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
+    ramseteCommandGroup = createRamseteCommandGroup(Trajectories.searchTrajectoryA);
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
-
+    searchStoreBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
+    searchCommandGroup = createRamseteCommandGroup(Trajectories.searchTrajectoryA).alongWith(searchStoreBallsCG);
     driveAutoC = new DriveAutoC(drivebaseS, 1, true);
 
     SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
 
-    
+    SmartDashboard.putData(new AimTurretC(limelightS, cannonS));
+    SmartDashboard.putData(new SpinUpShooterDistanceC(cannonS, limelightS, true));
   }
 
   /**
@@ -248,13 +234,9 @@ public class RobotContainer {
   }
 
   /**
-   * Creates the operator console. In actual use, this method would have more constants files for other subsystems.
-   * @param driveConstants Drivebase constants to use in the input map creation.
-   * @param map The map from NomadInputMaps to select.
+   * Creates the operator console.
    */
   private void createControllers(DriveConstants driveConstants) {
-    //Robot2021NomadInputMaps.createMaps(driveConstants, driverStationConstants);
-    //NomadOperatorConsole.setMap(map);
     controller = new XboxController(0);
     operator = new XboxController(1);
   }
@@ -271,7 +253,7 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
     new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(new InstantCommand(() -> cannonS.stopShooter(), cannonS));
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS, true));
-    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpellBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
+    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
     new JoystickButton(controller, XboxController.Button.kA.value).whenPressed(new PrintCommand("Aiming turret")/*new AimTurretC(limelightS, cannonS)*/);
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5); cannonS.turret.runPID();}, cannonS)/*new PrintCommand("Turret left")*/;
     new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5); cannonS.turret.runPID();}, cannonS);
@@ -286,18 +268,20 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    return ramseteCommandGroup;
+    return searchCommandGroup;
     //return awardWinnerCG;
   }
   /**
    * Update the telemetry. This method in RobotContainer is mostly provided for quick testing. Most telemetry should be in subsystems. 
    */
   public void updateTelemetry() {
+    SmartDashboard.putNumber("LimelightDistance", limelightS.getFilteredDistance());
   }
 
 public void disabledInit() {
   columnS.enableStopper();
   cannonS.stopShooter();
+  intakeS.retract();
   drivebaseS.setIdleMode(IdleMode.kCoast);
 }
 
@@ -307,5 +291,14 @@ public void teleopInit() {
 
 public void autonomousInit() {
   drivebaseS.setIdleMode(IdleMode.kCoast);
+}
+
+public SequentialCommandGroup createRamseteCommandGroup(Trajectory trajectory) {
+  return new InstantCommand(() -> 
+    drivebaseS.resetOdometry(selectedTrajectory.getInitialPose()), drivebaseS)
+    .andThen(NomadAutoCommandGenerator.createRamseteCommand(trajectory, drivebaseS, driveConstants, autoConstants))
+    .andThen(() -> {System.out.println("Stopping trajectory") ; drivebaseS.tankDriveVolts(0, 0);}, drivebaseS);
+
+
 }
 }

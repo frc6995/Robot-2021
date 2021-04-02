@@ -56,4 +56,10 @@ public class ColumnConstants2021 implements ColumnConstants {
         return constants;
     }
 
+    @Override
+    public double getColumnSpeed() {
+        // TODO Auto-generated method stub
+        return 0.5;
+    }
+
 }

@@ -27,33 +27,16 @@ public interface ColumnConstants {
     int getRevPort();
 
     /**
-     * the speed that the column loads at
+     * the speed that the column spins at
      * @return speed
      */
-    double getColumnLoadSpeed();
+    double getColumnSpeed();
 
-    /**
-     * the speed that the column feeds into the accelerator at
-     * @return speed
-     */
     double getColumnFeedSpeed();
 
-    /**
-     * the RPM that the accelerator wheels spin
-     * @return rpm
-     */
+    double getColumnLoadSpeed();
+
     double getAcceleratorRPM();
-
-    /**
-     * the current limit for the accerator wheels
-     * @return amps
-     */
     double getAcceleratorCurrentLimit();
-
-    /**
-     * Get the Simple Motor Feed Forward Constants for the accelerator wheels.
-     * The format is [kS, kV, kA]
-     * @return The Simple Motor Feed Forward Constants
-     */
     double[] getFeedForwardConstants();
 }

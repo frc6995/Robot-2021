@@ -3,9 +3,8 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.constants.IntakeConstants;
+import frc.robot.constants.interfaces.IntakeConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.robot.constants.IntakeConstantsKRen;
 
 public class IntakeS extends SubsystemBase {
   private NomadSparkMax intakeMotor;
