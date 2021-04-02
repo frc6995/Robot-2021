@@ -24,9 +24,11 @@ public class LimelightS extends SubsystemBase {
 
   private LinearFilter xOffsetFilter;
   private LinearFilter yOffsetFilter;
+  private LinearFilter distanceFilter;
 
   private double filteredXOffset;
   private double filteredYOffset;
+  private double filteredDistance;
 
   private int numberOfConsumersRegistered;
 
@@ -45,6 +47,7 @@ public class LimelightS extends SubsystemBase {
 
     xOffsetFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());
     yOffsetFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());
+    distanceFilter = LinearFilter.singlePoleIIR(constants.getTimeConstant(), constants.getTimePeriod());
 
     numberOfConsumersRegistered = 0;
     registryKeys = new ArrayList<String>();
@@ -54,6 +57,7 @@ public class LimelightS extends SubsystemBase {
   public void periodic() {
     filteredXOffset = xOffsetFilter.calculate(getXOffset());
     filteredYOffset = yOffsetFilter.calculate(getYOffset());
+    filteredDistance = distanceFilter.calculate(getDistanceToTarget());
   }
 
   /**
@@ -90,6 +94,15 @@ public class LimelightS extends SubsystemBase {
    */
   public double getFilteredYOffset() {
     return filteredYOffset;
+  }
+
+  /**
+   * Get the distance to the target after filtering.
+   * 
+   * @return The filtered distance between the Limelight and the target
+   */
+  public double getFilteredDistance() {
+    return filteredDistance;
   }
 
   /**

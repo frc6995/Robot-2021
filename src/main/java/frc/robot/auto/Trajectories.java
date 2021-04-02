@@ -1,23 +1,12 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.auto;
-
-import edu.wpi.first.wpilibj.trajectory.Trajectory;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
-import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator.ControlVectorList;
-import frc.lib.constants.AutoConstants;
 
 import java.util.List;
 
-import javax.xml.crypto.dsig.Transform;
-
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.geometry.Transform2d;
-import edu.wpi.first.wpilibj.geometry.Translation2d;
+import edu.wpi.first.wpilibj.trajectory.Trajectory;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
+import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
 
 /** Add your docs here. */
 public class Trajectories {
@@ -26,6 +15,7 @@ public class Trajectories {
     public static Trajectory straightTrajectory;
     public static Trajectory slalomTrajectory;
     public static Trajectory barrelRaceTrajectory;
+    public static Trajectory searchTrajectoryA;
     public static Trajectory bounce1Trajectory;
     public static Trajectory bounce2Trajectory;
     public static Trajectory bounce3Trajectory;
@@ -88,8 +78,29 @@ public class Trajectories {
                 new Pose2d(3.559, -2.103 + fieldWidth, new Rotation2d(Math.atan2(0.033, -1.303))),
                 new Pose2d(1.349, -2.103 + fieldWidth, new Rotation2d(Math.atan2(-0.046, -1.033)))
             ), config.setEndVelocity(0));
-
-        bounce1Trajectory = 
+        
+        searchTrajectoryA = 
+            TrajectoryGenerator.generateTrajectory(List.of(
+                new Pose2d(0.647, -0.821 + fieldWidth, new Rotation2d(Math.atan2(0, 3.048))),
+                new Pose2d(2.242, -1.285 + fieldWidth, new Rotation2d(Math.atan2(-0.627, -0.041))),
+                new Pose2d(2.318, -2.312 + fieldWidth, new Rotation2d(Math.atan2(-0.731, 0.331))),
+                new Pose2d(3.797, -3.055 + fieldWidth, new Rotation2d(Math.atan2(-0.594, 0.468))),
+                new Pose2d(4.116, -3.623 + fieldWidth, new Rotation2d(Math.atan2(-0.266, 0.294))),
+                new Pose2d(4.655, -3.875 + fieldWidth, new Rotation2d(Math.atan2(0.005, 0.388))),
+                new Pose2d(5.033, -3.536 + fieldWidth, new Rotation2d(Math.atan2(0.348, -0.075))),
+                new Pose2d(4.482, -2.817 + fieldWidth, new Rotation2d(Math.atan2(0.389, -0.110))),
+                new Pose2d(4.145, -1.511 + fieldWidth, new Rotation2d(Math.atan2(0.214, 0.0))),
+                new Pose2d(4.331, -0.862 + fieldWidth, new Rotation2d(Math.atan2(0.220, 0.145))),
+                new Pose2d(4.975, -0.717 + fieldWidth, new Rotation2d(Math.atan2(-0.551, 0.406))),
+                new Pose2d(5.143, -1.163 + fieldWidth, new Rotation2d(Math.atan2(-0.180, 0.0))),
+                new Pose2d(5.455, -1.556 + fieldWidth, new Rotation2d(Math.atan2(-0.052, 0.197))),
+                new Pose2d(6.170, -1.575 + fieldWidth, new Rotation2d(Math.atan2(-0.182, 0.473))),
+                new Pose2d(6.791, -2.254 + fieldWidth, new Rotation2d(Math.atan2(-0.498, 0.519))),
+                new Pose2d(7.760, -3.032 + fieldWidth, new Rotation2d(Math.atan2(-0.277, 0.639))),
+                new Pose2d(8.636, -3.229 + fieldWidth, new Rotation2d(Math.atan2(-0.012, 0.249)))
+             ), config.setEndVelocity(0));
+        
+    bounce1Trajectory = 
             TrajectoryGenerator.generateTrajectory(List.of(
                 new Pose2d(1.221, -2.219 + fieldWidth, new Rotation2d(Math.atan2(0.44, -0.005))),
                 new Pose2d(1.894, -2.097 + fieldWidth, new Rotation2d(Math.atan2(0.249, 0.168))),
@@ -124,5 +135,4 @@ public class Trajectories {
                 new Pose2d(7.052, -1.911 + fieldWidth, new Rotation2d(Math.atan2(0.415, 0.471))),
                 new Pose2d(7.777, -2.312 + fieldWidth, new Rotation2d(Math.PI / 2))
         ), config.setEndVelocity(0).setReversed(true));
-    }   
-}
+    }}

@@ -5,7 +5,7 @@ import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.constants.ColumnConstants;
+import frc.robot.constants.interfaces.ColumnConstants;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;

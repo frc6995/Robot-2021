@@ -16,9 +16,8 @@ import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.intake.IntakeRetractC;
 import frc.robot.commands.intake.IntakeSpinC;
-import frc.robot.commands.intakecommands.IntakeSpinRetractedC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
-import frc.robot.commands.othercommands.ExpellBallsCG;
+import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.subsystems.*;
 import frc.robot.subsystems.cannon.*;
@@ -44,7 +43,7 @@ public class AutonomousAwardWinnerCG extends SequentialCommandGroup {
       new InstantCommand(()->column.setAcceleratorSpeed(0.75), column),
       new InstantCommand(()->column.disableStopper(), column),
       new WaitCommand(.5),
-      new ExpellBallsCG(intake, agitator, column).withTimeout(5), // feed them to the shooter,
+      new ExpelBallsCG(intake, agitator, column).withTimeout(5), // feed them to the shooter,
       new WaitCommand(.5)  
     );
   }
