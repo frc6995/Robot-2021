@@ -85,8 +85,8 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     rightLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
     
     setIdleMode(IdleMode.kBrake);
-    leftLeader.setOpenLoopRampRate(1.25);
-    rightLeader.setOpenLoopRampRate(1.25);
+    leftLeader.setOpenLoopRampRate(1);
+    rightLeader.setOpenLoopRampRate(1);
 
     m_drive = new DifferentialDrive(leftLeader, rightLeader);
     m_drive.setRightSideInverted(false);

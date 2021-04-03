@@ -125,8 +125,8 @@ public class LimelightS extends SubsystemBase {
     if (numberOfConsumersRegistered < 0)
       numberOfConsumersRegistered = 0;
     else if (numberOfConsumersRegistered == 0) {
-      setCameraMode(CameraMode.Driver);
-      setLEDState(LedState.Off);
+      //setCameraMode(CameraMode.Driver);
+      //setLEDState(LedState.Off);
     }
   }
 
@@ -204,7 +204,8 @@ public class LimelightS extends SubsystemBase {
   public double getDistanceToTarget() {
     // (h2 - h1) / tan(a1 + a2): h2 = target height, h1 = limelight height, a1 =
     // limelight mounting angle, a2 = angle from limelight to target
-    return (constants.getTargetHeight() - constants.getLimelightHeight())
-        / Math.tan(constants.getMountingAngle() + getYOffset());
+    //return (constants.getTargetHeight() - constants.getLimelightHeight())
+    //    / Math.tan(constants.getMountingAngle() + getYOffset());
+    return -limelight.getYOffset();
   }
 }

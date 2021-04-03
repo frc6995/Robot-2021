@@ -39,13 +39,13 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
     double rightTrigger = controller.getRawAxis(2);
     double leftTrigger = controller.getRawAxis(3);
 
-    if (rightTrigger > -0.02 && rightTrigger < 0.02) rightTrigger = 0;
-    if (leftTrigger > -0.02 && leftTrigger < 0.02) leftTrigger = 0;
+    if (rightTrigger > -0.015 && rightTrigger < 0.015) rightTrigger = 0;
+    if (leftTrigger > -0.015 && leftTrigger < 0.015) leftTrigger = 0;
 
     double driveSpeed = rightTrigger-leftTrigger;
     double turnSpeed = controller.getRawAxis(0);
 
-    if (turnSpeed > -0.02 && turnSpeed < 0.02) turnSpeed = 0;
+    if (turnSpeed > -0.015 && turnSpeed < 0.015) turnSpeed = 0;
 
     //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
     drivebaseS.curvatureDrive(driveSpeed*driveConstants.getDriveControllerFwdBackAxisMultiplier(), turnSpeed*driveConstants.getDriveControllerLeftRightAxisMultiplier(), controller.getRawButton(XboxController.Button.kB.value));

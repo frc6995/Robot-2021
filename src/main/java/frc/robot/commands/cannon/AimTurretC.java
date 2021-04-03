@@ -31,6 +31,9 @@ public class AimTurretC extends CommandBase {
   @Override
   public void initialize() {
     limelight.register();
+    double offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
+    cannon.turret.setSetpoint(offset);
+    cannon.turret.runPID();
   }
 
   @Override
@@ -38,8 +41,7 @@ public class AimTurretC extends CommandBase {
     /*cannon.requestTurretState(TurretRequestedStates.MOVE_TO_SETPOINT, 
         cannon.turret.getTurretEncoderPosition() - 
         limelight.getFilteredXOffset());*/
-    cannon.turret.setSetpoint(cannon.turret.getTurretEncoderPosition() - limelight.getFilteredXOffset());
-    cannon.runTurretPIDWithMotionMagic();
+    
   }
 
   @Override

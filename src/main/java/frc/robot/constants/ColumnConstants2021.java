@@ -11,27 +11,27 @@ import frc.robot.constants.interfaces.ColumnConstants;
 public class ColumnConstants2021 implements ColumnConstants {
     @Override
     public int getTalonID() {
-        return 41;
-    }
-    
-    @Override
-    public int getAcceleratorID() {
         return 43;
     }
     
     @Override
-    public int getFwdPort() {
-        return 4;
+    public int getAcceleratorID() {
+        return 41;
     }
-
+    
     @Override
-    public int getRevPort() {
+    public int getFwdPort() {
         return 5;
     }
 
     @Override
+    public int getRevPort() {
+        return 4;
+    }
+
+    @Override
     public double getColumnLoadSpeed() {
-        return 0.75;
+        return 0.25;
     }
 
     @Override

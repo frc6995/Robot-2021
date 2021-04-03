@@ -24,6 +24,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
@@ -208,11 +209,13 @@ public class RobotContainer {
   private void createCommands() {
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(selectedTrajectory,
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.slalomTrajectory,
     drivebaseS, driveConstants, autoConstants);
 
     
-    ramseteCommandGroup = createRamseteCommandGroup(Trajectories.searchTrajectoryA);
+    ramseteCommandGroup = new InstantCommand(() ->
+    drivebaseS.resetOdometry(Trajectories.slalomTrajectory.getInitialPose()), drivebaseS)
+    .andThen(ramseteCommand);
 
     var bounce1Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce1Trajectory,
     drivebaseS, driveConstants, autoConstants);
@@ -231,7 +234,9 @@ public class RobotContainer {
     .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce3Trajectory.getInitialPose()), drivebaseS)
     .andThen(bounce3Command)
     .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce4Trajectory.getInitialPose()), drivebaseS)
+    .andThen(() -> System.out.println("Starting path 4"))
     .andThen(bounce4Command)
+    .andThen(() -> System.out.println("Finished path 4"))
     .andThen(() -> drivebaseS.tankDriveVolts(0, 0), drivebaseS);
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
@@ -275,7 +280,7 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(new InstantCommand(() -> cannonS.stopShooter(), cannonS));
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS, true));
     new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
-    new JoystickButton(controller, XboxController.Button.kA.value).whenPressed(new PrintCommand("Aiming turret")/*new AimTurretC(limelightS, cannonS)*/);
+    new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new AimTurretC(limelightS, cannonS));
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5); cannonS.turret.runPID();}, cannonS)/*new PrintCommand("Turret left")*/;
     new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5); cannonS.turret.runPID();}, cannonS);
   }
@@ -289,7 +294,7 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    return bounceCommandGroup;
+    return ramseteCommandGroup;
     //return awardWinnerCG;
   }
   /**
@@ -297,6 +302,7 @@ public class RobotContainer {
    */
   public void updateTelemetry() {
     SmartDashboard.putNumber("LimelightDistance", limelightS.getFilteredDistance());
+    SmartDashboard.putNumber("Limelight Filtered Offset", limelightS.getFilteredXOffset());
   }
 
 public void disabledInit() {

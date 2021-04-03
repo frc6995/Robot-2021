@@ -15,8 +15,8 @@ public class ColumnFeedC extends CommandBase {
   @Override
   public void initialize() {
     column.disableStopper();
-    column.setAcceleratorSpeed(0.75);
-    column.setColumnSpeed(1);
+    column.setAcceleratorSpeed(0.85);
+    column.setColumnSpeed(0.4);
   }
 
   @Override

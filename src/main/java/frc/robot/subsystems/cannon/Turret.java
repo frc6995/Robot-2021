@@ -22,7 +22,7 @@ import frc.robot.constants.interfaces.TurretConstants;
  */
 public class Turret {
 
-  public final double[][] speeds = {{0, 0}, {5, 1000},  {10, 2000},  {15, 3000}, {20, 4000}}; 
+  public final double[][] speeds = {{0, 3500}, {4.00, 2550},  {10, 2000},  {15, 3000},}; 
   /**
    * An enum containing the different possible internal states of the Turret
    */
@@ -116,11 +116,12 @@ public class Turret {
     this.sparkMax.enableSoftLimit(SoftLimitDirection.kReverse, true);
     this.sparkMax.setSoftLimit(SoftLimitDirection.kReverse, (float) constants.getReverseSoftLimit());
 
-    this.sparkMax.getPIDController().setSmartMotionMaxAccel(35000, 0);
-    this.sparkMax.getPIDController().setSmartMotionMaxVelocity(36000, 0);
+    this.sparkMax.getPIDController().setSmartMotionMaxAccel(350, 0); //35000
+    this.sparkMax.getPIDController().setSmartMotionMaxVelocity(360, 0); //36000
     this.sparkMax.getPIDController().setSmartMotionMinOutputVelocity(/*500*/0, 0);
     this.sparkMax.getPIDController().setSmartMotionAccelStrategy(AccelStrategy.kTrapezoidal, 0);
     this.sparkMax.getPIDController().setSmartMotionAllowedClosedLoopError(0.1, 0);
+    
     
     this.sparkMax.getPIDController().setOutputRange(-1, 1);
 

@@ -15,7 +15,7 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getKP() {
-        return .01;
+        return .015;
     }
 
     @Override

@@ -44,16 +44,17 @@ public class Trajectories {
         slalomTrajectory = 
             TrajectoryGenerator.generateTrajectory(List.of(
                  new Pose2d(0.763,-3.912 + fieldWidth, new Rotation2d(Math.atan2(0, 3.048)))
-                ,new Pose2d(2.121,-3.658 + fieldWidth, new Rotation2d(Math.atan2(0.45, 0.813)))
+                ,new Pose2d(2.121,-3.658 + fieldWidth, new Rotation2d(Math.atan2(0.627, 0.336)))
                 ,new Pose2d(3.124,-2.236 + fieldWidth, new Rotation2d(Math.atan2(0.617, 0.878)))
-                ,new Pose2d(4.724,-1.941 + fieldWidth, new Rotation2d(Math.atan2(-0.065,1.082)))
-                ,new Pose2d(6.443, -2.54 + fieldWidth, new Rotation2d(Math.atan2(-0.453, 0.325)))
+                ,new Pose2d(4.546,-2.086 + fieldWidth, new Rotation2d(Math.atan2(0.0, 1.0)))
+                ,new Pose2d(6.588, -2.283 + fieldWidth, new Rotation2d(Math.atan2(-0.4, 0.209)))
                 ,new Pose2d(7.934, -3.925 + fieldWidth, new Rotation2d(Math.atan2(0, 1.5)))
                 ,new Pose2d(8.735, -2.973 + fieldWidth, new Rotation2d(Math.PI/2))
-                ,new Pose2d(7.841, -2.028 + fieldWidth, new Rotation2d(Math.atan2(0, -1.5)))
-                ,new Pose2d(6.443, -3.658 + fieldWidth, new Rotation2d(Math.atan2(-0.510, -1.061)))
+                ,new Pose2d(7.452, -2.103 + fieldWidth, new Rotation2d(Math.atan2(-0.273, -0.801)))
+                ,new Pose2d(6.704, -2.857 + fieldWidth, new Rotation2d(Math.atan2(-0.603, -0.133)))
+                ,new Pose2d(6.402, -3.687 + fieldWidth, new Rotation2d(Math.atan2(-0.603, -0.545)))
                 ,new Pose2d(4.724, -3.924 + fieldWidth, new Rotation2d(Math.atan2(-0.028, -1.041)))
-                ,new Pose2d(2.962, -3.681 + fieldWidth, new Rotation2d(Math.atan2(0.383, -0.801)))
+                ,new Pose2d(2.48, -3.722 + fieldWidth, new Rotation2d(Math.atan2(0.58, -0.598)))
                 ,new Pose2d(1.889, -2.132 + fieldWidth, new Rotation2d(Math.atan2(0.358, -0.821)))
                 ,new Pose2d(0.987, -2.086 + fieldWidth, new Rotation2d(Math.atan2(0, -3)))
                 
@@ -102,37 +103,38 @@ public class Trajectories {
         
     bounce1Trajectory = 
             TrajectoryGenerator.generateTrajectory(List.of(
-                new Pose2d(1.221, -2.219 + fieldWidth, new Rotation2d(Math.atan2(0.44, -0.005))),
-                new Pose2d(1.894, -2.097 + fieldWidth, new Rotation2d(Math.atan2(0.249, 0.168))),
-                new Pose2d(2.155, -1.470 + fieldWidth, new Rotation2d(Math.atan2(0.075, 0.249))),
-                new Pose2d(2.312, -0.722 + fieldWidth, new Rotation2d(Math.atan2(0.011, 0.290)))
+                new Pose2d(1, -2.219 + fieldWidth, new Rotation2d(Math.atan2(-0.005, 0.44))),
+                new Pose2d(1.894, -2.097 + fieldWidth, new Rotation2d(Math.atan2(0.081, 0.209))),
+                new Pose2d(2.289, -1.616 + fieldWidth, new Rotation2d(Math.atan2(0.249, 0.075))),
+                new Pose2d(2.335, -1.000 + fieldWidth, new Rotation2d(Math.atan2(1.0, 0.0)))
             ), config.setEndVelocity(0));
 
         bounce2Trajectory = 
             TrajectoryGenerator.generateTrajectory(List.of(
-                new Pose2d(2.300, -0.844 + fieldWidth, new Rotation2d(Math.atan2(0.0, -1.0))),
-                new Pose2d(2.567, -2.271 + fieldWidth, new Rotation2d(Math.atan2(0.358, 1.005))),
-                new Pose2d(3.489, -3.814 + fieldWidth, new Rotation2d(Math.atan2(0.795, 0.076))),
-                new Pose2d(4.191, -3.716 + fieldWidth, new Rotation2d(Math.atan2(0.476, 0.265))),
-                new Pose2d(4.539, -2.619 + fieldWidth, new Rotation2d(Math.atan2(0.023, 0.400))),
-                new Pose2d(4.539, -1.755 + fieldWidth, new Rotation2d(Math.atan2(0.003, 0.597))),
-                new Pose2d(4.551, -0.826 + fieldWidth, new Rotation2d(Math.atan2(0.0, 1.0)))
+                new Pose2d(2.335, -1.000 + fieldWidth, new Rotation2d(Math.atan2(1.0, 0.0))),
+                new Pose2d(2.881, -2.376 + fieldWidth, new Rotation2d(Math.atan2(-0.966, 0.406)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(3.055, -2.910 + fieldWidth, new Rotation2d(Math.atan2(-0.458, 0.0)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(3.559, -3.896 + fieldWidth, new Rotation2d(Math.atan2(-0.041, 0.621)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(4.285, -3.722 + fieldWidth, new Rotation2d(Math.atan2(0.321, 0.444)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(4.539, -2.619 + fieldWidth, new Rotation2d(Math.atan2(0.400, 0.023)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(4.539, -1.755 + fieldWidth, new Rotation2d(Math.atan2(0.597, 0.003)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(4.551, -1.1 + fieldWidth, new Rotation2d(Math.atan2(-1.0, 0.0)))
         ), config.setEndVelocity(0).setReversed(true));
 
         bounce3Trajectory = 
             TrajectoryGenerator.generateTrajectory(List.of(
-                new Pose2d(4.615, -0.751 + fieldWidth, new Rotation2d(Math.atan2(0.0, -1.0))),
-                new Pose2d(4.748, -2.172 + fieldWidth, new Rotation2d(Math.atan2(0.174, 0.954))),
-                new Pose2d(5.149, -3.611 + fieldWidth, new Rotation2d(Math.atan2(0.621, 0.373))),
-                new Pose2d(6.28,  -3.675 + fieldWidth, new Rotation2d(Math.atan2(0.342, 0.069))),
-                new Pose2d(6.686, -2.637 + fieldWidth, new Rotation2d(Math.atan2(0.116, 0.667))),
-                new Pose2d(6.849, -0.832 + fieldWidth, new Rotation2d(Math.atan2(0.005, 0.435)))
-        ), config.setEndVelocity(0));
+                new Pose2d(4.551, -1.1 + fieldWidth, new Rotation2d(Math.atan2(-1.0, 0.0))),
+                new Pose2d(4.586, -2.179 + fieldWidth, new Rotation2d(Math.atan2(-1.0, 0.0))),
+                new Pose2d(4.708, -3.716 + fieldWidth, new Rotation2d(Math.atan2(-0.737, 0.534))),
+                new Pose2d(6.721,  -3.78 + fieldWidth, new Rotation2d(Math.atan2(0.278, 0.186))),
+                new Pose2d(6.803, -2.667 + fieldWidth, new Rotation2d(Math.atan2(1, 0.0))),
+                new Pose2d(6.889, -1.000 + fieldWidth, new Rotation2d(Math.atan2(1, 0.0)))
+        ), config.setEndVelocity(0).setReversed(false));
 
         bounce4Trajectory = 
             TrajectoryGenerator.generateTrajectory(List.of(
-                new Pose2d(6.889, -0.676 + fieldWidth, new Rotation2d(Math.atan2(0.0, -1.0))),
-                new Pose2d(7.052, -1.911 + fieldWidth, new Rotation2d(Math.atan2(0.415, 0.471))),
-                new Pose2d(7.777, -2.312 + fieldWidth, new Rotation2d(Math.PI / 2))
+                new Pose2d(6.889, -1 + fieldWidth, new Rotation2d(Math.atan2(1.0, 0.0))),
+                new Pose2d(7.133, -2.039 + fieldWidth, new Rotation2d(Math.atan2(-0.522, 0.249)).plus(new Rotation2d(Math.PI))),
+                new Pose2d(7.725, -2.512 + fieldWidth, new Rotation2d(Math.PI))
         ), config.setEndVelocity(0).setReversed(true));
     }}
