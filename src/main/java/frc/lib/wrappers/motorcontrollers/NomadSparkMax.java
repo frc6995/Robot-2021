@@ -40,7 +40,7 @@ public class NomadSparkMax extends CANSparkMax implements NomadBaseMotor {
     public NomadSparkMax(int port, MotorType type) {
         super(port, type);
         restoreFactoryDefaults();
-        setIdleMode(IdleMode.kBrake);
+        setIdleMode(IdleMode.kCoast);
     }
 
     /**

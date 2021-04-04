@@ -22,7 +22,7 @@ import frc.robot.constants.interfaces.TurretConstants;
  */
 public class Turret {
 
-  public final double[][] speeds = {{0, 3500}, {4.00, 2550},  {10, 2000},  {15, 3000},}; 
+  public final double[][] speeds = {{0, 3500}, {4.00, 2550},  {14.00, 2350},  {15, 2375},}; 
   /**
    * An enum containing the different possible internal states of the Turret
    */

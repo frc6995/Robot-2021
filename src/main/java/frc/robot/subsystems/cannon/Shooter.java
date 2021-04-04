@@ -74,7 +74,7 @@ public class Shooter {
         motor.getPIDController().setFF(constants.getKFF());
         motor.getPIDController().setIZone(constants.getIZone());
         motor.setIdleMode(IdleMode.kCoast);
-        motor.setClosedLoopRampRate(5);
+        motor.setClosedLoopRampRate(4);
         motor.burnFlash();
     }
 
@@ -124,6 +124,7 @@ public class Shooter {
      */
     protected void periodic() {
         updateState();
+        SmartDashboard.putNumber("shooter Speed", motor.getEncoder().getVelocity());
         
     }
     public boolean isVoltageNormal() {
