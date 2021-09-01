@@ -23,19 +23,19 @@ public class SpinUpShooterC extends CommandBase {
 
   }
 
-  public SpinUpShooterC(CannonS cannon, boolean requireCannon, double rpm){
-      this(cannon, requireCannon);
-      this.rpm = rpm;
+  public SpinUpShooterC(CannonS cannon, boolean requireCannon, double rpm) {
+    this(cannon, requireCannon);
+    this.rpm = rpm;
   }
 
   @Override
   public void initialize() {
     cannon.pidShooterToTargetSpeed(rpm);
   }
-  
+
   @Override
   public void execute() {
-    //cannon.pidShooterToTargetSpeed(rpm);
+    // cannon.pidShooterToTargetSpeed(rpm);
   }
 
   @Override

@@ -19,14 +19,12 @@ import frc.lib.constants.DriveConstants;
 /** Add your docs here. */
 public class DriveConstants2021 implements DriveConstants {
 
-    protected DifferentialDriveKinematics kDifferentialDriveKinematics
-    = new DifferentialDriveKinematics(getkTrackWidthMeters());
-    protected LinearSystem<N2, N2, N2> kDrivetrainPlant = 
-        LinearSystemId.identifyDrivetrainSystem(
-        getKvVoltSecondsPerMeter(),
-        getKaVoltSecondsSquaredPerMeter(),
-        getKvVoltSecondsPerRadian(),
-        getKaVoltSecondsSquaredPerRadian());
+    protected DifferentialDriveKinematics kDifferentialDriveKinematics = new DifferentialDriveKinematics(
+            getkTrackWidthMeters());
+    protected LinearSystem<N2, N2, N2> kDrivetrainPlant = LinearSystemId.identifyDrivetrainSystem(
+            getKvVoltSecondsPerMeter(), getKaVoltSecondsSquaredPerMeter(), getKvVoltSecondsPerRadian(),
+            getKaVoltSecondsSquaredPerRadian());
+
     @Override
     public int getDriveControllerFwdBackAxis() {
         return 33;
@@ -41,6 +39,7 @@ public class DriveConstants2021 implements DriveConstants {
     public int getDriveControllerLeftRightAxis() {
         return 34;
     }
+
     @Override
     public int getCanIDLeftDriveMaster() {
         return 12;
@@ -57,6 +56,7 @@ public class DriveConstants2021 implements DriveConstants {
         int[] ports = { 0, 1 };
         return ports;
     }
+
     @Override
     public int getCanIDRightDriveMaster() {
         return 10;
@@ -74,6 +74,7 @@ public class DriveConstants2021 implements DriveConstants {
         int[] ports = { 2, 3 };
         return ports;
     }
+
     @Override
     public boolean getRightDriveLeaderInverted() {
         return true;
@@ -106,13 +107,12 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getEncoderCountsPerEncoderRevolution() {
-        return 42 * 4; //Greyhill
+        return 42 * 4; // Greyhill
     }
 
     @Override
     public double getEncoderCountsPerWheelRevolution() {
-        return getEncoderCountsPerEncoderRevolution() *
-        getEncoderRevolutionsPerWheelRevolution();
+        return getEncoderCountsPerEncoderRevolution() * getEncoderRevolutionsPerWheelRevolution();
     }
 
     @Override
@@ -122,8 +122,9 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getEncoderDistancePerPulse() {
-        return 1/672.5;
-        //return (getkWheelDiameter() * Math.PI) / (double) getEncoderCountsPerEncoderRevolution();
+        return 1 / 672.5;
+        // return (getkWheelDiameter() * Math.PI) / (double)
+        // getEncoderCountsPerEncoderRevolution();
     }
 
     @Override
@@ -193,17 +194,18 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public Vector<N7> getSimEncoderStdDev() {
-        return VecBuilder.fill(0, 0, 0, 0, 0, 0, 0);//VecBuilder.fill(0.0001, 0.0001, 0.0001, 0.01, 0.01, 0.0005, 0.0005);
+        return VecBuilder.fill(0, 0, 0, 0, 0, 0, 0);// VecBuilder.fill(0.0001, 0.0001, 0.0001, 0.01, 0.01, 0.0005,
+                                                    // 0.0005);
     }
 
     @Override
     public double getDriveControllerFwdBackAxisMultiplier() {
-        return -1.0;
+        return -0.25;
     }
 
     @Override
     public double getDriveControllerLeftRightAxisMultiplier() {
-        return 0.5;
+        return 0.4;
     }
 
     @Override
@@ -211,7 +213,7 @@ public class DriveConstants2021 implements DriveConstants {
         return false;
     }
 
-    public SimpleMotorFeedforward getArbitraryFeedforward(){
+    public SimpleMotorFeedforward getArbitraryFeedforward() {
         return new SimpleMotorFeedforward(0.303, 2.02, 0.0468);
     }
 }
