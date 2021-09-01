@@ -84,7 +84,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     leftLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
     rightLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
     
-    setIdleMode(IdleMode.kBrake);
+    setIdleMode(IdleMode.kCoast);
     leftLeader.setOpenLoopRampRate(1);
     rightLeader.setOpenLoopRampRate(1);
 

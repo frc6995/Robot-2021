@@ -1,5 +1,7 @@
 package frc.robot.commands.cannon;
 
+import java.util.function.DoubleSupplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.subsystems.cannon.CannonS;
@@ -11,7 +13,7 @@ import frc.robot.subsystems.cannon.CannonS;
  */
 public class SpinUpShooterC extends CommandBase {
   private CannonS cannon;
-  private double rpm = 3500;
+  private double rpm = 2550;
 
   /** Creates a new SpinUpShooterC. */
   public SpinUpShooterC(CannonS cannon, boolean requireCannon) {
@@ -28,8 +30,14 @@ public class SpinUpShooterC extends CommandBase {
     this.rpm = rpm;
   }
 
+  public SpinUpShooterC(CannonS cannon, boolean requireCannon, DoubleSupplier rpm){
+    this(cannon, requireCannon);
+    this.rpm = rpm.getAsDouble();
+}
+
   @Override
   public void initialize() {
+    System.out.println("Spin up at " + rpm);
     cannon.pidShooterToTargetSpeed(rpm);
   }
 
@@ -45,6 +53,6 @@ public class SpinUpShooterC extends CommandBase {
 
   @Override
   public boolean isFinished() {
-    return cannon.isShooterAtSpeed();
+    return true; //cannon.isShooterAtSpeed();
   }
 }

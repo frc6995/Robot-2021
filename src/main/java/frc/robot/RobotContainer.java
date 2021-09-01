@@ -7,12 +7,15 @@
 
 package frc.robot;
 
+import java.util.function.DoubleSupplier;
+
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.XboxController;
@@ -26,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
@@ -118,10 +122,23 @@ public class RobotContainer {
   // private NomadMappedGenericHID driverController;
 
   private boolean init = false;
+  private enum SHOOTER_SPEEDS {
+    GREEN(3500),
+    YELLOW(2550),
+    BLUE(2250),
+    RED(2275);
+    public double value;
+    private SHOOTER_SPEEDS(double value){
+      this.value = value;
+    }
+  }
+  private double shooterSetpoint = SHOOTER_SPEEDS.GREEN.value;
 
   private Spark lights;
 
   private Trajectory selectedTrajectory;
+  private PowerDistributionPanel pdp;
+  private DoubleSupplier shooterSpeedSupplier = (DoubleSupplier) () -> {return shooterSetpoint;};
 
   /**
    * The container for the robot. Contains constant files, controllers,
@@ -140,6 +157,8 @@ public class RobotContainer {
     lights = new Spark(0);
     lights.set(-0.97);
     init = true;
+    pdp = new PowerDistributionPanel();
+    //SmartDashboard.putData(pdp);
   }
 
   /**
@@ -292,6 +311,19 @@ public class RobotContainer {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5);
       cannonS.turret.runPID();
     }, cannonS);
+    /*new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
+    new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(agitatorSpinC);
+    new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(new InstantCommand(() -> cannonS.stopShooter()));
+    new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS,false , shooterSpeedSupplier));
+    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
+    new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new AimTurretC(limelightS, cannonS));
+    new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 3); cannonS.turret.runPID();})//new PrintCommand("Turret left");
+    new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();});
+    new POVButton(operator, 0).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.GREEN.value));
+    new POVButton(operator, 90).whenPressed(new SpinUpShooterC(cannonS,  true, SHOOTER_SPEEDS.RED.value));
+    new POVButton(operator, 180).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.BLUE.value));
+    new POVButton(operator, 270).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.YELLOW.value)); */
   }
 
   /**
@@ -315,6 +347,8 @@ public class RobotContainer {
   public void updateTelemetry() {
     SmartDashboard.putNumber("LimelightDistance", limelightS.getFilteredDistance());
     SmartDashboard.putNumber("Limelight Filtered Offset", limelightS.getFilteredXOffset());
+    //SmartDashboard.putData(pdp);
+    SmartDashboard.putNumber("shooter setpt", shooterSetpoint);
   }
 
   public void disabledInit() {
@@ -340,5 +374,9 @@ public class RobotContainer {
           drivebaseS.tankDriveVolts(0, 0);
         }, drivebaseS);
 
-  }
+}
+
+public void setShooterSetpoint(double rpm){
+  shooterSetpoint = rpm;
+}
 }
