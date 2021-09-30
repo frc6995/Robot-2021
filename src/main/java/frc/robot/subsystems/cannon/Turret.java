@@ -150,11 +150,13 @@ public class Turret {
     else
     withinSetpointCounter = 0;
     
-/*     SmartDashboard.putNumber("Turret Position", getTurretEncoderPosition());
+    SmartDashboard.putNumber("Turret Position", getTurretEncoderPosition());
+    /*
     SmartDashboard.putNumber("Turret Velocity", encoder.getVelocity());
     SmartDashboard.putNumber("Turret Setpoint", setpoint);
     SmartDashboard.putString("Turret State", requestedState.toString());
-    SmartDashboard.putNumber("Turret encoder counts per rev", encoder.getCountsPerRevolution()); */
+    SmartDashboard.putNumber("Turret encoder counts per rev", encoder.getCountsPerRevolution());
+    */
   }
 
   /**
