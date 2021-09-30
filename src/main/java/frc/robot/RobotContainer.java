@@ -355,6 +355,7 @@ public class RobotContainer {
     columnS.enableStopper();
     cannonS.stopShooter();
     intakeS.retract();
+    cannonS.periodic();
     drivebaseS.setIdleMode(IdleMode.kCoast);
   }
 

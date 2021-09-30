@@ -49,7 +49,7 @@ public class ShooterConstants2021 implements ShooterConstants {
 
     @Override
     public boolean getLeadMotorInverted() {
-        return false;
+        return true;
     }
 
     @Override
