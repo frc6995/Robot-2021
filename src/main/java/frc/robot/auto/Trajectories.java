@@ -1,12 +1,15 @@
 package frc.robot.auto;
 
+import java.io.IOException;
 import java.util.List;
 
+import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryConfig;
 import edu.wpi.first.wpilibj.trajectory.TrajectoryGenerator;
+import frc.robot.auto.WaypointUtil.FIELD_WIDTH;
 
 /** Add your docs here. */
 public class Trajectories {
@@ -21,6 +24,8 @@ public class Trajectories {
     public static Trajectory bounce3Trajectory;
     public static Trajectory bounce4Trajectory;
     public static double fieldWidth = 4.572;
+    public static Trajectory leftTurnTrajectory;
+
     public static void createTrajectories(TrajectoryConfig config) {
         
         /* exampleTrajectory =
@@ -137,4 +142,14 @@ public class Trajectories {
                 new Pose2d(7.133, -2.039 + fieldWidth, new Rotation2d(Math.atan2(-0.522, 0.249)).plus(new Rotation2d(Math.PI))),
                 new Pose2d(7.725, -2.512 + fieldWidth, new Rotation2d(Math.PI))
         ), config.setEndVelocity(0).setReversed(true));
+
+        try {
+            leftTurnTrajectory = 
+            WaypointUtil.importPathToCubicTrajectory(Filesystem.getDeployDirectory() + "/PathWeaver/Paths/Unnamed.path", config.setEndVelocity(0).setReversed(false), FIELD_WIDTH.METERS.value);
+            System.out.println(leftTurnTrajectory);
+        } catch(IOException e) {
+            System.out.println("TRAJECTORY NOT FOUND: " + e.getMessage());
+            System.exit(8);
+        }
+       
     }}
