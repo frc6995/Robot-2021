@@ -228,33 +228,14 @@ public class RobotContainer {
   private void createCommands() {
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.slalomTrajectory, drivebaseS,
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.leftTurnTrajectory, drivebaseS,
         driveConstants, autoConstants);
 
-    ramseteCommandGroup = new InstantCommand(
-        () -> drivebaseS.resetOdometry(Trajectories.slalomTrajectory.getInitialPose()), drivebaseS)
+    ramseteCommandGroup = //ramseteCommand.andThen(new PrintCommand("done"));
+    new InstantCommand(
+        () -> drivebaseS.resetOdometry(Trajectories.leftTurnTrajectory.getInitialPose()), drivebaseS)
             .andThen(ramseteCommand);
 
-    var bounce1Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce1Trajectory, drivebaseS,
-        driveConstants, autoConstants);
-    var bounce2Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce2Trajectory, drivebaseS,
-        driveConstants, autoConstants);
-    var bounce3Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce3Trajectory, drivebaseS,
-        driveConstants, autoConstants);
-    var bounce4Command = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.bounce4Trajectory, drivebaseS,
-        driveConstants, autoConstants);
-
-    bounceCommandGroup = new InstantCommand(
-        () -> drivebaseS.resetOdometry(Trajectories.bounce1Trajectory.getInitialPose()), drivebaseS)
-            .andThen(bounce1Command)
-            .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce2Trajectory.getInitialPose()), drivebaseS)
-            .andThen(bounce2Command)
-            .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce3Trajectory.getInitialPose()), drivebaseS)
-            .andThen(bounce3Command)
-            .andThen(() -> drivebaseS.resetOdometry(Trajectories.bounce4Trajectory.getInitialPose()), drivebaseS)
-            .andThen(() -> System.out.println("Starting path 4")).andThen(bounce4Command)
-            .andThen(() -> System.out.println("Finished path 4"))
-            .andThen(() -> drivebaseS.tankDriveVolts(0, 0), drivebaseS);
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
     intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
@@ -335,8 +316,8 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    // return ramseteCommandGroup;
-    return new InstantCommand();
+    return ramseteCommandGroup;
+    //return new InstantCommand();
     // return awardWinnerCG;
   }
 

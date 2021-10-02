@@ -111,11 +111,9 @@ public class DrivebaseS extends DifferentialDrivebaseS {
         driveConstants.getkWheelDiameter() / 2.0, driveConstants.getSimEncoderStdDev());
 
     // m_gyroSim = new ADXRS450_GyroSim(gyro);
-    /*
-     * m_field.getObject("trajectory").setPoses(Trajectories.straightTrajectory.
-     * getStates().stream() .map(state->state.poseMeters)
-     * .collect(Collectors.toList()));
-     */
+    m_field.getObject("trajectory").setPoses(Trajectories.leftTurnTrajectory.
+    getStates().stream() .map(state->state.poseMeters)
+    .collect(Collectors.toList()));
 
     SmartDashboard.putData("Field", m_field);
 
