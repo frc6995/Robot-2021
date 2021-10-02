@@ -122,9 +122,8 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getEncoderDistancePerPulse() {
-        return 1 / 672.5;
-        // return (getkWheelDiameter() * Math.PI) / (double)
-        // getEncoderCountsPerEncoderRevolution();
+        //return 1 / 672.5;
+         return (getkWheelDiameter() * Math.PI) / (double) getEncoderCountsPerWheelRevolution();
     }
 
     @Override
@@ -200,12 +199,12 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getDriveControllerFwdBackAxisMultiplier() {
-        return -0.25;
+        return -0.65;
     }
 
     @Override
     public double getDriveControllerLeftRightAxisMultiplier() {
-        return 0.4;
+        return 0.5;
     }
 
     @Override

@@ -112,7 +112,7 @@ public final class WaypointUtil {
         line = reader.readLine();
       }
 
-      return TrajectoryGenerator.generateTrajectory(controlVectors, config).transformBy(new Transform2d( new Translation2d(0.0, fieldWidth), new Rotation2d()));
+      return TrajectoryGenerator.generateTrajectory(controlVectors, config);
     }
   }
 
@@ -120,18 +120,18 @@ public final class WaypointUtil {
     String[] arrOfStr = input.split(",", 0);
     return new Pose2d(
         new Translation2d(Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[1])),
-        new Rotation2d(Double.parseDouble(arrOfStr[2]), Double.parseDouble(arrOfStr[3])));
+        new Rotation2d(Double.parseDouble(arrOfStr[2]) + FIELD_WIDTH.METERS.value, Double.parseDouble(arrOfStr[3])));
   }
 
   private static Translation2d createTranslationWaypoint(String input) {
     String[] arrOfStr = input.split(",", 0);
-    return new Translation2d(Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[1]));
+    return new Translation2d(Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[1])  + FIELD_WIDTH.METERS.value);
   }
 
   private static ControlVector createControlVector(String input) {
     String[] arrOfStr = input.split(",", 0);
     var x = new double[] {Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[2]), 0};
-    var y = new double[] {Double.parseDouble(arrOfStr[1]), Double.parseDouble(arrOfStr[3]), 0};
+    var y = new double[] {Double.parseDouble(arrOfStr[1])  + FIELD_WIDTH.METERS.value, Double.parseDouble(arrOfStr[3]), 0};
     return new ControlVector(x, y);
   }
 }

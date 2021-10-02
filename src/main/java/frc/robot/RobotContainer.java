@@ -229,13 +229,15 @@ public class RobotContainer {
   private void createCommands() {
     controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
 
-    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.leftTurnTrajectory, drivebaseS,
+    ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.lineToTrenchTrajectory, drivebaseS,
         driveConstants, autoConstants);
 
     ramseteCommandGroup = //ramseteCommand.andThen(new PrintCommand("done"));
     new InstantCommand(
-        () -> drivebaseS.resetOdometry(Trajectories.leftTurnTrajectory.getInitialPose()), drivebaseS)
-            .andThen(ramseteCommand);
+        () -> drivebaseS.resetOdometry(Trajectories.lineToTrenchTrajectory.getInitialPose()), drivebaseS)
+            .andThen(NomadAutoCommandGenerator.createRamseteCommand(Trajectories.lineToTrenchTrajectory, drivebaseS,
+            driveConstants, autoConstants)).andThen(new WaitCommand(3).andThen(NomadAutoCommandGenerator.createRamseteCommand(Trajectories.trenchToLineRevTrajectory, drivebaseS,
+            driveConstants, autoConstants)));
 
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);

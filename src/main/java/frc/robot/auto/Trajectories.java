@@ -24,7 +24,8 @@ public class Trajectories {
     public static Trajectory bounce3Trajectory;
     public static Trajectory bounce4Trajectory;
     public static double fieldWidth = 4.572;
-    public static Trajectory leftTurnTrajectory;
+    public static Trajectory lineToTrenchTrajectory;
+    public static Trajectory trenchToLineRevTrajectory;
 
     public static void createTrajectories(TrajectoryConfig config) {
         
@@ -144,9 +145,18 @@ public class Trajectories {
         ), config.setEndVelocity(0).setReversed(true));
 
         try {
-            leftTurnTrajectory = 
-            WaypointUtil.importPathToQuinticTrajectory(Filesystem.getDeployDirectory() + "/PathWeaver/Paths/Unnamed.path", config.setEndVelocity(0).setReversed(false), FIELD_WIDTH.METERS.value);
-            System.out.println(leftTurnTrajectory);
+            lineToTrenchTrajectory = 
+            WaypointUtil.importPathToQuinticTrajectory(Filesystem.getDeployDirectory() + "/PathWeaver/Paths/Shoot3Drive_LineToTrench.path", config.setEndVelocity(0).setReversed(false), FIELD_WIDTH.METERS.value);
+            //System.out.println(leftTurnTrajectory);
+        } catch(IOException e) {
+            System.out.println("TRAJECTORY NOT FOUND: " + e.getMessage());
+            System.exit(8);
+        }
+
+        try {
+            trenchToLineRevTrajectory = 
+            WaypointUtil.importPathToQuinticTrajectory(Filesystem.getDeployDirectory() + "/PathWeaver/Paths/Shoot3Drive_TrenchToLineRev.path", config.setEndVelocity(0).setReversed(true), FIELD_WIDTH.METERS.value);
+            //System.out.println(leftTurnTrajectory);
         } catch(IOException e) {
             System.out.println("TRAJECTORY NOT FOUND: " + e.getMessage());
             System.exit(8);
