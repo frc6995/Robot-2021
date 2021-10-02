@@ -15,6 +15,8 @@ import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.SPI.Port;
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.drive.DifferentialDrive;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
@@ -40,14 +42,9 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   private NomadSparkMax rightLeader;
   private NomadSparkMax leftFollower;
   private NomadSparkMax rightFollower;
-  
-  //private DifferentialDrive m_drive;
 
-  private EncoderSim m_leftEncoderSim;
-  private EncoderSim m_rightEncoderSim;
+  // private DifferentialDrive m_drive;
 
-  //private ADXRS450_Gyro gyro = new ADXRS450_Gyro();
-  private ADXRS450_GyroSim m_gyroSim;
 
   private AHRS navx = new AHRS(Port.kMXP);
 
@@ -59,31 +56,32 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 
   private Field2d m_field = new Field2d();
 
+  private RamseteController controller = new RamseteController(autoConstants.getkRamseteB(),
+      autoConstants.getkRamseteZeta());
+  private PIDController leftPidController = new PIDController(driveConstants.getkPDriveVel(), 0, 0);
+  private PIDController rightPidController = new PIDController(driveConstants.getkPDriveVel(), 0, 0);
+
   /** Creates a new AutonomousDrivebaseS. */
   public DrivebaseS(DriveConstants driveConstants, AutoConstants autoConstants) {
     super(driveConstants, autoConstants);
 
-    leftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(),
-        MotorType.kBrushless, 
+    leftLeader = new NomadSparkMax(driveConstants.getCanIDLeftDriveMaster(), MotorType.kBrushless,
         driveConstants.getLeftDriveLeaderInverted());
 
-    rightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(),
-        MotorType.kBrushless,
+    rightLeader = new NomadSparkMax(driveConstants.getCanIDRightDriveMaster(), MotorType.kBrushless,
         driveConstants.getRightDriveLeaderInverted());
 
-    leftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(),
-        MotorType.kBrushless, 
+    leftFollower = new NomadSparkMax(driveConstants.getCanIDLeftDriveFollower(), MotorType.kBrushless,
         driveConstants.getLeftDriveFollowerInverted(), leftLeader);
 
-    rightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(),
-        MotorType.kBrushless,
+    rightFollower = new NomadSparkMax(driveConstants.getCanIDRightDriveFollower(), MotorType.kBrushless,
         driveConstants.getRightDriveFollowerInverted(), rightLeader);
 
     leftLeader.getEncoder().setPositionConversionFactor(42);
     rightLeader.getEncoder().setPositionConversionFactor(42);
     leftLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
     rightLeader.getEncoder().setVelocityConversionFactor(42 / 60.0);
-    
+
     setIdleMode(IdleMode.kCoast);
     leftLeader.setOpenLoopRampRate(1);
     rightLeader.setOpenLoopRampRate(1);
@@ -91,39 +89,52 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     m_drive = new DifferentialDrive(leftLeader, rightLeader);
     m_drive.setRightSideInverted(false);
 
-    
+    /**
+     * m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0],
+     * driveConstants.getLeftEncoderPorts()[1],
+     * driveConstants.getLeftEncoderReversed());
+     * 
+     * m_rightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0],
+     * driveConstants.getRightEncoderPorts()[1],
+     * driveConstants.getRightEncoderReversed());
+     * 
+     * m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
+     * m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
+     * 
+     * 
+     * m_leftEncoderSim = new EncoderSim(m_leftEncoder); m_rightEncoderSim = new
+     * EncoderSim(m_rightEncoder);
+     */
 
-    /**m_leftEncoder = new Encoder(driveConstants.getLeftEncoderPorts()[0], driveConstants.getLeftEncoderPorts()[1],
-        driveConstants.getLeftEncoderReversed());
+    m_driveSim = new DifferentialDrivetrainSim(driveConstants.getDrivetrainPlant(), driveConstants.getDriveGearbox(),
+        driveConstants.getEncoderRevolutionsPerWheelRevolution(), driveConstants.getkTrackWidthMeters(),
+        driveConstants.getkWheelDiameter() / 2.0, driveConstants.getSimEncoderStdDev());
 
-    m_rightEncoder = new Encoder(driveConstants.getRightEncoderPorts()[0], driveConstants.getRightEncoderPorts()[1],
-        driveConstants.getRightEncoderReversed());
+    // m_gyroSim = new ADXRS450_GyroSim(gyro);
+    /*
+     * m_field.getObject("trajectory").setPoses(Trajectories.straightTrajectory.
+     * getStates().stream() .map(state->state.poseMeters)
+     * .collect(Collectors.toList()));
+     */
 
-    m_leftEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
-    m_rightEncoder.setDistancePerPulse(driveConstants.getEncoderDistancePerPulse());
-
-
-    m_leftEncoderSim = new EncoderSim(m_leftEncoder);
-    m_rightEncoderSim = new EncoderSim(m_rightEncoder);*/
-    
-    m_driveSim = new DifferentialDrivetrainSim(
-        driveConstants.getDrivetrainPlant(),
-        driveConstants.getDriveGearbox(),
-        driveConstants.getEncoderRevolutionsPerWheelRevolution(),
-        driveConstants.getkTrackWidthMeters(),
-        driveConstants.getkWheelDiameter()/2.0,
-        driveConstants.getSimEncoderStdDev());
-
-        
-    //m_gyroSim = new ADXRS450_GyroSim(gyro);
-    /*m_field.getObject("trajectory").setPoses(Trajectories.straightTrajectory.getStates().stream()
-      .map(state->state.poseMeters)
-      .collect(Collectors.toList()));*/
-    
     SmartDashboard.putData("Field", m_field);
 
     resetOdometry(new Pose2d());
   }
+
+  public PIDController getLeftPidController() {
+    return leftPidController;
+  }
+
+  public PIDController getRightPidController() {
+    return rightPidController;
+  }
+
+
+  public RamseteController getRamseteController() {
+    return controller;
+  }
+
 
   @Override
   public void periodic() {
@@ -140,26 +151,26 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   }
 
   public void simulationPeriodic() {
-    // Set the inputs to the system. Note that we need to convert
-    // the [-1, 1] PWM signal to voltage by multiplying it by the
-    // robot controller voltage.
-    m_driveSim.setInputs(leftLeader.get() * RobotController.getInputVoltage(),
-    (driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightLeader.get() * RobotController.getInputVoltage());
+    // // Set the inputs to the system. Note that we need to convert
+    // // the [-1, 1] PWM signal to voltage by multiplying it by the
+    // // robot controller voltage.
+    // m_driveSim.setInputs(leftLeader.get() * RobotController.getInputVoltage(),
+    // (driveConstants.getDrivebaseRightSideInverted() ? -1 : 1) * rightLeader.get() * RobotController.getInputVoltage());
 
-    // Advance the model by 20 ms. Note that if you are running this
-    // subsystem in a separate thread or have changed the nominal timestep
-    // of TimedRobot, this value needs to match it.
-    m_driveSim.update(0.02);
+    // // Advance the model by 20 ms. Note that if you are running this
+    // // subsystem in a separate thread or have changed the nominal timestep
+    // // of TimedRobot, this value needs to match it.
+    // m_driveSim.update(0.02);
 
-    // Update all of our sensors.
-    m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
-    m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
-    m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
-    m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
+    // // Update all of our sensors.
+    // m_leftEncoderSim.setDistance(m_driveSim.getLeftPositionMeters());
+    // m_leftEncoderSim.setRate(m_driveSim.getLeftVelocityMetersPerSecond());
+    // m_rightEncoderSim.setDistance(m_driveSim.getRightPositionMeters());
+    // m_rightEncoderSim.setRate(m_driveSim.getRightVelocityMetersPerSecond());
 
 
     
-    m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
+    // m_gyroSim.setAngle(-m_driveSim.getHeading().getDegrees());
 
 
   }

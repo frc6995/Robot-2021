@@ -2,6 +2,8 @@
 
 package frc.lib.subsystems;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -55,6 +57,10 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
   
   public abstract DifferentialDriveWheelSpeeds getWheelSpeeds();
 
+  public abstract RamseteController getRamseteController();
+
+  public abstract PIDController getLeftPidController();
+  public abstract PIDController getRightPidController();
   /**
    * Gets the left side velocity in meters per second.
    * @return the left side velocity in meters per second.

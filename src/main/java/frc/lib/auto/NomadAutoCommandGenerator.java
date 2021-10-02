@@ -27,22 +27,19 @@ public class NomadAutoCommandGenerator {
         DifferentialDrivebaseS drivebaseS,
         DriveConstants driveConstants,
         AutoConstants autoConstants) {
-        RamseteController controller = new RamseteController(
-            autoConstants.getkRamseteB(), autoConstants.getkRamseteZeta());
-            PIDController leftPidController = new PIDController(driveConstants.getkPDriveVel(), 0, 0);
-            PIDController rightPidController = new PIDController(driveConstants.getkPDriveVel(), 0, 0);
+        
             
             
         RamseteCommand ramseteCommand =
         new RamseteCommand(
             trajectory,
             drivebaseS::getPose,
-            controller,
+            drivebaseS.getRamseteController(),
             autoConstants.getTrajectoryFeedForward(),
             driveConstants.getDifferentialDriveKinematics(),
             drivebaseS::getWheelSpeeds,
-            leftPidController,
-            rightPidController,
+            drivebaseS.getLeftPidController(),
+            drivebaseS.getRightPidController(),
             // RamseteCommand passes volts to the callback
             drivebaseS::tankDriveVolts,
             drivebaseS);
