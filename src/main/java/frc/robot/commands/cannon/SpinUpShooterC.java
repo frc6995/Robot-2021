@@ -48,11 +48,12 @@ public class SpinUpShooterC extends CommandBase {
 
   @Override
   public void end(boolean interrupted) {
+    cannon.stopShooter();
     super.end(interrupted);
   }
 
   @Override
   public boolean isFinished() {
-    return true; //cannon.isShooterAtSpeed();
+    return false; //cannon.isShooterAtSpeed();
   }
 }
