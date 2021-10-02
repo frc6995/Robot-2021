@@ -25,7 +25,7 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getKD() {
-        return 0;
+        return 0.1;
     }
 
     @Override
@@ -50,15 +50,15 @@ public class TurretConstants2021 implements TurretConstants {
 
     @Override
     public double getSoftLimit() {
-        return 80;
+        return 25;
     }
 
     public double getForwardSoftLimit() {
-        return 80;
+        return 52;
     }
 
     public double getReverseSoftLimit() {
-        return -80;
+        return -52;
     }
 
     @Override
