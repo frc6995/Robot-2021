@@ -130,8 +130,8 @@ public final class WaypointUtil {
 
   private static ControlVector createControlVector(String input) {
     String[] arrOfStr = input.split(",", 0);
-    var x = new double[] {Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[2])};
-    var y = new double[] {Double.parseDouble(arrOfStr[1]), Double.parseDouble(arrOfStr[3])};
+    var x = new double[] {Double.parseDouble(arrOfStr[0]), Double.parseDouble(arrOfStr[2]), 0};
+    var y = new double[] {Double.parseDouble(arrOfStr[1]), Double.parseDouble(arrOfStr[3]), 0};
     return new ControlVector(x, y);
   }
 }

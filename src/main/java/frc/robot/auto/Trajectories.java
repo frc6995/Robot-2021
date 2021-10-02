@@ -145,7 +145,7 @@ public class Trajectories {
 
         try {
             leftTurnTrajectory = 
-            WaypointUtil.importPathToCubicTrajectory(Filesystem.getDeployDirectory() + "/PathWeaver/Paths/Unnamed.path", config.setEndVelocity(0).setReversed(false), FIELD_WIDTH.METERS.value);
+            WaypointUtil.importPathToQuinticTrajectory(Filesystem.getDeployDirectory() + "/PathWeaver/Paths/Unnamed.path", config.setEndVelocity(0).setReversed(false), FIELD_WIDTH.METERS.value);
             System.out.println(leftTurnTrajectory);
         } catch(IOException e) {
             System.out.println("TRAJECTORY NOT FOUND: " + e.getMessage());
