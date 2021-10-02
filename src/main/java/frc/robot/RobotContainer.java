@@ -12,6 +12,7 @@ import java.util.function.DoubleSupplier;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.GenericHID;
@@ -101,6 +102,7 @@ public class RobotContainer {
   private IntakeToggleC intakeToggleC;
   private StoreBallsCG storeBallsCG;
   private StoreBallsCG searchStoreBallsCG;
+  private SpinUpShooterC spinShooterC;
 
   private DrivebaseArcadeDriveStickControllerC controllerDrive;
   private DriveAutoC driveAutoC;
@@ -147,6 +149,7 @@ public class RobotContainer {
    * created in that order.
    */
   public RobotContainer() {
+    CameraServer.getInstance().startAutomaticCapture();
     createConstantsFiles();
     createControllers(driveConstants);
     Trajectories.createTrajectories(autoConstants.getTrajectoryConfig());
@@ -245,7 +248,7 @@ public class RobotContainer {
     searchCommandGroup = createRamseteCommandGroup(Trajectories.searchTrajectoryA).alongWith(searchStoreBallsCG);
     driveAutoC = new DriveAutoC(drivebaseS, 1, true);
 
-    SpinUpShooterC spinShooterC = new SpinUpShooterC(cannonS, false);
+    spinShooterC = new SpinUpShooterC(cannonS, false);
 
     SmartDashboard.putData(new AimTurretC(limelightS, cannonS));
     SmartDashboard.putData(new SpinUpShooterDistanceC(cannonS, limelightS, true));
@@ -273,22 +276,19 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(controller, XboxController.Button.kA.value).whenPressed(intakeToggleC);
+    //new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
     new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(new TurretHomeC(cannonS));
-    new JoystickButton(controller, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(controller, XboxController.Button.kBumperLeft.value)
-        .whenPressed(new InstantCommand(() -> cannonS.stopShooter(), cannonS));
-    new JoystickButton(controller, XboxController.Button.kBumperRight.value)
-        .whenPressed(new SpinUpShooterC(cannonS, true));
-    new JoystickButton(controller, XboxController.Button.kY.value)
+    new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(spinShooterC);
+    new JoystickButton(operator, XboxController.Button.kY.value)
         .whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));// new ColumnFeedCG(columnS));
     // new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new
     // AimTurretC(limelightS, cannonS));
-    new JoystickButton(operator, 7).whenPressed(() -> {
+    new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(() -> {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5);
       cannonS.turret.runPID();
     }, cannonS)/* new PrintCommand("Turret left") */;
-    new JoystickButton(operator, 8).whenPressed(() -> {
+    new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(() -> {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5);
       cannonS.turret.runPID();
     }, cannonS);
