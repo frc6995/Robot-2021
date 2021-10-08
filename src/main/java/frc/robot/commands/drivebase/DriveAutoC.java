@@ -12,6 +12,7 @@ public class DriveAutoC extends CommandBase {
   private DrivebaseS drivebase;
   private boolean forwards;
   private double speed = 0.1;
+  private DrivebaseWheelPercentages percentages;
 
   /** Creates a new DrivebaseAutoC. */
   public DriveAutoC(DrivebaseS drivebase, double timeout, boolean forwards) {
@@ -38,7 +39,9 @@ public class DriveAutoC extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() {}
+  public void execute() {
+    drivebase.drivePercentages(percentages);
+  }
 
   // Called once the command ends or is interrupted.
   @Override

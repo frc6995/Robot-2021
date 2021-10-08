@@ -33,7 +33,7 @@ public class AutoShootAndDriveSequencingCG extends SequentialCommandGroup {
       new WaitCommand(0.5),
       new ColumnFeedC(column, 0.85, 0.25).withTimeout(1),
       new WaitCommand(.5), // spin shooter and launch 3  balls.
-      new DriveAutoC(drivebase, 6, forwards, 0.45).withTimeout(6)))
+      new DriveAutoC(drivebase, 3, forwards, 0.25).withTimeout(1.5)))
     );
   }
 }

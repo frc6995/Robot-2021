@@ -260,7 +260,7 @@ public class RobotContainer {
     spinShooterC = new SpinUpShooterC(cannonS, false);
 
     chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
-    chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
+    chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
     chooser.addOption("Shoot Seq and Move Back", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
     chooser.addOption("Shoot Seq and Move Fwd", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
     chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
