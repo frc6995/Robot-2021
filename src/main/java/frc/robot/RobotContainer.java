@@ -24,11 +24,13 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
@@ -49,8 +51,11 @@ import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.TurretHomeC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
+import frc.robot.commands.intake.IntakeSpinWhileHeldC;
 import frc.robot.commands.intake.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
+import frc.robot.commands.column.ColumnFeedC;
+import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstants2021;
@@ -289,8 +294,17 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    IntakeSpinWhileHeldC intakeSpinWhileHeldC = new IntakeSpinWhileHeldC(intakeS);
+    AgitatorSpinC agitatorSpinC = new AgitatorSpinC(agitatorS);
+    ColumnLoadC columnLoadC = new ColumnLoadC(columnS);
+    StartEndCommand storeSeqC = new StartEndCommand(
+      () -> CommandScheduler.getInstance().schedule(intakeSpinWhileHeldC.alongWith(agitatorSpinC)),
+      () -> CommandScheduler.getInstance().schedule(columnLoadC.withTimeout(2)),
+      intakeS);
     //new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
-    new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(controller, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
+    //new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
+    new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeSeqC);
     // new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new
     // AimTurretC(limelightS, cannonS));
     
@@ -341,7 +355,7 @@ public class RobotContainer {
    * quick testing. Most telemetry should be in subsystems.
    */
   public void updateTelemetry() {
-    SmartDashboard.putNumber("LimelightDistance", limelightS.getFilteredDistance());
+    SmartDashboard.putNumber("LimelightDistance", limelightS.getFilteredYOffset());
     SmartDashboard.putNumber("Limelight Filtered Offset", limelightS.getFilteredXOffset());
     //SmartDashboard.putData(pdp);
     //SmartDashboard.putNumber("shooter setpt", shooterSetpoint);

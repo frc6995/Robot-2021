@@ -124,7 +124,7 @@ public class Shooter {
      */
     protected void periodic() {
         updateState();
-        SmartDashboard.putNumber("shooter Speed", encoder.getVelocity());
+        //SmartDashboard.putNumber("shooter Speed", encoder.getVelocity());
         
     }
     public boolean isVoltageNormal() {

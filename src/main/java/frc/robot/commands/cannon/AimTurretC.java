@@ -34,7 +34,7 @@ public class AimTurretC extends CommandBase {
   public void initialize() {
     limelight.register();
     offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
-    SmartDashboard.putNumber("Turret LL Offset", offset);
+    //SmartDashboard.putNumber("Turret LL Offset", offset);
     cannon.turret.setSetpoint(offset);
     cannon.turret.runPID();
   }

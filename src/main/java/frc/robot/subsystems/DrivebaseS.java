@@ -124,7 +124,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     getStates().stream() .map(state->state.poseMeters)
     .collect(Collectors.toList()));
 
-    SmartDashboard.putData("Field", m_field);
+    //SmartDashboard.putData("Field", m_field);
 
     resetOdometry(new Pose2d());
   }
@@ -151,7 +151,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
     else {
       m_odometry.update(m_gyroSim, m_leftEncoder.getDistance(), m_rightEncoder.getDistance());
     }
-    SmartDashboard.putData(m_drive);
+    //SmartDashboard.putData(m_drive);
     /* SmartDashboard.putNumber("PoseX", m_odometry.getPoseMeters().getX());
     SmartDashboard.putNumber("PoseY", m_odometry.getPoseMeters().getY());
     SmartDashboard.putNumber("DriveLeftCounts", leftLeader.getEncoder().getPosition());
@@ -227,7 +227,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   }
 
   public void curvatureDrive(double xSpeed, double zRotation, boolean isQuickTurn){
-    SmartDashboard.putNumber("xSpeed", xSpeed);
+    //SmartDashboard.putNumber("xSpeed", xSpeed);
     m_drive.curvatureDrive(xSpeed, zRotation * (isQuickTurn ? 0.75 : 1) , isQuickTurn);
   }
 
@@ -252,7 +252,7 @@ public class DrivebaseS extends DifferentialDrivebaseS {
   @Override
   public void updateTelemetry() {
 
-    SmartDashboard.putData("Drivebase", this);
+    //SmartDashboard.putData("Drivebase", this);
     // SmartDashboard.putNumber("fwdbackaxis",
     // driveConstants.getDriveControllerFwdBackAxis());
   }

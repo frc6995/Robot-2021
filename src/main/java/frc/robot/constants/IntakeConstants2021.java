@@ -21,7 +21,7 @@ public class IntakeConstants2021 implements IntakeConstants {
 
     @Override
     public double getIntakeSpeed() {
-        return -0.6;
+        return -0.75;
     }
 
 }

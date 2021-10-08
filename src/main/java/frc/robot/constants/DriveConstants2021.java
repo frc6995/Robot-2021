@@ -107,7 +107,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getEncoderCountsPerEncoderRevolution() {
-        return 42 * 4; // Greyhill
+        return 42; // Greyhill
     }
 
     @Override

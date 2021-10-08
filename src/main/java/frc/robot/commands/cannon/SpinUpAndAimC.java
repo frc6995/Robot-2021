@@ -16,7 +16,7 @@ import frc.robot.subsystems.cannon.CannonS;
 public class SpinUpAndAimC extends CommandBase {
   private CannonS cannon;
   private LimelightS limelight;
-  private double rpm = 2450;
+  private double rpm = 2250;
   private double offset;
 
   /** Creates a new SpinUpShooterC. */

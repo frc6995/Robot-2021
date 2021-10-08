@@ -30,7 +30,7 @@ public class DriveAutoC extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    DrivebaseWheelPercentages percentages = new DrivebaseWheelPercentages();
+    percentages = new DrivebaseWheelPercentages();
     percentages.setLeftPercentage(speed * (forwards ? 1 : -1));
     percentages.setRightPercentage(speed * (forwards ? 1 : -1));
 
