@@ -199,7 +199,7 @@ public class DriveConstants2021 implements DriveConstants {
 
     @Override
     public double getDriveControllerFwdBackAxisMultiplier() {
-        return -0.65;
+        return -0.5;
     }
 
     @Override

@@ -5,6 +5,8 @@ import frc.robot.subsystems.ColumnS;
 
 public class ColumnFeedC extends CommandBase {
   private ColumnS column;
+  private double accelSpeed = 0.85;
+  private double colSpeed = 0.4;
 
   /** Creates a new ColumnFeedC. */
   public ColumnFeedC(ColumnS columnS) {
@@ -12,11 +14,23 @@ public class ColumnFeedC extends CommandBase {
     addRequirements(column);
   }
 
+  /**
+   * Creates a new ColumnFeedC
+   * @param columnS The subsystem to require
+   * @param accelSpeed The speed of the accelerator wheels
+   * @param colSpeed The speed of the column belts
+   */
+  public ColumnFeedC(ColumnS columnS, double accelSpeed, double colSpeed) {
+    this(columnS);
+    this.accelSpeed = accelSpeed;
+    this.colSpeed = colSpeed;
+  }
+
   @Override
   public void initialize() {
     column.disableStopper();
-    column.setAcceleratorSpeed(0.85);
-    column.setColumnSpeed(0.4);
+    column.setAcceleratorSpeed(accelSpeed);
+    column.setColumnSpeed(colSpeed);
   }
 
   @Override

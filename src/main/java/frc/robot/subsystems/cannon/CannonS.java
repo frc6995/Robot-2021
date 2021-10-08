@@ -10,7 +10,7 @@ import frc.robot.subsystems.cannon.Shooter.ShooterStates;
 import frc.robot.subsystems.cannon.Turret.TurretRequestedStates;
 
 /**
- * The Super Shooter Subsytem, it includes the {@link Shooter}, the
+ * The Super Shooter Subsystem, it includes the {@link Shooter}, the
  * {@link Hood}, and the {@link Turret}.
  * 
  * @author JoeyFabel
@@ -19,7 +19,8 @@ public class CannonS extends SubsystemBase {
   public Hood hood;
   private Shooter shooter;
   public Turret turret;
-private int numBalls = 0;
+  private int numBalls = 0;
+
   /** Creates a new ShooterS. */
   public CannonS(CannonConstants constants, Servo hoodLeftServo, Servo hoodRightServo, NomadSparkMax shooterLeadMotor,
       NomadSparkMax turretMotor, DigitalInput turretLimitSwitch) {

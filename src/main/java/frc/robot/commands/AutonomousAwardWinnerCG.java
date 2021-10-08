@@ -5,22 +5,18 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.cannon.LaunchBallC;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.column.ColumnFeedC;
-import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.drivebase.DriveAutoC;
-import frc.robot.commands.intake.IntakeRetractC;
-import frc.robot.commands.intake.IntakeSpinC;
-import frc.robot.commands.othercommands.AgitatorSpinC;
 import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
-import frc.robot.subsystems.*;
-import frc.robot.subsystems.cannon.*;
+import frc.robot.subsystems.AgitatorS;
+import frc.robot.subsystems.ColumnS;
+import frc.robot.subsystems.DrivebaseS;
+import frc.robot.subsystems.IntakeS;
+import frc.robot.subsystems.cannon.CannonS;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more
 // information, see:

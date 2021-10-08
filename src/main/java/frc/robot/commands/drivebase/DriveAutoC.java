@@ -11,6 +11,7 @@ import frc.robot.subsystems.DrivebaseS;
 public class DriveAutoC extends CommandBase {
   private DrivebaseS drivebase;
   private boolean forwards;
+  private double speed = 0.1;
 
   /** Creates a new DrivebaseAutoC. */
   public DriveAutoC(DrivebaseS drivebase, double timeout, boolean forwards) {
@@ -20,12 +21,17 @@ public class DriveAutoC extends CommandBase {
     addRequirements(drivebase);
   }
 
+  public DriveAutoC(DrivebaseS drivebase, double timeout, boolean forwards, double speed) {
+    this(drivebase, timeout, forwards);
+    this.speed = speed;
+  }
+
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
     DrivebaseWheelPercentages percentages = new DrivebaseWheelPercentages();
-    percentages.setLeftPercentage(0.1 * (forwards ? -1 : 1));
-    percentages.setRightPercentage(0.1 * (forwards ? -1 : 1));
+    percentages.setLeftPercentage(speed * (forwards ? 1 : -1));
+    percentages.setRightPercentage(speed * (forwards ? 1 : -1));
 
     drivebase.drivePercentages(percentages);
   }

@@ -47,7 +47,7 @@ public class ColumnConstants2021 implements ColumnConstants {
 
     @Override
     public double getAcceleratorCurrentLimit() {
-        return 5;
+        return 6;
     }
 
     @Override

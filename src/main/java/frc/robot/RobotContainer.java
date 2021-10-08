@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.trajectory.Trajectory;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -38,7 +39,11 @@ import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.auto.Trajectories;
+import frc.robot.commands.AutoShootAndDriveCG;
+import frc.robot.commands.AutoShootAndDriveSequencingCG;
+import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.AimTurretC;
+import frc.robot.commands.cannon.SpinUpAndAimC;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.TurretHomeC;
@@ -142,6 +147,8 @@ public class RobotContainer {
   private Trajectory selectedTrajectory;
   private PowerDistributionPanel pdp;
   private DoubleSupplier shooterSpeedSupplier = (DoubleSupplier) () -> {return shooterSetpoint;};
+
+  private SendableChooser<Command> chooser = new SendableChooser<>();
 
   /**
    * The container for the robot. Contains constant files, controllers,
@@ -252,8 +259,12 @@ public class RobotContainer {
 
     spinShooterC = new SpinUpShooterC(cannonS, false);
 
-    SmartDashboard.putData(new AimTurretC(limelightS, cannonS));
-    SmartDashboard.putData(new SpinUpShooterDistanceC(cannonS, limelightS, true));
+    chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
+    chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
+    chooser.addOption("Shoot Seq and Move Back", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
+    chooser.addOption("Shoot Seq and Move Fwd", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
+    chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
+    SmartDashboard.putData("Autonomous", chooser);
   }
 
   /**
@@ -279,19 +290,22 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     //new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
-    new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(new TurretHomeC(cannonS));
     new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(spinShooterC);
-    new JoystickButton(operator, XboxController.Button.kY.value)
-        .whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));// new ColumnFeedCG(columnS));
     // new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new
     // AimTurretC(limelightS, cannonS));
+    
+    
+    new JoystickButton(operator, XboxController.Button.kA.value).toggleWhenPressed(new AimTurretC(limelightS, cannonS));
+    new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(new TurretHomeC(cannonS));
+    new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(new SpinUpAndAimC(cannonS, limelightS, true));
+    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));
+
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(() -> {
-      cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5);
-      cannonS.turret.runPID();
-    }, cannonS)/* new PrintCommand("Turret left") */;
-    new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(() -> {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5);
+      cannonS.turret.runPID();
+    }, cannonS);
+    new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(() -> {
+      cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5);
       cannonS.turret.runPID();
     }, cannonS);
     /*new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
@@ -299,8 +313,7 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
     new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(new InstantCommand(() -> cannonS.stopShooter()));
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS,false , shooterSpeedSupplier));
-    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));*/
-    new JoystickButton(operator, XboxController.Button.kA.value).whenHeld(new AimTurretC(limelightS, cannonS));/*
+    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 3); cannonS.turret.runPID();})//new PrintCommand("Turret left");
     new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();});
     new POVButton(operator, 0).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.GREEN.value));
@@ -318,7 +331,7 @@ public class RobotContainer {
     // Reset odometry to starting pose of trajectory.
 
     // Run path following command, then stop at the end.
-    return ramseteCommandGroup;
+    return chooser.getSelected();
     //return new InstantCommand();
     // return awardWinnerCG;
   }
@@ -331,7 +344,7 @@ public class RobotContainer {
     SmartDashboard.putNumber("LimelightDistance", limelightS.getFilteredDistance());
     SmartDashboard.putNumber("Limelight Filtered Offset", limelightS.getFilteredXOffset());
     //SmartDashboard.putData(pdp);
-    SmartDashboard.putNumber("shooter setpt", shooterSetpoint);
+    //SmartDashboard.putNumber("shooter setpt", shooterSetpoint);
   }
 
   public void disabledInit() {
