@@ -32,6 +32,20 @@ public class ColumnS extends SubsystemBase {
     return constants;
   }
 
+  public void turnOnCurrent() {
+    back.configContinuousCurrentLimit(6);
+    back.configPeakCurrentDuration(10);
+    back.configPeakCurrentLimit(7);
+    back.enableCurrentLimit(true);
+  }
+
+  public void turnOffCurrent() {
+    back.configContinuousCurrentLimit(6);
+    back.configPeakCurrentDuration(10);
+    back.configPeakCurrentLimit(7);
+    back.enableCurrentLimit(false);
+  }
+
   @Override
   public void periodic() {
     // This method will be called once per scheduler run

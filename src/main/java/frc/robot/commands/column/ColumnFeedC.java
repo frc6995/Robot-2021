@@ -26,6 +26,13 @@ public class ColumnFeedC extends CommandBase {
     this.colSpeed = colSpeed;
   }
 
+  public ColumnFeedC(ColumnS columnS, double accelSpeed, double colSpeed, boolean enable) {
+    this(columnS, accelSpeed, colSpeed);
+    if (!enable) {
+      column.turnOffCurrent();
+    }
+  }
+
   @Override
   public void initialize() {
     column.disableStopper();
@@ -41,6 +48,7 @@ public class ColumnFeedC extends CommandBase {
     column.setAcceleratorSpeed(0);
     column.setColumnSpeed(0);
     column.enableStopper();
+    column.turnOnCurrent();
   }
 
   @Override

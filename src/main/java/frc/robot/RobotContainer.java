@@ -48,9 +48,11 @@ import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpAndAimC;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.SpinUpShooterDistanceC;
+import frc.robot.commands.cannon.SpinUpShooterMidC;
 import frc.robot.commands.cannon.TurretHomeC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
+import frc.robot.commands.intake.IntakeRetractC;
 import frc.robot.commands.intake.IntakeSpinWhileHeldC;
 import frc.robot.commands.intake.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
@@ -299,12 +301,12 @@ public class RobotContainer {
     ColumnLoadC columnLoadC = new ColumnLoadC(columnS);
     StartEndCommand storeSeqC = new StartEndCommand(
       () -> CommandScheduler.getInstance().schedule(intakeSpinWhileHeldC.alongWith(agitatorSpinC)),
-      () -> CommandScheduler.getInstance().schedule(columnLoadC.withTimeout(2)),
+      () -> CommandScheduler.getInstance().schedule(new IntakeRetractC(intakeS).alongWith(new AgitatorSpinC(agitatorS).withTimeout(1)).alongWith(columnLoadC.withTimeout(2))),
       intakeS);
     //new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
     new JoystickButton(controller, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
-    //new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeSeqC);
+    new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
+    //new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeSeqC);
     // new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new
     // AimTurretC(limelightS, cannonS));
     
@@ -313,6 +315,8 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(new TurretHomeC(cannonS));
     new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(new SpinUpAndAimC(cannonS, limelightS, true));
     new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));
+    new JoystickButton(operator, XboxController.Button.kStart.value).toggleWhenPressed(new SpinUpShooterMidC(cannonS, true));
+    new JoystickButton(operator, XboxController.Button.kBack.value).toggleWhenPressed(new SpinUpShooterDistanceC(cannonS, limelightS, true));
 
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(() -> {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5);

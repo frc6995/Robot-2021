@@ -24,8 +24,8 @@ public class SpinUpShooterDistanceC extends CommandBase {
   private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry speed = tab.add("Calculated Speed", 1).withWidget(BuiltInWidgets.kGraph).getEntry();
 
-  private static double[] speeds =    {2450};
-  private static double[] distances = {0.0};
+  private static double[] speeds =    {5500, 3250, 2450, 3250, 3800, 4000};
+  private static double[] distances = {-15.0, 0.0, 8.0, 12.0, 14.0, 18};
 
   /** Creates a new SpinUpShooterC. */
   public SpinUpShooterDistanceC(CannonS cannon, LimelightS limelight, boolean requireCannon) {
