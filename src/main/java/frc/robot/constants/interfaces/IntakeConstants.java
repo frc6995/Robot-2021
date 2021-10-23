@@ -13,6 +13,12 @@ public interface IntakeConstants {
     int getIntakeMotorPort();
 
     /**
+     * The CAN id of the intake back roller
+     * @return The CAN id
+     */
+    int getIntakeBackMotorPort();
+
+    /**
      * The pcm port for the forward channel of the intake solenoid
      * @return pcm id
      */
@@ -29,4 +35,10 @@ public interface IntakeConstants {
      * @return intake speed
      */
     double getIntakeSpeed();
+
+    /**
+     * The speed of the top roller of the intake
+     * @return intake speed
+     */
+    double getIntakeBackRollerSpeed();
 }

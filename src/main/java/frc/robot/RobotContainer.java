@@ -208,9 +208,10 @@ public class RobotContainer {
     agitatorS = new AgitatorS(agitatorConstants, left, right);
 
     NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
+    NomadSparkMax intakeBackMotor = new NomadSparkMax(intakeConstants.getIntakeBackMotorPort());
     DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(),
         intakeConstants.getSolenoidRevPort());
-    intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
+    intakeS = new IntakeS(intakeConstants, intakeMotor, intakeBackMotor, intakeStopper);
 
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
