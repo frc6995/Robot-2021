@@ -2,6 +2,8 @@ package frc.robot.constants;
 
 import java.awt.Point;
 
+import frc.robot.constants.interfaces.HoodConstants;
+
 /** The {@link Hood} constants for the 2021 robot. */
 public class HoodConstants2021 implements HoodConstants {
 
@@ -33,6 +35,23 @@ public class HoodConstants2021 implements HoodConstants {
         }
         
         return closestDataPoint;
+    }
+
+    @Override
+    public double getAllowableError(){
+        return 10;
+    }
+
+    @Override
+    public int getLeftServoPort() {
+        // TODO Auto-generated method stub
+        return 5;
+    }
+
+    @Override
+    public int getRightServoPort() {
+        // TODO Auto-generated method stub
+        return 6;
     }
 
 }

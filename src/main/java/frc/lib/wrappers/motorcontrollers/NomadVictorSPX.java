@@ -132,4 +132,11 @@ public class NomadVictorSPX extends WPI_VictorSPX implements NomadBaseMotor {
             return get();
         }
     }
+
+    @Override
+    public void setOutputVoltage(double voltage) {
+        super.setVoltage(voltage);
+
+    }
+
 }

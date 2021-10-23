@@ -4,6 +4,7 @@ import javax.sound.sampled.Line;
 
 import org.ejml.LinearSolverToSparse;
 
+import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.system.LinearSystem;
 import edu.wpi.first.wpilibj.system.plant.DCMotor;
@@ -51,18 +52,20 @@ public interface DriveConstants {
     int getDriveControllerLeftRightAxis() ;
     /** The CAN ID for the left master motor controller. */
     int getCanIDLeftDriveMaster();
+    default boolean getLeftDriveLeaderInverted(){return false;};
     boolean getLeftEncoderReversed();
     int[] getLeftEncoderPorts();
     /** The CAN ID for the right master motor controller. */
     int getCanIDRightDriveMaster();
+    default boolean getRightDriveLeaderInverted(){return false;}
     boolean getRightEncoderReversed();
     int[] getRightEncoderPorts();
     /** The CAN ID for the left follower motor controller. */
     int getCanIDLeftDriveFollower();
-
+    default boolean getLeftDriveFollowerInverted(){return false;}
     /** The CAN ID for the right follower motor controller. */
     int getCanIDRightDriveFollower();
-
+    default boolean getRightDriveFollowerInverted(){return false;}
     /** Whether or not the gyro is reversed */
     boolean getGyroReversed();
 
@@ -101,24 +104,24 @@ public interface DriveConstants {
     }*/
     DCMotor getDriveGearbox();
 
-    double getDriveGearingRatio();
-
     Vector<N7> getSimEncoderStdDev();
 
        /**
      * 
      * @return The value to multiply the drive controller forward back axis by 
      */
-    int getDriveControllerFwdBackAxisMultiplier();
+    double getDriveControllerFwdBackAxisMultiplier();
     /**
      * 
      * @return The value to multiply the drive controller turning axis by
      */
-    int getDriveControllerLeftRightAxisMultiplier();
+    double getDriveControllerLeftRightAxisMultiplier();
 
     /**
      * 
      */
     boolean getDrivebaseRightSideInverted();
+
+    public SimpleMotorFeedforward getArbitraryFeedforward();
     
 }   

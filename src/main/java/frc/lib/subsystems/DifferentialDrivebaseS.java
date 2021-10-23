@@ -1,12 +1,9 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2019 FIRST. All Rights Reserved.                             */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
+
 
 package frc.lib.subsystems;
 
+import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.controller.RamseteController;
 import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
@@ -60,6 +57,10 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
   
   public abstract DifferentialDriveWheelSpeeds getWheelSpeeds();
 
+  public abstract RamseteController getRamseteController();
+
+  public abstract PIDController getLeftPidController();
+  public abstract PIDController getRightPidController();
   /**
    * Gets the left side velocity in meters per second.
    * @return the left side velocity in meters per second.
@@ -88,5 +89,13 @@ public abstract class DifferentialDrivebaseS extends SubsystemBase {
 
   public abstract double getRightSetSpeed();
 
-  
+  public void setMotors(double left, double right){
+    leftLeader.set(left);
+    rightLeader.set(right);
+  }
+
+  public void stopMotors(){
+    leftLeader.stopMotor();
+    rightLeader.stopMotor();
+  }
 }

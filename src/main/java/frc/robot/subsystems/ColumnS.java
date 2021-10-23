@@ -1,28 +1,49 @@
 package frc.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
+
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.lib.constants.ColumnConstants;
+import frc.robot.constants.interfaces.ColumnConstants;
+import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.lib.wrappers.motorcontrollers.NomadVictorSPX;
 
 public class ColumnS extends SubsystemBase {
-  private NomadTalonSRX front;
-  private NomadVictorSPX back;
+  private NomadSparkMax front;
+  private NomadTalonSRX back;
   private DoubleSolenoid solenoid; 
   private ColumnConstants constants;
   
   /** Creates a new ColumnS. */
-  public ColumnS(ColumnConstants constants, NomadTalonSRX front, NomadVictorSPX back, DoubleSolenoid solenoid) {
+  public ColumnS(ColumnConstants constants, NomadSparkMax front, NomadTalonSRX back, DoubleSolenoid solenoid) {
     this.constants = constants;
     this.front = front;
     this.back = back;
+    back.configContinuousCurrentLimit(6);
+    back.configPeakCurrentDuration(10);
+    back.configPeakCurrentLimit(7);
+    back.enableCurrentLimit(true);
     this.solenoid = solenoid;
   }
 
   public ColumnConstants getConstants(){
     return constants;
+  }
+
+  public void turnOnCurrent() {
+    back.configContinuousCurrentLimit(6);
+    back.configPeakCurrentDuration(10);
+    back.configPeakCurrentLimit(7);
+    back.enableCurrentLimit(true);
+  }
+
+  public void turnOffCurrent() {
+    back.configContinuousCurrentLimit(6);
+    back.configPeakCurrentDuration(10);
+    back.configPeakCurrentLimit(7);
+    back.enableCurrentLimit(false);
   }
 
   @Override
@@ -34,11 +55,11 @@ public class ColumnS extends SubsystemBase {
     return solenoid.get();
   }
 
-  public void setFrontSpeed(double speed){
+  public void setAcceleratorSpeed(double speed){
     front.set(speed);
   }
 
-  public void setBackSpeed(double speed){
+  public void setColumnSpeed(double speed){
     back.set(speed);
   }
 
