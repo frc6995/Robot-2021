@@ -21,6 +21,7 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 	DrivebaseS drivebaseS;
 	DriveConstants driveConstants;
 	GenericHID controller;
+	double driveSpeed;
 
 	/**
 	 * Creates a new DrivebaseArcadeDriveStick.
@@ -47,17 +48,21 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 		if (leftTrigger > -0.015 && leftTrigger < 0.015)
 			leftTrigger = 0;
 
-		double driveSpeed = rightTrigger - leftTrigger;
+		//double driveSpeed = rightTrigger - leftTrigger;
+		if (controller.getRawButton(XboxController.Button.kY.value)) {
+			driveSpeed = (rightTrigger - leftTrigger) * -1;
+		} else {
+			driveSpeed = (rightTrigger - leftTrigger) * driveConstants.getDriveControllerFwdBackAxisMultiplier();
+		}
+
 		double turnSpeed = controller.getRawAxis(0);
 
 		if (turnSpeed > -0.015 && turnSpeed < 0.015)
 			turnSpeed = 0;
-
-		double driveSpeed2 = (controller.getRawButton(XboxController.Button.kY.value) ? driveSpeed
-				: driveSpeed * driveConstants.getDriveControllerFwdBackAxisMultiplier());
+		
 		// A compounded function: processOutputs(calculateOutputs(getInputs())).
 		// Defaults to the left and right Talons in DrivebaseS
-		drivebaseS.curvatureDrive(driveSpeed2,
+		drivebaseS.curvatureDrive(driveSpeed,
 				turnSpeed * driveConstants.getDriveControllerLeftRightAxisMultiplier(),
 				controller.getRawButton(XboxController.Button.kB.value));
 	}
