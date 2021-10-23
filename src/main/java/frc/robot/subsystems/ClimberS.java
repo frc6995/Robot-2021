@@ -5,6 +5,7 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
@@ -13,13 +14,13 @@ import frc.robot.constants.ClimberConstants2021;
 public class ClimberS extends SubsystemBase {
 
 	private NomadSparkMax climbRatchet;
-	private Solenoid ratchetRelease;
+	private Servo ratchetRelease;
 	private Solenoid climberDeploy;
 	private CANEncoder encoder;
 	private ClimberConstants2021 constants;
 
 	/** Creates a new ClimberS. */
-	public ClimberS(ClimberConstants2021 constants, NomadSparkMax climbRatchet, Solenoid ratchetRelease,
+	public ClimberS(ClimberConstants2021 constants, NomadSparkMax climbRatchet, Servo ratchetRelease,
 			Solenoid climberDeploy) {
 		this.climbRatchet = climbRatchet;
 		this.ratchetRelease = ratchetRelease;
@@ -38,12 +39,12 @@ public class ClimberS extends SubsystemBase {
 	}
 
 	public void disengageRatchet() {
-		ratchetRelease.set(true);
+		ratchetRelease.setAngle(constants.servoDisengagedAngle());
 		climbRatchet.setIdleMode(IdleMode.kCoast);
 	}
 
 	public void engageRatchet() {
-		ratchetRelease.set(false);
+		ratchetRelease.setAngle(constants.servoEngagedAngle());
 		climbRatchet.setIdleMode(IdleMode.kBrake);
 	}
 

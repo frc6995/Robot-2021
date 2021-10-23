@@ -45,4 +45,12 @@ public class ClimberConstants2021 {
 	public double getAllowableError() {
 		return 50;
 	}
+
+	public double servoEngagedAngle() {
+		return 0;
+	}
+
+	public double servoDisengagedAngle() {
+		return 90;
+	}
 }
