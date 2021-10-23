@@ -44,6 +44,7 @@ import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutoShootAndDriveCG;
 import frc.robot.commands.AutoShootAndDriveSequencingCG;
 import frc.robot.commands.AutonomousAwardWinnerCG;
+import frc.robot.commands.SixBallAutoCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpAndAimC;
 import frc.robot.commands.cannon.SpinUpShooterC;
@@ -268,9 +269,10 @@ public class RobotContainer {
 
     chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
     chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
-    chooser.addOption("Shoot Seq and Move Back", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
-    chooser.addOption("Shoot Seq and Move Fwd", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
+    //chooser.addOption("Shoot Seq and Move Back", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
+    //chooser.addOption("Shoot Seq and Move Fwd", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
     chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
+    chooser.addOption("6 Ball Trench", new SixBallAutoCG(cannonS, limelightS, intakeS, agitatorS, columnS, drivebaseS));
     SmartDashboard.putData("Autonomous", chooser);
   }
 
