@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import java.util.function.DoubleSupplier;
@@ -27,13 +20,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
@@ -43,21 +34,18 @@ import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutoShootAndDriveCG;
 import frc.robot.commands.AutoShootAndDriveSequencingCG;
-import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpAndAimC;
 import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.SpinUpShooterMidC;
 import frc.robot.commands.cannon.TurretHomeC;
+import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intake.IntakeRetractC;
 import frc.robot.commands.intake.IntakeSpinWhileHeldC;
-import frc.robot.commands.intake.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
-import frc.robot.commands.column.ColumnFeedC;
-import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstants2021;
@@ -108,10 +96,8 @@ public class RobotContainer {
   private CannonS cannonS;
   private LimelightS limelightS;
 
-  // private DifferentialDrive differentialDrive;
   // Commands
   private AgitatorSpinC agitatorSpinC;
-  private IntakeToggleC intakeToggleC;
   private StoreBallsCG storeBallsCG;
   private StoreBallsCG searchStoreBallsCG;
   private SpinUpShooterC spinShooterC;
@@ -258,7 +244,6 @@ public class RobotContainer {
 
 
     agitatorSpinC = new AgitatorSpinC(agitatorS);
-    intakeToggleC = new IntakeToggleC(intakeS, agitatorS);
     storeBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
     searchStoreBallsCG = new StoreBallsCG(intakeS, agitatorS, columnS);
     searchCommandGroup = createRamseteCommandGroup(Trajectories.searchTrajectoryA).alongWith(searchStoreBallsCG);
@@ -296,20 +281,8 @@ public class RobotContainer {
    * passing it to a {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    IntakeSpinWhileHeldC intakeSpinWhileHeldC = new IntakeSpinWhileHeldC(intakeS);
-    AgitatorSpinC agitatorSpinC = new AgitatorSpinC(agitatorS);
-    ColumnLoadC columnLoadC = new ColumnLoadC(columnS);
-    StartEndCommand storeSeqC = new StartEndCommand(
-      () -> CommandScheduler.getInstance().schedule(intakeSpinWhileHeldC.alongWith(agitatorSpinC)),
-      () -> CommandScheduler.getInstance().schedule(new IntakeRetractC(intakeS).alongWith(new AgitatorSpinC(agitatorS).withTimeout(1)).alongWith(columnLoadC.withTimeout(2))),
-      intakeS);
-    //new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
     new JoystickButton(controller, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
     new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeBallsCG);
-    //new JoystickButton(controller, XboxController.Button.kA.value).toggleWhenPressed(storeSeqC);
-    // new JoystickButton(controller, XboxController.Button.kA.value).whileHeld(new
-    // AimTurretC(limelightS, cannonS));
-    
     
     new JoystickButton(operator, XboxController.Button.kA.value).toggleWhenPressed(new AimTurretC(limelightS, cannonS));
     new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(new TurretHomeC(cannonS));
@@ -326,18 +299,6 @@ public class RobotContainer {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 5);
       cannonS.turret.runPID();
     }, cannonS);
-    /*new JoystickButton(operator, XboxController.Button.kA.value).whenPressed(intakeToggleC);
-    new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(agitatorSpinC);
-    new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(storeBallsCG);
-    new JoystickButton(operator, XboxController.Button.kBumperLeft.value).whenPressed(new InstantCommand(() -> cannonS.stopShooter()));
-    new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS,false , shooterSpeedSupplier));
-    new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
-    new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 3); cannonS.turret.runPID();})//new PrintCommand("Turret left");
-    new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();});
-    new POVButton(operator, 0).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.GREEN.value));
-    new POVButton(operator, 90).whenPressed(new SpinUpShooterC(cannonS,  true, SHOOTER_SPEEDS.RED.value));
-    new POVButton(operator, 180).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.BLUE.value));
-    new POVButton(operator, 270).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.YELLOW.value)); */
   }
 
   /**
@@ -347,11 +308,8 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // Reset odometry to starting pose of trajectory.
-
     // Run path following command, then stop at the end.
     return chooser.getSelected();
-    //return new InstantCommand();
-    // return awardWinnerCG;
   }
 
   /**
@@ -365,6 +323,9 @@ public class RobotContainer {
     //SmartDashboard.putNumber("shooter setpt", shooterSetpoint);
   }
 
+  /**
+   * This method is called when the robot is disabled
+   */
   public void disabledInit() {
     columnS.enableStopper();
     cannonS.stopShooter();
@@ -373,6 +334,9 @@ public class RobotContainer {
     drivebaseS.setIdleMode(IdleMode.kCoast);
   }
 
+  /**
+   * This method is called when the robot enters teleop
+   */
   public void teleopInit() {
     drivebaseS.setIdleMode(IdleMode.kCoast);
   }
@@ -381,6 +345,11 @@ public class RobotContainer {
     drivebaseS.setIdleMode(IdleMode.kCoast);
   }
 
+  /**
+   * This method creates a command group to run a trajectory
+   * @param trajectory of the path to follow
+   * @return trajectory command group
+   */
   public SequentialCommandGroup createRamseteCommandGroup(Trajectory trajectory) {
     return new InstantCommand(() -> drivebaseS.resetOdometry(selectedTrajectory.getInitialPose()), drivebaseS)
         .andThen(NomadAutoCommandGenerator.createRamseteCommand(trajectory, drivebaseS, driveConstants, autoConstants))
@@ -389,9 +358,5 @@ public class RobotContainer {
           drivebaseS.tankDriveVolts(0, 0);
         }, drivebaseS);
 
-}
-
-public void setShooterSetpoint(double rpm){
-  shooterSetpoint = rpm;
 }
 }

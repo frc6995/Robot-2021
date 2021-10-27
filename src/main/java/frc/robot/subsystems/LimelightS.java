@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import edu.wpi.first.wpilibj.LinearFilter;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.limelight.Limelight;
 import frc.lib.wrappers.limelight.Limelight.CameraMode;
@@ -53,6 +52,9 @@ public class LimelightS extends SubsystemBase {
     registryKeys = new ArrayList<String>();
   }
 
+  /**
+   * This is the subsystem's periodic method
+   */
   @Override
   public void periodic() {
     filteredXOffset = xOffsetFilter.calculate(getXOffset());

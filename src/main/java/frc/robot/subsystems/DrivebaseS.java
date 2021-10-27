@@ -1,17 +1,11 @@
-// Copyright (c) FIRST and other WPILib contributors.
-// Open Source Software; you can modify and/or share it under the terms of
-// the WPILib BSD license file in the root directory of this project.
-
 package frc.robot.subsystems;
 
 import java.util.stream.Collectors;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.kauailabs.navx.frc.AHRS;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotController;
@@ -23,20 +17,16 @@ import edu.wpi.first.wpilibj.geometry.Pose2d;
 import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.simulation.ADXRS450_GyroSim;
 import edu.wpi.first.wpilibj.simulation.DifferentialDrivetrainSim;
 import edu.wpi.first.wpilibj.simulation.EncoderSim;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableBuilder;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.lib.subsystems.DifferentialDrivebaseS;
-import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
-import frc.lib.wrappers.motorcontrollers.NomadPWMMotor;
-import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
-import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
-import frc.robot.auto.Trajectories;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
+import frc.lib.subsystems.DifferentialDrivebaseS;
+import frc.lib.utility.drivebase.DrivebaseWheelPercentages;
+import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
+import frc.robot.auto.Trajectories;
 
 public class DrivebaseS extends DifferentialDrivebaseS {
 	private NomadSparkMax leftLeader;
@@ -117,7 +107,6 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 				driveConstants.getkTrackWidthMeters(), driveConstants.getkWheelDiameter() / 2.0,
 				driveConstants.getSimEncoderStdDev());
 
-		// m_gyroSim = new ADXRS450_GyroSim(gyro);
 		m_field.getObject("trajectory").setPoses(Trajectories.trenchToLineRevTrajectory.getStates().stream()
 				.map(state -> state.poseMeters).collect(Collectors.toList()));
 
@@ -126,10 +115,16 @@ public class DrivebaseS extends DifferentialDrivebaseS {
 		resetOdometry(new Pose2d());
 	}
 
+	/**
+	 * Access to the PID controllers for the left half of the drive base
+	 */
 	public PIDController getLeftPidController() {
 		return leftPidController;
 	}
 
+	/**
+	 * Access to the PID controllers for the right half of the drive base
+	 */
 	public PIDController getRightPidController() {
 		return rightPidController;
 	}
