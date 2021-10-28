@@ -7,14 +7,14 @@ package frc.robot.constants;
 /** Add your docs here. */
 public class ClimberConstants2021 {
 	public int getRatchetMotorId() {
-		return 61;
-	}
-
-	public int getRatchetReleasePort() {
-		return 0;
+		return 60;
 	}
 
 	public int getDeploySolenoidPort() {
+		return 0;
+	}
+
+	public int getRetractSolenoidPort() {
 		return 1;
 	}
 
