@@ -50,6 +50,9 @@ import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.SpinUpShooterMidC;
 import frc.robot.commands.cannon.TurretHomeC;
+import frc.robot.commands.climber.ClimberMotorTest;
+import frc.robot.commands.climber.DisengageRatchetC;
+import frc.robot.commands.climber.EngageRatchetC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intake.IntakeRetractC;
@@ -63,6 +66,7 @@ import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstants2021;
 import frc.robot.constants.AutoConstants2021;
 import frc.robot.constants.CannonConstants2021;
+import frc.robot.constants.ClimberConstants2021;
 import frc.robot.constants.ColumnConstants2021;
 import frc.robot.constants.DriveConstants2021;
 import frc.robot.constants.HoodConstants2021;
@@ -79,6 +83,7 @@ import frc.robot.constants.interfaces.LimelightConstants;
 import frc.robot.constants.interfaces.ShooterConstants;
 import frc.robot.constants.interfaces.TurretConstants;
 import frc.robot.subsystems.AgitatorS;
+import frc.robot.subsystems.ClimberS;
 import frc.robot.subsystems.ColumnS;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.IntakeS;
@@ -106,6 +111,7 @@ public class RobotContainer {
   private IntakeS intakeS;
   private ColumnS columnS;
   private CannonS cannonS;
+  private ClimberS climberS;
   private LimelightS limelightS;
 
   // private DifferentialDrive differentialDrive;
@@ -172,7 +178,7 @@ public class RobotContainer {
     createCommands();
     configureDefaultCommands();
     configureButtonBindings();
-    lights = new Spark(0);
+    lights = new Spark(1);
     lights.set(-0.97);
     init = true;
     pdp = new PowerDistributionPanel();
@@ -237,6 +243,13 @@ public class RobotContainer {
 
     cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor,
         turretLimitSwitch);
+
+    ClimberConstants2021 climberConstants = new ClimberConstants2021();
+    NomadSparkMax climberMotor = new NomadSparkMax(climberConstants.getRatchetMotorId(), MotorType.kBrushless, true);
+    DoubleSolenoid climbDeploy = new DoubleSolenoid(1, climberConstants.getDeploySolenoidPort(), climberConstants.getRetractSolenoidPort());
+    Servo climbServo = new Servo(climberConstants.getServoPort());
+
+    climberS = new ClimberS(climberConstants, climberMotor, climbServo, climbDeploy);
   }
 
   /**
@@ -272,6 +285,10 @@ public class RobotContainer {
     chooser.addOption("Shoot Seq and Move Fwd", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
     chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
     SmartDashboard.putData("Autonomous", chooser);
+
+    SmartDashboard.putData(new EngageRatchetC(climberS));
+    SmartDashboard.putData(new DisengageRatchetC(climberS));
+    SmartDashboard.putData("Climber Motor Test", new ClimberMotorTest(climberS).withTimeout(1));
   }
 
   /**

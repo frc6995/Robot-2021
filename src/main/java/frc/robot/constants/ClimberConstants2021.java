@@ -4,8 +4,17 @@
 
 package frc.robot.constants;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /** Add your docs here. */
 public class ClimberConstants2021 {
+	private boolean useSD = true;
+
+	public ClimberConstants2021() {
+		SmartDashboard.putNumber("Servo Engage", 5);
+		SmartDashboard.putNumber("Servo Disengaged", 16);
+	}
+
 	public int getRatchetMotorId() {
 		return 60;
 	}
@@ -16,6 +25,10 @@ public class ClimberConstants2021 {
 
 	public int getRetractSolenoidPort() {
 		return 1;
+	}
+
+	public int getServoPort() {
+		return 0;
 	}
 
 	public double getKP() {
@@ -47,10 +60,10 @@ public class ClimberConstants2021 {
 	}
 
 	public double servoEngagedAngle() {
-		return 0;
+		return (useSD ? SmartDashboard.getNumber("Servo Engage", 5) : 5);
 	}
 
 	public double servoDisengagedAngle() {
-		return 90;
+		return (useSD ? SmartDashboard.getNumber("Servo Disengaged", 16) : 16);
 	}
 }

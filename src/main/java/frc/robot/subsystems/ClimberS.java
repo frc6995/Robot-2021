@@ -5,8 +5,10 @@ import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.ClimberConstants2021;
@@ -15,13 +17,13 @@ public class ClimberS extends SubsystemBase {
 
 	private NomadSparkMax climbRatchet;
 	private Servo ratchetRelease;
-	private Solenoid climberDeploy;
+	private DoubleSolenoid climberDeploy;
 	private CANEncoder encoder;
 	private ClimberConstants2021 constants;
 
 	/** Creates a new ClimberS. */
 	public ClimberS(ClimberConstants2021 constants, NomadSparkMax climbRatchet, Servo ratchetRelease,
-			Solenoid climberDeploy) {
+			DoubleSolenoid climberDeploy) {
 		this.climbRatchet = climbRatchet;
 		this.ratchetRelease = ratchetRelease;
 		this.climberDeploy = climberDeploy;
@@ -38,6 +40,10 @@ public class ClimberS extends SubsystemBase {
 		retractClimber();
 	}
 
+	public void setSpeed(double speed) {
+		climbRatchet.set(speed);
+	}
+
 	public void disengageRatchet() {
 		ratchetRelease.setAngle(constants.servoDisengagedAngle());
 		climbRatchet.setIdleMode(IdleMode.kCoast);
@@ -49,11 +55,11 @@ public class ClimberS extends SubsystemBase {
 	}
 
 	public void deployClimber() {
-		climberDeploy.set(true);
+		climberDeploy.set(Value.kForward);
 	}
 
 	private void retractClimber() {
-		climberDeploy.set(false);
+		climberDeploy.set(Value.kReverse);
 	}
 
 	public void resetEncoder() {
