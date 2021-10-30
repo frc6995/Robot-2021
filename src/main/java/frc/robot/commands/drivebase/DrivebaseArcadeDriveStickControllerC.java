@@ -18,44 +18,61 @@ import frc.lib.subsystems.DifferentialDrivebaseS;
 import frc.robot.subsystems.DrivebaseS;
 
 public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
-  DrivebaseS drivebaseS;
-  DriveConstants driveConstants;
-  GenericHID controller;
-  /**
-   * Creates a new DrivebaseArcadeDriveStick.
-   */
-  public DrivebaseArcadeDriveStickControllerC(DrivebaseS drivebase, DriveConstants driveConstants, GenericHID controller) {
-    drivebaseS = drivebase;
-    addRequirements(drivebaseS);
-    this.driveConstants = driveConstants;
-    this.controller = controller;
-  }
+	DrivebaseS drivebaseS;
+	DriveConstants driveConstants;
+	GenericHID controller;
+	double driveSpeed;
 
-  @Override
-  public void initialize() {}
+	/**
+	 * Creates a new DrivebaseArcadeDriveStick.
+	 */
+	public DrivebaseArcadeDriveStickControllerC(DrivebaseS drivebase, DriveConstants driveConstants,
+			GenericHID controller) {
+		drivebaseS = drivebase;
+		addRequirements(drivebaseS);
+		this.driveConstants = driveConstants;
+		this.controller = controller;
+	}
 
-  @Override
-  public void execute() {
-    double rightTrigger = controller.getRawAxis(2);
-    double leftTrigger = controller.getRawAxis(3);
+	@Override
+	public void initialize() {
+	}
 
-    if (rightTrigger > -0.015 && rightTrigger < 0.015) rightTrigger = 0;
-    if (leftTrigger > -0.015 && leftTrigger < 0.015) leftTrigger = 0;
+	@Override
+	public void execute() {
+		double rightTrigger = controller.getRawAxis(2);
+		double leftTrigger = controller.getRawAxis(3);
 
-    double driveSpeed = rightTrigger-leftTrigger;
-    double turnSpeed = controller.getRawAxis(0);
+		if (rightTrigger > -0.015 && rightTrigger < 0.015)
+			rightTrigger = 0;
+		if (leftTrigger > -0.015 && leftTrigger < 0.015)
+			leftTrigger = 0;
 
-    if (turnSpeed > -0.015 && turnSpeed < 0.015) turnSpeed = 0;
+		//double driveSpeed = rightTrigger - leftTrigger;
+		if (controller.getRawButton(XboxController.Button.kY.value)) {
+			driveSpeed = (rightTrigger - leftTrigger) * -1;
+		} else {
+			driveSpeed = (rightTrigger - leftTrigger) * driveConstants.getDriveControllerFwdBackAxisMultiplier();
+		}
 
-    //A compounded function: processOutputs(calculateOutputs(getInputs())). Defaults to the left and right Talons in DrivebaseS
-    drivebaseS.curvatureDrive(driveSpeed*driveConstants.getDriveControllerFwdBackAxisMultiplier(), turnSpeed*driveConstants.getDriveControllerLeftRightAxisMultiplier(), controller.getRawButton(XboxController.Button.kB.value));
-  }
+		double turnSpeed = controller.getRawAxis(0);
 
-  @Override
-  public void end(boolean interrupted) {}
+		if (turnSpeed > -0.015 && turnSpeed < 0.015)
+			turnSpeed = 0;
+		
+		// A compounded function: processOutputs(calculateOutputs(getInputs())).
+		// Defaults to the left and right Talons in DrivebaseS
+		drivebaseS.curvatureDrive(driveSpeed,
+				turnSpeed * driveConstants.getDriveControllerLeftRightAxisMultiplier(),
+				controller.getRawButton(XboxController.Button.kB.value));
+	}
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	@Override
+	public void end(boolean interrupted) {
+	}
+
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }

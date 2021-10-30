@@ -24,8 +24,8 @@ public class SpinUpShooterDistanceC extends CommandBase {
   private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry speed = tab.add("Calculated Speed", 1).withWidget(BuiltInWidgets.kGraph).getEntry();
 
-  private static double[] speeds =    {5500, 3250, 2450, 3250, 3800, 4000};
-  private static double[] distances = {-15.0, 0.0, 8.0, 12.0, 14.0, 18};
+  private static double[] speeds =    {3300, 2700, 2600, 2650, 2650, 2700, 3000};
+  private static double[] distances = {6.0, -4.0, -9.0, -13.0, -15, -18, -25};
 
   /** Creates a new SpinUpShooterC. */
   public SpinUpShooterDistanceC(CannonS cannon, LimelightS limelight, boolean requireCannon) {
@@ -42,7 +42,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
   public void initialize() {
     limelight.register();
     distance = limelight.getFilteredYOffset();
-    index = getUnderId(distance, distances);
+    index = Math.max(Math.min(distances.length-2, getUnderId(distance, distances)), 0);
     rpm = calcSpeed(index, index+1, distance, distances, speeds);
     cannon.pidShooterToTargetSpeed(rpm);
     speed.setDouble(rpm);
@@ -57,7 +57,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
     distance = limelight.getFilteredYOffset();
     // if the distance is not within the closest two values anymore, recalculate
     if (!(distance > distances[index] && distance < distances[index+1])) {
-      index = getUnderId(distance, distances);
+      index = Math.max(Math.min(distances.length-2, getUnderId(distance, distances)), 0);
     }
 
     // find target speed and pid to that speed
@@ -94,10 +94,10 @@ public class SpinUpShooterDistanceC extends CommandBase {
    * @return returns the exact RPM depending on the distance from the target
    */ 
   public static double calcSpeed(int smallerIndex, int biggerIndex, double distance, double[] DISTANCES_FEET, double[] RPMS) {
-    double smallerRPM = RPMS[smallerIndex];
-    double biggerRPM = RPMS[biggerIndex];
-    double smallerDistance = DISTANCES_FEET[smallerIndex];
-    double biggerDistance = DISTANCES_FEET[biggerIndex];
+    double smallerRPM = RPMS[Math.max(smallerIndex, 0)];
+    double biggerRPM = RPMS[Math.min(biggerIndex, RPMS.length-1)];
+    double smallerDistance = DISTANCES_FEET[Math.max(smallerIndex, 0)];
+    double biggerDistance = DISTANCES_FEET[Math.min(biggerIndex, DISTANCES_FEET.length-1)];
     
     double newRPM = (biggerRPM - smallerRPM) / (biggerDistance - smallerDistance) * (distance - smallerDistance) + smallerRPM;
 
