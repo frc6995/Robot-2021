@@ -14,57 +14,59 @@ import frc.robot.subsystems.cannon.CannonS;
  * @author JoeyFabel, sammcdo
  */
 public class SpinUpAndAimC extends CommandBase {
-  private CannonS cannon;
-  private LimelightS limelight;
-  private double rpm = 2250;
-  private double offset;
+	private CannonS cannon;
+	private LimelightS limelight;
+	private double rpm = 2450;
+	private double offset;
 
-  /** Creates a new SpinUpShooterC. */
-  public SpinUpAndAimC(CannonS cannon, LimelightS limelight, boolean requireCannon) {
-    this.cannon = cannon;
-    this.limelight = limelight;
+	/** Creates a new SpinUpShooterC. */
+	public SpinUpAndAimC(CannonS cannon, LimelightS limelight, boolean requireCannon) {
+		this.cannon = cannon;
+		this.limelight = limelight;
 
-    if (requireCannon) {
-      addRequirements(cannon);
-    }
+		if (requireCannon) {
+			addRequirements(cannon);
+		}
 
-  }
+	}
 
-  public SpinUpAndAimC(CannonS cannon, LimelightS limelight, boolean requireCannon, double rpm) {
-    this(cannon, limelight, requireCannon);
-    this.rpm = rpm;
-  }
+	public SpinUpAndAimC(CannonS cannon, LimelightS limelight, boolean requireCannon, double rpm) {
+		this(cannon, limelight, requireCannon);
+		this.rpm = rpm;
+	}
 
-  public SpinUpAndAimC(CannonS cannon, LimelightS limelight, boolean requireCannon, DoubleSupplier rpm){
-    this(cannon, limelight, requireCannon);
-    this.rpm = rpm.getAsDouble();
-}
+	public SpinUpAndAimC(CannonS cannon, LimelightS limelight, boolean requireCannon, DoubleSupplier rpm) {
+		this(cannon, limelight, requireCannon);
+		this.rpm = rpm.getAsDouble();
+	}
 
-  @Override
-  public void initialize() {
-    cannon.pidShooterToTargetSpeed(rpm);
-    limelight.register();
-    offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
-    cannon.turret.setSetpoint(offset);
-    cannon.turret.runPID();
-  }
+	@Override
+	public void initialize() {
+		cannon.pidShooterToTargetSpeed(rpm);
+		limelight.register();
+		offset = cannon.turret.getTurretEncoderPosition()
+				- (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1 : 0));
+		cannon.turret.setSetpoint(offset);
+		cannon.turret.runPID();
+	}
 
-  @Override
-  public void execute() {
-    offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
-    cannon.turret.setSetpoint(offset);
-    cannon.turret.runPID();
-  }
+	@Override
+	public void execute() {
+		offset = cannon.turret.getTurretEncoderPosition()
+				- (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1 : 0));
+		cannon.turret.setSetpoint(offset);
+		cannon.turret.runPID();
+	}
 
-  @Override
-  public void end(boolean interrupted) {
-    cannon.stopShooter();
-    limelight.deregister();
-    super.end(interrupted);
-  }
+	@Override
+	public void end(boolean interrupted) {
+		cannon.stopShooter();
+		limelight.deregister();
+		super.end(interrupted);
+	}
 
-  @Override
-  public boolean isFinished() {
-    return false;
-  }
+	@Override
+	public boolean isFinished() {
+		return false;
+	}
 }
