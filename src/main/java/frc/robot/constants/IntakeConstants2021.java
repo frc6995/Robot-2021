@@ -10,6 +10,11 @@ public class IntakeConstants2021 implements IntakeConstants {
     }
 
     @Override
+	public int getIntakeBackMotorPort() {
+		return 31;
+	}
+
+    @Override
     public int getSolenoidFwdPort() {
         return 6;
     }
@@ -23,5 +28,10 @@ public class IntakeConstants2021 implements IntakeConstants {
     public double getIntakeSpeed() {
         return -0.75;
     }
+
+	@Override
+	public double getIntakeBackRollerSpeed() {
+		return -0.6;
+	}
 
 }

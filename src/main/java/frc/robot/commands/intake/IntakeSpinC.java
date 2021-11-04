@@ -14,7 +14,7 @@ public class IntakeSpinC extends CommandBase {
 
   @Override
   public void initialize() {
-    intake.setSpeed(intake.getConstants().getIntakeSpeed());
+    intake.runIntake();
   }
 
   @Override
