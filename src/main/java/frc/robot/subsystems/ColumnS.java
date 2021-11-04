@@ -40,9 +40,9 @@ public class ColumnS extends SubsystemBase {
   }
 
   public void turnOffCurrent() {
-    back.configContinuousCurrentLimit(6);
+    back.configContinuousCurrentLimit(25);
     back.configPeakCurrentDuration(10);
-    back.configPeakCurrentLimit(7);
+    back.configPeakCurrentLimit(30);
     back.enableCurrentLimit(false);
   }
 

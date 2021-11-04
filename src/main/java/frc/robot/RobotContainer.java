@@ -25,6 +25,7 @@ import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
@@ -40,11 +41,14 @@ import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.SpinUpShooterMidC;
 import frc.robot.commands.cannon.TurretHomeC;
+import frc.robot.commands.climber.ClimberFLEXCG;
 import frc.robot.commands.climber.ClimberManualModeC;
 import frc.robot.commands.climber.ClimberMotorTest;
+import frc.robot.commands.climber.ClimberUpCG;
 import frc.robot.commands.climber.DeployClimberC;
 import frc.robot.commands.climber.DisengageRatchetC;
 import frc.robot.commands.climber.EngageRatchetC;
+import frc.robot.commands.climber.ExtendClimberCG;
 import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
@@ -250,7 +254,7 @@ public class RobotContainer {
    * them, we should save on garbage collection.
    */
   private void createCommands() {
-    controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller);
+    controllerDrive = new DrivebaseArcadeDriveStickControllerC(drivebaseS, driveConstants, controller, climberS);
 
     ramseteCommand = NomadAutoCommandGenerator.createRamseteCommand(Trajectories.lineToTrenchTrajectory, drivebaseS,
         driveConstants, autoConstants);
@@ -326,12 +330,12 @@ public class RobotContainer {
     // AimTurretC(limelightS, cannonS));
     
     
-    new JoystickButton(operator, XboxController.Button.kA.value).toggleWhenPressed(new AimTurretC(limelightS, cannonS));
+    new JoystickButton(operator, XboxController.Button.kA.value).toggleWhenPressed(new SpinUpShooterDistanceC(cannonS, limelightS, true));//new AimTurretC(limelightS, cannonS));
     new JoystickButton(operator, XboxController.Button.kB.value).whileHeld(new TurretHomeC(cannonS));
     new JoystickButton(operator, XboxController.Button.kX.value).toggleWhenPressed(new SpinUpAndAimC(cannonS, limelightS, true));
     new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));
     new JoystickButton(operator, XboxController.Button.kStart.value).toggleWhenPressed(new SpinUpShooterMidC(cannonS, true));
-    new JoystickButton(operator, XboxController.Button.kBack.value).toggleWhenPressed(new SpinUpShooterDistanceC(cannonS, limelightS, true));
+    //new JoystickButton(operator, XboxController.Button.kBack.value).toggleWhenPressed(new SpinUpShooterDistanceC(cannonS, limelightS, true));
 
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(() -> {
       cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 5);
@@ -348,11 +352,11 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kBumperRight.value).whenPressed(new SpinUpShooterC(cannonS,false , shooterSpeedSupplier));
     new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 3); cannonS.turret.runPID();})//new PrintCommand("Turret left");
-    new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();});
-    new POVButton(operator, 0).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.GREEN.value));
-    new POVButton(operator, 90).whenPressed(new SpinUpShooterC(cannonS,  true, SHOOTER_SPEEDS.RED.value));
-    new POVButton(operator, 180).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.BLUE.value));
-    new POVButton(operator, 270).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.YELLOW.value)); */
+    new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();}); */
+    new POVButton(operator, 0).whenPressed(new ExtendClimberCG(climberS, cannonS));
+    new POVButton(operator, 90).whenPressed(new ClimberUpCG(climberS));
+    new POVButton(operator, 180).whenPressed(new ClimberFLEXCG(climberS));
+    //new POVButton(operator, 270).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.YELLOW.value));
   }
 
   /**

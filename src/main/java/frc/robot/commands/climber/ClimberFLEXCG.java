@@ -6,6 +6,6 @@ import frc.robot.subsystems.ClimberS;
 public class ClimberFLEXCG extends SequentialCommandGroup {
 	/** Creates a new ClimberFLEXCG. */
 	public ClimberFLEXCG(ClimberS climber) {
-		addCommands(new RunClimberPIDC(climber), new EngageRatchetC(climber));
+		addCommands(new EngageRatchetC(climber), new RunClimberPIDC(climber));
 	}
 }

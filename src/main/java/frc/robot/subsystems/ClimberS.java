@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.Servo;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.robot.constants.ClimberConstants2021;
@@ -60,6 +61,10 @@ public class ClimberS extends SubsystemBase {
 		climbRatchet.setIdleMode(IdleMode.kBrake);
 	}
 
+	public boolean isDeployed() {
+		return (climberDeploy.get() == Value.kForward ? true : false);
+	}
+
 	public void deployClimber() {
 		climberDeploy.set(Value.kForward);
 	}
@@ -81,8 +86,14 @@ public class ClimberS extends SubsystemBase {
 				.getAllowableError());
 	}
 
+	public boolean isAtUpSetpoint() {
+		return (Math.abs(encoder.getPosition() - constants.getExtendSetPoint()) < constants
+				.getAllowableError());
+	}
+
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
+		SmartDashboard.putNumber("Climber Encoder", encoder.getPosition());
 	}
 }

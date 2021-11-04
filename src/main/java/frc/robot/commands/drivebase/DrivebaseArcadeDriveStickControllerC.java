@@ -14,11 +14,12 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.lib.constants.DriveConstants;
 import frc.lib.subsystems.DifferentialDrivebaseS;
-
+import frc.robot.subsystems.ClimberS;
 import frc.robot.subsystems.DrivebaseS;
 
 public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 	DrivebaseS drivebaseS;
+	ClimberS climberS;
 	DriveConstants driveConstants;
 	GenericHID controller;
 	double driveSpeed;
@@ -27,8 +28,9 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 	 * Creates a new DrivebaseArcadeDriveStick.
 	 */
 	public DrivebaseArcadeDriveStickControllerC(DrivebaseS drivebase, DriveConstants driveConstants,
-			GenericHID controller) {
+			GenericHID controller, ClimberS climber) {
 		drivebaseS = drivebase;
+		climberS = climber;
 		addRequirements(drivebaseS);
 		this.driveConstants = driveConstants;
 		this.controller = controller;
@@ -51,6 +53,8 @@ public class DrivebaseArcadeDriveStickControllerC extends CommandBase {
 		//double driveSpeed = rightTrigger - leftTrigger;
 		if (controller.getRawButton(XboxController.Button.kY.value)) {
 			driveSpeed = (rightTrigger - leftTrigger) * -1;
+		} else if (climberS.isDeployed()) {
+			driveSpeed = (rightTrigger - leftTrigger) * (driveConstants.getDriveControllerFwdBackAxisMultiplier() / 2);
 		} else {
 			driveSpeed = (rightTrigger - leftTrigger) * driveConstants.getDriveControllerFwdBackAxisMultiplier();
 		}

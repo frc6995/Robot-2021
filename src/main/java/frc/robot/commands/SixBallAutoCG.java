@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.commands.cannon.SpinUpAndAimC;
+import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.column.ColumnFeedC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DriveAutoCurvatureC;
@@ -21,11 +22,11 @@ public class SixBallAutoCG extends ParallelCommandGroup {
 	/** Creates a new SixBallAutoCG. */
 	public SixBallAutoCG(CannonS cannon, LimelightS limelight, IntakeS intake, AgitatorS agitator, ColumnS column,
 			DrivebaseS drivebase) {
-		addCommands(new SpinUpAndAimC(cannon, limelight, true), new IntakeSpinWhileHeldC(intake),
+		addCommands(new SpinUpShooterDistanceC(cannon, limelight, true), new IntakeSpinWhileHeldC(intake),
 				new AgitatorSpinC(agitator),
-				new SequentialCommandGroup(new WaitCommand(2),
+				new SequentialCommandGroup(new WaitCommand(1.5),
 						new InstantCommand(() -> column.disableStopper(), column), new WaitCommand(.5),
-						new ColumnFeedC(column, 0.85, 0.25, false)),
+						new ColumnFeedC(column, 0.85, 0.3, false).withTimeout(15)),
 				new DriveAutoC(drivebase, 2, true, 0.25).withTimeout(3.5)
 						.andThen(new DriveAutoC(drivebase, 2, false, 0.25).withTimeout(1.3))
 						.andThen(new DriveAutoCurvatureC(drivebase, 2, true, -0.18, -0.18).withTimeout(2.5)));

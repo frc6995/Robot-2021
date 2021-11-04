@@ -4,6 +4,7 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.wpilibj.shuffleboard.BuiltInWidgets;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.LimelightS;
 import frc.robot.subsystems.cannon.CannonS;
@@ -24,8 +25,8 @@ public class SpinUpShooterDistanceC extends CommandBase {
   private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
   private NetworkTableEntry speed = tab.add("Calculated Speed", 1).withWidget(BuiltInWidgets.kGraph).getEntry();
 
-  private static double[] speeds =    {3300, 2700, 2600, 2650, 2650, 2700, 3000};
-  private static double[] distances = {6.0, -4.0, -9.0, -13.0, -15, -18, -25};
+  private static double[] speeds =    {3000, 2700, 2650, 2650, 2600, 2700, 3300, 4500};
+  private static double[] distances =  {-25,  -18,  -15,  -13,   -9,   -4,    6,   20};
 
   /** Creates a new SpinUpShooterC. */
   public SpinUpShooterDistanceC(CannonS cannon, LimelightS limelight, boolean requireCannon) {
@@ -68,6 +69,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
     offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
     cannon.turret.setSetpoint(offset);
     cannon.turret.runPID();
+    SmartDashboard.putNumber("Shooter Distance RPM", rpm);
   }
 
   @Override
@@ -95,11 +97,10 @@ public class SpinUpShooterDistanceC extends CommandBase {
    */ 
   public static double calcSpeed(int smallerIndex, int biggerIndex, double distance, double[] DISTANCES_FEET, double[] RPMS) {
     double smallerRPM = RPMS[Math.max(smallerIndex, 0)];
-    double biggerRPM = RPMS[Math.min(biggerIndex, RPMS.length-1)];
+    double biggerRPM = RPMS[Math.min(biggerIndex, RPMS.length-1)] + 0.0001; //add a tiny amount to avoid NaN if distance is out of range
     double smallerDistance = DISTANCES_FEET[Math.max(smallerIndex, 0)];
-    double biggerDistance = DISTANCES_FEET[Math.min(biggerIndex, DISTANCES_FEET.length-1)];
-    
-    double newRPM = (biggerRPM - smallerRPM) / (biggerDistance - smallerDistance) * (distance - smallerDistance) + smallerRPM;
+    double biggerDistance = DISTANCES_FEET[Math.min(biggerIndex, DISTANCES_FEET.length-1)] + 0.0001;
+    double newRPM = ((biggerRPM - smallerRPM) / (biggerDistance - smallerDistance) * (distance - smallerDistance)) + smallerRPM;
 
     return newRPM;
   }
@@ -107,10 +108,11 @@ public class SpinUpShooterDistanceC extends CommandBase {
   public static int getUnderId(double distance, double[] DISTANCES_FEET) {
     int index = 0;
     for (int i = 0; i < DISTANCES_FEET.length; i++) {
-      if (distance > DISTANCES_FEET[i]) {
-        index = i;
-      }
+        if (distance > DISTANCES_FEET[i]) {
+            index = i;
+        }
     }
+    
     return index;
   }
 }

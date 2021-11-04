@@ -24,11 +24,11 @@ public class ClimberConstants2021 {
 	}
 
 	public int getDeploySolenoidPort() {
-		return 2;
+		return 3;
 	}
 
 	public int getRetractSolenoidPort() {
-		return 3;
+		return 2;
 	}
 
 	public int getServoPort() {
@@ -57,6 +57,10 @@ public class ClimberConstants2021 {
 
 	public double getPullupSetpoint() {
 		return 1000;
+	}
+
+	public double getExtendSetPoint() {
+		return 5000;
 	}
 
 	public double getAllowableError() {

@@ -19,7 +19,7 @@ public class IntakeS extends SubsystemBase {
     this.constants = constants;
     this.intakeMotor = intakeMotor;
     this.intakeBackMotor = intakeBackMotor;
-    this.intakeBackMotor.follow(intakeMotor);
+    this.intakeBackMotor.follow(this.intakeMotor);
     this.intakeSolenoid = solenoid;
   }
 
@@ -29,12 +29,12 @@ public class IntakeS extends SubsystemBase {
 
   public void setSpeed(double speed) {
     intakeMotor.set(speed);
-    //intakeBackMotor.set(speed * 0.9);
+    intakeBackMotor.set(speed);
   }
 
   public void runIntake() {
     intakeMotor.set(constants.getIntakeSpeed());
-    //intakeBackMotor.set(constants.getIntakeBackRollerSpeed());
+    intakeBackMotor.set(constants.getIntakeBackRollerSpeed());
   }
 
   @Override
