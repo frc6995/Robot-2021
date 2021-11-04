@@ -16,6 +16,7 @@ import frc.robot.constants.ClimberConstants2021;
 public class ClimberS extends SubsystemBase {
 
 	private NomadSparkMax climbRatchet;
+	private NomadSparkMax translator;
 	private Servo ratchetRelease;
 	private DoubleSolenoid climberDeploy;
 	private CANEncoder encoder;
@@ -23,8 +24,9 @@ public class ClimberS extends SubsystemBase {
 
 	/** Creates a new ClimberS. */
 	public ClimberS(ClimberConstants2021 constants, NomadSparkMax climbRatchet, Servo ratchetRelease,
-			DoubleSolenoid climberDeploy) {
+			DoubleSolenoid climberDeploy, NomadSparkMax translator) {
 		this.climbRatchet = climbRatchet;
+		this.translator = translator;
 		this.ratchetRelease = ratchetRelease;
 		this.climberDeploy = climberDeploy;
 		this.encoder = climbRatchet.getEncoder();
@@ -44,6 +46,10 @@ public class ClimberS extends SubsystemBase {
 		climbRatchet.set(speed);
 	}
 
+	public void setTranslatorSpeed(double speed) {
+		translator.set(speed);
+	}
+
 	public void disengageRatchet() {
 		ratchetRelease.setAngle(constants.servoDisengagedAngle());
 		climbRatchet.setIdleMode(IdleMode.kCoast);
@@ -58,7 +64,7 @@ public class ClimberS extends SubsystemBase {
 		climberDeploy.set(Value.kForward);
 	}
 
-	private void retractClimber() {
+	public void retractClimber() {
 		climberDeploy.set(Value.kReverse);
 	}
 

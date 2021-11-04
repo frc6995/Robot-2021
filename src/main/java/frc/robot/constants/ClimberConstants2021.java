@@ -19,12 +19,16 @@ public class ClimberConstants2021 {
 		return 60;
 	}
 
+	public int getTranslatorId() {
+		return 61;
+	}
+
 	public int getDeploySolenoidPort() {
-		return 0;
+		return 2;
 	}
 
 	public int getRetractSolenoidPort() {
-		return 1;
+		return 3;
 	}
 
 	public int getServoPort() {
