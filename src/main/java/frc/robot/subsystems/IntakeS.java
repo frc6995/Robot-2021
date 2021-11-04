@@ -8,15 +8,18 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 
 public class IntakeS extends SubsystemBase {
   private NomadSparkMax intakeMotor;
+  private NomadSparkMax intakeBackMotor;
   private DoubleSolenoid intakeSolenoid;
   private IntakeConstants constants;
 
   /**
    * Creates a new IntakeS.
    */
-  public IntakeS(IntakeConstants constants, NomadSparkMax intakeMotor, DoubleSolenoid solenoid) {
+  public IntakeS(IntakeConstants constants, NomadSparkMax intakeMotor, NomadSparkMax intakeBackMotor, DoubleSolenoid solenoid) {
     this.constants = constants;
     this.intakeMotor = intakeMotor;
+    this.intakeBackMotor = intakeBackMotor;
+    this.intakeBackMotor.follow(intakeMotor);
     this.intakeSolenoid = solenoid;
   }
 
@@ -26,6 +29,12 @@ public class IntakeS extends SubsystemBase {
 
   public void setSpeed(double speed) {
     intakeMotor.set(speed);
+    //intakeBackMotor.set(speed * 0.9);
+  }
+
+  public void runIntake() {
+    intakeMotor.set(constants.getIntakeSpeed());
+    //intakeBackMotor.set(constants.getIntakeBackRollerSpeed());
   }
 
   @Override

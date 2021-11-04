@@ -54,11 +54,11 @@ public class TurretConstants2021 implements TurretConstants {
     }
 
     public double getForwardSoftLimit() {
-        return 52;
+        return 80;
     }
 
     public double getReverseSoftLimit() {
-        return -52;
+        return -80;
     }
 
     @Override

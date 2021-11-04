@@ -15,7 +15,7 @@ public class IntakeSpinWhileHeldC extends CommandBase {
   @Override
   public void initialize() {
     intake.extend();
-    intake.setSpeed(intake.getConstants().getIntakeSpeed());
+    intake.runIntake();
   }
 
   @Override
