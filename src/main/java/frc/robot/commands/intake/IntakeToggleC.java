@@ -26,7 +26,7 @@ public class IntakeToggleC extends InstantCommand {
     }
     else if (intakeS.getSolenoidPosition() == Value.kReverse){
       intakeS.extend();
-      intakeS.setSpeed(intakeS.getConstants().getIntakeSpeed());
+      intakeS.runIntake();
       agitatorS.setLeftMotor(agitatorS.getConstants().getLeftSpeed());
       agitatorS.setRightMotor(agitatorS.getConstants().getRightSpeed());
     }

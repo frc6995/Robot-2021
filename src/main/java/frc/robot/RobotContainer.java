@@ -33,7 +33,7 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutoShootAndDriveCG;
-import frc.robot.commands.AutoShootAndDriveSequencingCG;
+import frc.robot.commands.SixBallAutoCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpAndAimC;
 import frc.robot.commands.cannon.SpinUpShooterC;
@@ -205,9 +205,10 @@ public class RobotContainer {
     agitatorS = new AgitatorS(agitatorConstants, left, right);
 
     NomadSparkMax intakeMotor = new NomadSparkMax(intakeConstants.getIntakeMotorPort());
+    NomadSparkMax intakeBackMotor = new NomadSparkMax(intakeConstants.getIntakeBackMotorPort());
     DoubleSolenoid intakeStopper = new DoubleSolenoid(1, intakeConstants.getSolenoidFwdPort(),
         intakeConstants.getSolenoidRevPort());
-    intakeS = new IntakeS(intakeConstants, intakeMotor, intakeStopper);
+    intakeS = new IntakeS(intakeConstants, intakeMotor, intakeBackMotor, intakeStopper);
 
     drivebaseS = new DrivebaseS(driveConstants, autoConstants);
 
@@ -271,18 +272,20 @@ public class RobotContainer {
 
     spinShooterC = new SpinUpShooterC(cannonS, false);
 
-    chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
-    chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
-    chooser.addOption("Shoot Seq and Move Back", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, false));
-    chooser.addOption("Shoot Seq and Move Fwd", new AutoShootAndDriveSequencingCG(drivebaseS, cannonS, agitatorS, columnS, intakeS, limelightS, true));
-    chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
-    SmartDashboard.putData("Autonomous", chooser);
-
     SmartDashboard.putData(new EngageRatchetC(climberS));
     SmartDashboard.putData(new DisengageRatchetC(climberS));
     SmartDashboard.putData(new DeployClimberC(climberS));
     SmartDashboard.putData(new InstantCommand(() -> climberS.retractClimber()));
     SmartDashboard.putData("Climber Motor Test", new ClimberMotorTest(climberS).withTimeout(1));
+    
+    chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS,
+				agitatorS, columnS, intakeS, limelightS, false));
+		chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS,
+				columnS, intakeS, limelightS, true));
+		//chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
+		chooser.addOption("6 Ball Trench",
+				new SixBallAutoCG(cannonS, limelightS, intakeS, agitatorS, columnS, drivebaseS));
+		SmartDashboard.putData("Autonomous", chooser);
   }
 
   /**
