@@ -1,10 +1,3 @@
-/*----------------------------------------------------------------------------*/
-/* Copyright (c) 2018-2019 FIRST. All Rights Reserved.                        */
-/* Open Source Software - may be modified and shared by FRC teams. The code   */
-/* must be accompanied by the FIRST BSD license file in the root directory of */
-/* the project.                                                               */
-/*----------------------------------------------------------------------------*/
-
 package frc.robot;
 
 import java.util.function.DoubleSupplier;
@@ -27,13 +20,11 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.StartEndCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import edu.wpi.first.wpilibj2.command.button.POVButton;
 import frc.lib.auto.NomadAutoCommandGenerator;
 import frc.lib.constants.AutoConstants;
 import frc.lib.constants.DriveConstants;
@@ -42,8 +33,6 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutoShootAndDriveCG;
-import frc.robot.commands.AutoShootAndDriveSequencingCG;
-import frc.robot.commands.AutonomousAwardWinnerCG;
 import frc.robot.commands.SixBallAutoCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpAndAimC;
@@ -51,19 +40,24 @@ import frc.robot.commands.cannon.SpinUpShooterC;
 import frc.robot.commands.cannon.SpinUpShooterDistanceC;
 import frc.robot.commands.cannon.SpinUpShooterMidC;
 import frc.robot.commands.cannon.TurretHomeC;
+import frc.robot.commands.climber.ClimberManualModeC;
+import frc.robot.commands.climber.ClimberMotorTest;
+import frc.robot.commands.climber.DeployClimberC;
+import frc.robot.commands.climber.DisengageRatchetC;
+import frc.robot.commands.climber.EngageRatchetC;
+import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.drivebase.DriveAutoC;
 import frc.robot.commands.drivebase.DrivebaseArcadeDriveStickControllerC;
 import frc.robot.commands.intake.IntakeRetractC;
 import frc.robot.commands.intake.IntakeSpinWhileHeldC;
 import frc.robot.commands.intake.IntakeToggleC;
 import frc.robot.commands.othercommands.AgitatorSpinC;
-import frc.robot.commands.column.ColumnFeedC;
-import frc.robot.commands.column.ColumnLoadC;
 import frc.robot.commands.othercommands.ExpelBallsCG;
 import frc.robot.commands.othercommands.StoreBallsCG;
 import frc.robot.constants.AgitatorConstants2021;
 import frc.robot.constants.AutoConstants2021;
 import frc.robot.constants.CannonConstants2021;
+import frc.robot.constants.ClimberConstants2021;
 import frc.robot.constants.ColumnConstants2021;
 import frc.robot.constants.DriveConstants2021;
 import frc.robot.constants.HoodConstants2021;
@@ -80,6 +74,7 @@ import frc.robot.constants.interfaces.LimelightConstants;
 import frc.robot.constants.interfaces.ShooterConstants;
 import frc.robot.constants.interfaces.TurretConstants;
 import frc.robot.subsystems.AgitatorS;
+import frc.robot.subsystems.ClimberS;
 import frc.robot.subsystems.ColumnS;
 import frc.robot.subsystems.DrivebaseS;
 import frc.robot.subsystems.IntakeS;
@@ -107,6 +102,7 @@ public class RobotContainer {
   private IntakeS intakeS;
   private ColumnS columnS;
   private CannonS cannonS;
+  private ClimberS climberS;
   private LimelightS limelightS;
 
   // private DifferentialDrive differentialDrive;
@@ -173,7 +169,7 @@ public class RobotContainer {
     createCommands();
     configureDefaultCommands();
     configureButtonBindings();
-    lights = new Spark(0);
+    lights = new Spark(1);
     lights.set(-0.97);
     init = true;
     pdp = new PowerDistributionPanel();
@@ -239,6 +235,14 @@ public class RobotContainer {
 
     cannonS = new CannonS(cannonConstants, hoodLeftServo, hoodRightServo, shooterLeadMotor, turretMotor,
         turretLimitSwitch);
+
+    ClimberConstants2021 climberConstants = new ClimberConstants2021();
+    NomadSparkMax climberMotor = new NomadSparkMax(climberConstants.getRatchetMotorId(), MotorType.kBrushless, true);
+    NomadSparkMax translator = new NomadSparkMax(climberConstants.getTranslatorId(), MotorType.kBrushless, false);
+    DoubleSolenoid climbDeploy = new DoubleSolenoid(1, climberConstants.getDeploySolenoidPort(), climberConstants.getRetractSolenoidPort());
+    Servo climbServo = new Servo(climberConstants.getServoPort());
+
+    climberS = new ClimberS(climberConstants, climberMotor, climbServo, climbDeploy, translator);
   }
 
   /**
@@ -268,6 +272,12 @@ public class RobotContainer {
 
     spinShooterC = new SpinUpShooterC(cannonS, false);
 
+    SmartDashboard.putData(new EngageRatchetC(climberS));
+    SmartDashboard.putData(new DisengageRatchetC(climberS));
+    SmartDashboard.putData(new DeployClimberC(climberS));
+    SmartDashboard.putData(new InstantCommand(() -> climberS.retractClimber()));
+    SmartDashboard.putData("Climber Motor Test", new ClimberMotorTest(climberS).withTimeout(1));
+    
     chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS,
 				agitatorS, columnS, intakeS, limelightS, false));
 		chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS,
@@ -283,6 +293,7 @@ public class RobotContainer {
    */
   private void configureDefaultCommands() {
     drivebaseS.setDefaultCommand(controllerDrive);
+    climberS.setDefaultCommand(new ClimberManualModeC(climberS, operator));
   }
 
   /**

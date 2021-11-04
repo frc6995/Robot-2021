@@ -1,5 +1,4 @@
 
-
 package frc.robot.constants;
 
 import frc.robot.constants.interfaces.CannonConstants;
@@ -13,19 +12,20 @@ public class CannonConstants2021 implements CannonConstants {
 	private HoodConstants hoodConstants;
 	private TurretConstants turretConstants;
 
-    public CannonConstants2021(ShooterConstants shooterConstants, HoodConstants hoodConstants, TurretConstants turretConstants){
+	public CannonConstants2021(ShooterConstants shooterConstants, HoodConstants hoodConstants,
+			TurretConstants turretConstants) {
 		this.shooterConstants = shooterConstants;
 		this.hoodConstants = hoodConstants;
 		this.turretConstants = turretConstants;
 	}
 
 	@Override
-	public ShooterConstants getShooterConstants() {		
+	public ShooterConstants getShooterConstants() {
 		return shooterConstants;
 	}
 
 	@Override
-	public HoodConstants getHoodConstants() {		
+	public HoodConstants getHoodConstants() {
 		return hoodConstants;
 	}
 
