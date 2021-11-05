@@ -56,22 +56,22 @@ public class ClimberConstants2021 {
 	}
 
 	public double getPullupSetpoint() {
-		return 1000;
+		return 3;
 	}
 
 	public double getExtendSetPoint() {
-		return 5000;
+		return 28;
 	}
 
 	public double getAllowableError() {
-		return 50;
+		return 3;
 	}
 
 	public double servoEngagedAngle() {
-		return (useSD ? SmartDashboard.getNumber("Servo Engage", 5) : 5);
+		return (useSD ? SmartDashboard.getNumber("Servo Engage", 0) : 0);
 	}
 
 	public double servoDisengagedAngle() {
-		return (useSD ? SmartDashboard.getNumber("Servo Disengaged", 16) : 16);
+		return (useSD ? SmartDashboard.getNumber("Servo Disengaged", 25) : 25);
 	}
 }

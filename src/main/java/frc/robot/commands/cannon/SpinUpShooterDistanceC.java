@@ -23,7 +23,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
   private double offset = 0;
 
   private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
-  private NetworkTableEntry speed = tab.add("Calculated Speed", 1).withWidget(BuiltInWidgets.kGraph).getEntry();
+  //private NetworkTableEntry speed = tab.add("Calculated Speed Dist", 1).withWidget(BuiltInWidgets.kGraph).getEntry();
 
   private static double[] speeds =    {3000, 2700, 2650, 2650, 2600, 2700, 3300, 4500};
   private static double[] distances =  {-25,  -18,  -15,  -13,   -9,   -4,    6,   20};
@@ -46,7 +46,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
     index = Math.max(Math.min(distances.length-2, getUnderId(distance, distances)), 0);
     rpm = calcSpeed(index, index+1, distance, distances, speeds);
     cannon.pidShooterToTargetSpeed(rpm);
-    speed.setDouble(rpm);
+    //speed.setDouble(rpm);
 
     offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
     cannon.turret.setSetpoint(offset);
@@ -64,7 +64,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
     // find target speed and pid to that speed
     rpm = calcSpeed(index, index+1, distance, distances, speeds);
     cannon.pidShooterToTargetSpeed(rpm);
-    speed.setDouble(rpm);
+    //speed.setDouble(rpm);
 
     offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
     cannon.turret.setSetpoint(offset);

@@ -3,6 +3,7 @@ package frc.robot.subsystems;
 import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
+import com.revrobotics.CANSparkMax.SoftLimitDirection;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DoubleSolenoid;
@@ -38,6 +39,8 @@ public class ClimberS extends SubsystemBase {
 		climbRatchet.getPIDController().setD(constants.getKD());
 		climbRatchet.getPIDController().setFF(constants.getKF());
 		climbRatchet.getPIDController().setIZone(constants.getIZone());
+		climbRatchet.setSoftLimit(SoftLimitDirection.kReverse, -35);
+		climbRatchet.setSoftLimit(SoftLimitDirection.kForward, 0);
 
 		engageRatchet();
 		retractClimber();
@@ -82,18 +85,19 @@ public class ClimberS extends SubsystemBase {
 	}
 
 	public boolean isAtSetpoint() {
-		return (Math.abs(encoder.getPosition() - constants.getPullupSetpoint()) < constants
-				.getAllowableError());
+		return !(Math.abs(encoder.getPosition()) > constants.getPullupSetpoint());
 	}
 
 	public boolean isAtUpSetpoint() {
-		return (Math.abs(encoder.getPosition() - constants.getExtendSetPoint()) < constants
-				.getAllowableError());
+		return (Math.abs(encoder.getPosition()) > constants.getExtendSetPoint());
 	}
 
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
 		SmartDashboard.putNumber("Climber Encoder", encoder.getPosition());
+		SmartDashboard.putBoolean("C Is At Setpoint", isAtSetpoint());
+		SmartDashboard.putBoolean("C Is At Up Setpoint", isAtUpSetpoint());
+		SmartDashboard.putNumber("Ratchet Value", ratchetRelease.getAngle());
 	}
 }

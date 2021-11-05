@@ -354,7 +354,7 @@ public class RobotContainer {
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 3); cannonS.turret.runPID();})//new PrintCommand("Turret left");
     new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();}); */
     new POVButton(operator, 0).whenPressed(new ExtendClimberCG(climberS, cannonS));
-    new POVButton(operator, 90).whenPressed(new ClimberUpCG(climberS));
+    new POVButton(operator, 90).whenPressed(new ClimberUpCG(climberS, cannonS));
     new POVButton(operator, 180).whenPressed(new ClimberFLEXCG(climberS));
     //new POVButton(operator, 270).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.YELLOW.value));
   }
@@ -390,6 +390,7 @@ public class RobotContainer {
     intakeS.retract();
     cannonS.periodic();
     drivebaseS.setIdleMode(IdleMode.kCoast);
+    climberS.resetEncoder();
   }
 
   public void teleopInit() {

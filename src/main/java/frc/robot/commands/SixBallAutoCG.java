@@ -25,7 +25,7 @@ public class SixBallAutoCG extends ParallelCommandGroup {
 		addCommands(new SpinUpShooterDistanceC(cannon, limelight, true), new IntakeSpinWhileHeldC(intake),
 				new AgitatorSpinC(agitator),
 				new SequentialCommandGroup(new WaitCommand(1.5),
-						new InstantCommand(() -> column.disableStopper(), column), new WaitCommand(.5),
+						new InstantCommand(() -> column.disableStopper(), column), new WaitCommand(5.5), //0.5
 						new ColumnFeedC(column, 0.85, 0.3, false).withTimeout(15)),
 				new DriveAutoC(drivebase, 2, true, 0.25).withTimeout(3.5)
 						.andThen(new DriveAutoC(drivebase, 2, false, 0.25).withTimeout(1.3))

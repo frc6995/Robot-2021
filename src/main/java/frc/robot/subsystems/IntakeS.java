@@ -19,7 +19,8 @@ public class IntakeS extends SubsystemBase {
     this.constants = constants;
     this.intakeMotor = intakeMotor;
     this.intakeBackMotor = intakeBackMotor;
-    this.intakeBackMotor.follow(this.intakeMotor);
+    //this.intakeBackMotor.follow(this.intakeMotor);
+    this.intakeBackMotor.setInverted(true);
     this.intakeSolenoid = solenoid;
   }
 
