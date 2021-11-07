@@ -34,6 +34,7 @@ import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
 import frc.lib.wrappers.motorcontrollers.NomadTalonSRX;
 import frc.robot.auto.Trajectories;
 import frc.robot.commands.AutoShootAndDriveCG;
+import frc.robot.commands.FiveBallAutoCG;
 import frc.robot.commands.SixBallAutoCG;
 import frc.robot.commands.cannon.AimTurretC;
 import frc.robot.commands.cannon.SpinUpAndAimC;
@@ -173,8 +174,6 @@ public class RobotContainer {
     createCommands();
     configureDefaultCommands();
     configureButtonBindings();
-    lights = new Spark(1);
-    lights.set(-0.97);
     init = true;
     pdp = new PowerDistributionPanel();
     //SmartDashboard.putData(pdp);
@@ -279,13 +278,15 @@ public class RobotContainer {
     SmartDashboard.putData(new EngageRatchetC(climberS));
     SmartDashboard.putData(new DisengageRatchetC(climberS));
     SmartDashboard.putData(new DeployClimberC(climberS));
+    SmartDashboard.putData(new SpinUpShooterC(cannonS, true));
     SmartDashboard.putData(new InstantCommand(() -> climberS.retractClimber()));
     SmartDashboard.putData("Climber Motor Test", new ClimberMotorTest(climberS).withTimeout(1));
     
     chooser.setDefaultOption("Shoot 3 and Move Back", new AutoShootAndDriveCG(drivebaseS, cannonS,
 				agitatorS, columnS, intakeS, limelightS, false));
 		chooser.addOption("Shoot 3 and Move Fwd", new AutoShootAndDriveCG(drivebaseS, cannonS, agitatorS,
-				columnS, intakeS, limelightS, true));
+        columnS, intakeS, limelightS, true));
+    chooser.addOption("Five Ball Auto", new FiveBallAutoCG(cannonS, limelightS, intakeS, agitatorS, columnS, drivebaseS));
 		//chooser.addOption("Shoot 3 grab trench (wip)", ramseteCommandGroup);
 		chooser.addOption("6 Ball Trench",
 				new SixBallAutoCG(cannonS, limelightS, intakeS, agitatorS, columnS, drivebaseS));
@@ -353,9 +354,9 @@ public class RobotContainer {
     new JoystickButton(operator, XboxController.Button.kY.value).whileHeld(new ExpelBallsCG(intakeS, agitatorS, columnS));//new ColumnFeedCG(columnS));
     new JoystickButton(controller, XboxController.Button.kBumperLeft.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() + 3); cannonS.turret.runPID();})//new PrintCommand("Turret left");
     new JoystickButton(controller, XboxController.Button.kBumperRight.value).whenPressed(() -> {cannonS.turret.setSetpoint(cannonS.turret.getTurretEncoderPosition() - 3); cannonS.turret.runPID();}); */
-    new POVButton(operator, 0).whenPressed(new ExtendClimberCG(climberS, cannonS));
-    new POVButton(operator, 90).whenPressed(new ClimberUpCG(climberS, cannonS));
-    new POVButton(operator, 180).whenPressed(new ClimberFLEXCG(climberS));
+    new POVButton(operator, 0).toggleWhenPressed(new ExtendClimberCG(climberS, cannonS));
+    new POVButton(operator, 90).toggleWhenPressed(new ClimberUpCG(climberS, cannonS));
+    new POVButton(operator, 180).toggleWhenPressed(new ClimberFLEXCG(climberS));
     //new POVButton(operator, 270).whenPressed(new SpinUpShooterC(cannonS, true, SHOOTER_SPEEDS.YELLOW.value));
   }
 
@@ -390,7 +391,6 @@ public class RobotContainer {
     intakeS.retract();
     cannonS.periodic();
     drivebaseS.setIdleMode(IdleMode.kCoast);
-    climberS.resetEncoder();
   }
 
   public void teleopInit() {
@@ -398,6 +398,8 @@ public class RobotContainer {
   }
 
   public void autonomousInit() {
+    climberS.resetEncoder();
+    cannonS.turret.resetEncoder();
     drivebaseS.setIdleMode(IdleMode.kCoast);
   }
 

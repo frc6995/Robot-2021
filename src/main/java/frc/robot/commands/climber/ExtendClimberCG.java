@@ -10,6 +10,6 @@ public class ExtendClimberCG extends SequentialCommandGroup {
 
 	/** Creates a new ExtendClimberCG. */
 	public ExtendClimberCG(ClimberS climber, CannonS cannon) {
-		addCommands(new TurretHomeC(cannon).withTimeout(1), new DeployClimberC(climber));
+		addCommands(new TurretHomeC(cannon).withTimeout(0.5), new DeployClimberC(climber));
 	}
 }

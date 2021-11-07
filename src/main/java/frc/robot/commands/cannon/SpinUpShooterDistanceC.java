@@ -22,10 +22,10 @@ public class SpinUpShooterDistanceC extends CommandBase {
   private int index = 0;
   private double offset = 0;
 
-  private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
+  //private ShuffleboardTab tab = Shuffleboard.getTab("Shooter");
   //private NetworkTableEntry speed = tab.add("Calculated Speed Dist", 1).withWidget(BuiltInWidgets.kGraph).getEntry();
 
-  private static double[] speeds =    {3000, 2700, 2650, 2650, 2600, 2700, 3300, 4500};
+  private static double[] speeds =    {2900, 2650, 2600, 2600, 2550, 2600, 3200, 4400};
   private static double[] distances =  {-25,  -18,  -15,  -13,   -9,   -4,    6,   20};
 
   /** Creates a new SpinUpShooterC. */
@@ -47,6 +47,11 @@ public class SpinUpShooterDistanceC extends CommandBase {
     rpm = calcSpeed(index, index+1, distance, distances, speeds);
     cannon.pidShooterToTargetSpeed(rpm);
     //speed.setDouble(rpm);
+    if (rpm - cannon.shooter.getEncoderSpeed() < 500) {
+      cannon.shooter.lights.set(-0.5);
+    } else {
+      cannon.shooter.lights.set(-0.97);
+    }
 
     offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
     cannon.turret.setSetpoint(offset);
@@ -61,6 +66,12 @@ public class SpinUpShooterDistanceC extends CommandBase {
       index = Math.max(Math.min(distances.length-2, getUnderId(distance, distances)), 0);
     }
 
+    // if (rpm - cannon.shooter.getEncoderSpeed() < 500) {
+    //   cannon.shooter.lights.set(-0.5);
+    // } else {
+    //   cannon.shooter.lights.set(-0.97);
+    // }
+
     // find target speed and pid to that speed
     rpm = calcSpeed(index, index+1, distance, distances, speeds);
     cannon.pidShooterToTargetSpeed(rpm);
@@ -69,7 +80,6 @@ public class SpinUpShooterDistanceC extends CommandBase {
     offset = cannon.turret.getTurretEncoderPosition() - (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1:0));
     cannon.turret.setSetpoint(offset);
     cannon.turret.runPID();
-    SmartDashboard.putNumber("Shooter Distance RPM", rpm);
   }
 
   @Override
@@ -77,6 +87,7 @@ public class SpinUpShooterDistanceC extends CommandBase {
     super.end(interrupted);
     cannon.stopShooter();
     limelight.deregister();
+    cannon.shooter.lights.set(-0.97);
   }
 
   @Override

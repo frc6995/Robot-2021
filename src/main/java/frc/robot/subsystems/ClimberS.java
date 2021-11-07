@@ -95,9 +95,9 @@ public class ClimberS extends SubsystemBase {
 	@Override
 	public void periodic() {
 		// This method will be called once per scheduler run
-		SmartDashboard.putNumber("Climber Encoder", encoder.getPosition());
+		//SmartDashboard.putNumber("Climber Encoder", encoder.getPosition());
 		SmartDashboard.putBoolean("C Is At Setpoint", isAtSetpoint());
 		SmartDashboard.putBoolean("C Is At Up Setpoint", isAtUpSetpoint());
-		SmartDashboard.putNumber("Ratchet Value", ratchetRelease.getAngle());
+		//SmartDashboard.putNumber("Ratchet Value", ratchetRelease.getAngle());
 	}
 }

@@ -15,7 +15,7 @@ public class ClimberDownBangC extends CommandBase {
   // Called when the command is initially scheduled.
   @Override
   public void initialize() {
-    climber.setSpeed(0.25);
+    climber.setSpeed(0.5);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

@@ -6,7 +6,7 @@ import frc.robot.subsystems.ColumnS;
 public class ColumnFeedC extends CommandBase {
   private ColumnS column;
   private double accelSpeed = 0.85;
-  private double colSpeed = 0.4;
+  private double colSpeed = 0.5;
 
   /** Creates a new ColumnFeedC. */
   public ColumnFeedC(ColumnS columnS) {

@@ -35,7 +35,7 @@ public class IntakeS extends SubsystemBase {
 
   public void runIntake() {
     intakeMotor.set(constants.getIntakeSpeed());
-    intakeBackMotor.set(constants.getIntakeBackRollerSpeed());
+    intakeBackMotor.set(constants.getIntakeSpeed());
   }
 
   @Override

@@ -137,6 +137,10 @@ public class Turret {
     this.sparkMax.enableVoltageCompensation(12);
   }
 
+  public void resetEncoder() {
+    encoder.setPosition(0);
+  }
+
   // Don't want anyone to be able to run this, but it will make it easier for the
   // periodic in the subsystem to call this
   protected void periodic() {

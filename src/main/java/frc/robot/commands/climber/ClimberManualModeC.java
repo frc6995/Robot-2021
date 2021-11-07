@@ -26,8 +26,8 @@ public class ClimberManualModeC extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    climbSpeed = controller.getRawAxis(XboxController.Axis.kLeftY.value) * 0.5;
-    translateSpeed = controller.getRawAxis(XboxController.Axis.kLeftX.value) * 0.5;
+    climbSpeed = controller.getRawAxis(XboxController.Axis.kLeftY.value) * 0.75;
+    translateSpeed = controller.getRawAxis(XboxController.Axis.kLeftX.value);
 
     climberS.setSpeed(climbSpeed);
     climberS.setTranslatorSpeed(translateSpeed);

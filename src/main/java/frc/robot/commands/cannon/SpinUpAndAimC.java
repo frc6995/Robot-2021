@@ -56,12 +56,18 @@ public class SpinUpAndAimC extends CommandBase {
 				- (limelight.getFilteredXOffset() * (limelight.isTargetFound() ? 1 : 0));
 		cannon.turret.setSetpoint(offset);
 		cannon.turret.runPID();
+		// if (rpm - cannon.shooter.getEncoderSpeed() < 500) {
+    //   cannon.shooter.lights.set(-0.5);
+    // } else {
+    //   cannon.shooter.lights.set(-0.97);
+    // }
 	}
 
 	@Override
 	public void end(boolean interrupted) {
 		cannon.stopShooter();
 		limelight.deregister();
+		cannon.shooter.lights.set(-0.97);
 		super.end(interrupted);
 	}
 

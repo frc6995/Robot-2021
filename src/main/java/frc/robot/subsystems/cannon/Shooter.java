@@ -4,6 +4,7 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.ControlType;
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.wpilibj.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.lib.utility.math.NomadMathUtil;
 import frc.lib.wrappers.motorcontrollers.NomadSparkMax;
@@ -46,6 +47,7 @@ public class Shooter {
     private double targetSpeed;
     /**The number of frames at the setpoint */
     private int counter;
+    public Spark lights;
 
     /**
      * Create a new Shooter with 2021 constants.
@@ -64,6 +66,8 @@ public class Shooter {
         this.motor = leadMotor;
         encoder = leadMotor.getEncoder();
         shooterState = ShooterStates.OFF;
+        lights = new Spark(1);
+        lights.set(-0.97);
 
         counter = 0;
 

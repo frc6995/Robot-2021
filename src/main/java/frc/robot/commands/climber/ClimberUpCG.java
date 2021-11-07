@@ -9,7 +9,7 @@ import frc.robot.subsystems.cannon.CannonS;
 public class ClimberUpCG extends SequentialCommandGroup {
   /** Creates a new ClimberUpCG. */
   public ClimberUpCG(ClimberS climber, CannonS cannon) {
-    addCommands(new TurretHomeC(cannon).withTimeout(1),// new WaitCommand(0),
+    addCommands(// new WaitCommand(0),
     new DisengageRatchetC(climber), 
     new WaitCommand(0.5), 
     new ClimberUpBangC(climber), 

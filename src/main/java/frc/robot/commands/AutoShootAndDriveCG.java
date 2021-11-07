@@ -27,7 +27,7 @@ public class AutoShootAndDriveCG extends SequentialCommandGroup {
       //new SpinUpShooterC(cannon, false)
       new InstantCommand(()->column.disableStopper(), column),
       new WaitCommand(.5),
-      new ColumnFeedC(column, 0.85, 0.25, false).withTimeout(4.5),
+      new ColumnFeedC(column, 0.85, 0.4, false).withTimeout(4.5),
       new WaitCommand(.5), // spin shooter and launch 3  balls.
       new DriveAutoC(drivebase, 3, forwards, 0.25).withTimeout(1)))
     );
