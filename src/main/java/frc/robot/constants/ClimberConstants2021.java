@@ -60,7 +60,7 @@ public class ClimberConstants2021 {
 	}
 
 	public double getExtendSetPoint() {
-		return 28;
+		return 27;
 	}
 
 	public double getAllowableError() {
